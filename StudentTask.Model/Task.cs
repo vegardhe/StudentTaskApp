@@ -10,7 +10,7 @@ namespace StudentTask.Model
         /// <summary>
         /// enum used for task status.
         /// </summary>
-        private enum Status
+        public enum Status
         {
             /// <summary>
             /// added task
@@ -64,7 +64,7 @@ namespace StudentTask.Model
         /// <value>
         /// The task status.
         /// </value>
-        public int TaskStatus { get; set; }
+        public Status TaskStatus { get; set; }
 
         /// <summary>
         /// Gets or sets the notes.
