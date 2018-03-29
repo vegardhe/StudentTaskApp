@@ -5,31 +5,45 @@
     xmlns:local="using:StudentTask.Uwp.App.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Template10.Controls"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource SystemControlForegroundAccentBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
+    <RelativePanel Background="{ThemeResource SystemControlForegroundAccentBrush}">
+        <controls:PageHeader x:Name="PageHeader"
+                             RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True"
+                             Text="Login"></controls:PageHeader>
+        
+        <Grid RelativePanel.Below="PageHeader" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        </Grid.ColumnDefinitions>
-
-        <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">Username:</TextBlock>
-        <TextBox Grid.Row="2" Grid.Column="2"></TextBox>
-
-        <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center">Password:</TextBlock>
-        <TextBox Grid.Row="4" Grid.Column="2"></TextBox>
-    </Grid>
+            <TextBox Grid.Row="3" Grid.Column="1" Height="35" PlaceholderText="Username" Name="UsernameBox"></TextBox>
+            <PasswordBox Grid.Row="4" Grid.Column="1" Height="35" PlaceholderText="Password" Name="PasswordBox"></PasswordBox>
+            <TextBlock Grid.Row="5" Grid.Column="1" Name="ErrorBlock" Foreground="Red"></TextBlock>
+            <Button Name="LoginButton" 
+                    Grid.Row="6" 
+                    Grid.Column="1" 
+                    VerticalAlignment="Stretch" 
+                    HorizontalAlignment="Stretch" 
+                    Foreground="AliceBlue"
+                    Click="Login">Log in</Button>
+        </Grid>
+    </RelativePanel>
 </Page>
