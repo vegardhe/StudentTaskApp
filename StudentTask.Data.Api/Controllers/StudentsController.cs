@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using StudentTask.Data.Access;
+using StudentTask.Model;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using StudentTask.Data.Access;
-using StudentTask.Model;
 
 namespace StudentTask.Data.Api.Controllers
 {
@@ -24,9 +20,10 @@ namespace StudentTask.Data.Api.Controllers
             return db.Students;
         }
 
+        // TODO: Make api not return passwords.
         // GET: api/Students/5
         [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> GetStudent(int id)
+        public async Task<IHttpActionResult> GetStudent(string id)
         {
             Student student = await db.Students.FindAsync(id);
             if (student == null)
@@ -39,14 +36,14 @@ namespace StudentTask.Data.Api.Controllers
 
         // PUT: api/Students/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutStudent(int id, Student student)
+        public async Task<IHttpActionResult> PutStudent(string id, Student student)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != student.StudentId)
+            if (id != student.Username)
             {
                 return BadRequest();
             }
@@ -82,14 +79,45 @@ namespace StudentTask.Data.Api.Controllers
             }
 
             db.Students.Add(student);
-            await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = student.StudentId }, student);
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (StudentExists(student.Username))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtRoute("DefaultApi", new { id = student.Username }, student);
+        }
+
+        // POST: api/Students/Login
+        [HttpPost]
+        [Route("api/Students/Login")]
+        [ResponseType(typeof(Student))]
+        public async Task<IHttpActionResult> StudentLogin(Student student)
+        {
+            Student dbStudent = await db.Students.FindAsync(student.Username);
+            if (dbStudent == null)
+                return NotFound();
+
+            if (dbStudent.Password == student.Password)
+                return Ok(dbStudent);
+
+            return InternalServerError();
         }
 
         // DELETE: api/Students/5
         [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> DeleteStudent(int id)
+        public async Task<IHttpActionResult> DeleteStudent(string id)
         {
             Student student = await db.Students.FindAsync(id);
             if (student == null)
@@ -112,9 +140,9 @@ namespace StudentTask.Data.Api.Controllers
             base.Dispose(disposing);
         }
 
-        private bool StudentExists(int id)
+        private bool StudentExists(string id)
         {
-            return db.Students.Count(e => e.StudentId == id) > 0;
+            return db.Students.Count(e => e.Username == id) > 0;
         }
     }
 }

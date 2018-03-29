@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace StudentTask.Model
 {
@@ -8,19 +9,12 @@ namespace StudentTask.Model
     public class Student
     {
         /// <summary>
-        /// Gets or sets the student identifier.
-        /// </summary>
-        /// <value>
-        /// The student identifier.
-        /// </value>
-        public int StudentId { get; set; }
-
-        /// <summary>
         /// Gets or sets the username.
         /// </summary>
         /// <value>
         /// The username.
         /// </value>
+        [Key]
         public string Username { get; set; }
 
         /// <summary>
