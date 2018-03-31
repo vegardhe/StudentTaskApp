@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace StudentTask.Model
 {
@@ -81,5 +82,13 @@ namespace StudentTask.Model
         /// The completed on.
         /// </value>
         public DateTimeOffset CompletedOn { get; set; }
+
+        /// <summary>
+        /// Gets or sets the students.
+        /// </summary>
+        /// <value>
+        /// The students.
+        /// </value>
+        public List<Student> Students { get; set; }
     }
 }

@@ -34,6 +34,18 @@ namespace StudentTask.Data.Api.Controllers
             return Ok(student);
         }
 
+        // GET: api/students/username/tasks
+        [HttpGet]
+        [Route("api/Students/{username}/tasks")]
+        [ResponseType(typeof(Student))]
+        public async Task<IHttpActionResult> GetTasks(string username)
+        {
+            var query = await (from tasks in db.Tasks
+                where tasks.Students.Any(s => s.Username == username)
+                select tasks).ToListAsync();
+            return Ok(query);
+        }
+
         // PUT: api/Students/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutStudent(string id, Student student)

@@ -5,9 +5,39 @@
     xmlns:local="using:StudentTask.Uwp.App.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:StudentTask.Uwp.App.ViewModels"
+    xmlns:controls="using:Template10.Controls"
+    xmlns:model="using:StudentTask.Model"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock>TASKA</TextBlock>
-    </Grid>
+    <Page.DataContext>
+        <viewModels:TaskPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="TaskViewSource" Source="{x:Bind ViewModel.SessionStudent.Tasks}" />
+    </Page.Resources>
+    
+    <RelativePanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <controls:PageHeader x:Name="pageHeader"
+                             RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True"
+                             Text="Tasks">
+        </controls:PageHeader>
+        
+        <ListView x:Name="TasksListView"
+                  ItemsSource="{Binding Source={StaticResource TaskViewSource}}"
+                  RelativePanel.Below="pageHeader"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  RelativePanel.AlignBottomWithPanel="True">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="model:Task">
+                    <TextBlock Text="{Binding Title, Mode=OneWay}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </RelativePanel>
+    
+
 </Page>

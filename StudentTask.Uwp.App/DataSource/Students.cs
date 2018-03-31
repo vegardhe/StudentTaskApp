@@ -6,12 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using StudentTask.Model;
+using Task = StudentTask.Model.Task;
 
 namespace StudentTask.Uwp.App.DataSource
 {
     public class Students
     {
         public static Students Instance { get; } = new Students();
+
+        public Student UserStudent { get; set; }
 
         private const string BaseUri = "http://localhost:52988/api/";
 
@@ -32,8 +35,18 @@ namespace StudentTask.Uwp.App.DataSource
                 .PostAsync("students/login", new StringContent(postBody, Encoding.UTF8, "application/json"))
                 .ConfigureAwait(false);
             var responseBody = await response.Content.ReadAsStringAsync();
-            var seesionStudent = JsonConvert.DeserializeObject<Student>(responseBody);
-            return seesionStudent;
+            var sessionStudent = JsonConvert.DeserializeObject<Student>(responseBody);
+            if (sessionStudent != null)
+                UserStudent = sessionStudent;
+
+            return sessionStudent;
+        }
+
+        public async Task<Task[]> GetTasks(Student student)
+        {
+            var json = await _client.GetStringAsync($"students\\{student.Username}/tasks").ConfigureAwait(false);
+            Task[] tasks = JsonConvert.DeserializeObject<Task[]>(json);
+            return tasks;
         }
     }
 }
