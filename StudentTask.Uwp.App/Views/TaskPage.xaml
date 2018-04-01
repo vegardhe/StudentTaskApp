@@ -37,6 +37,10 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <StackPanel RelativePanel.Below="pageHeader" RelativePanel.RightOf="TasksListView" Margin="10,10,0,0">
+            <TextBlock Text="{Binding SelectedItem.Title, ElementName=TasksListView}" FontSize="24"></TextBlock>
+        </StackPanel>
     </RelativePanel>
     
 

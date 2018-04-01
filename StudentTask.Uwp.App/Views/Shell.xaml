@@ -16,14 +16,14 @@
 
         <Controls:HamburgerMenu.PrimaryButtons>
             <!--  mainpage button  -->
-            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:LoginPage">
+            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:TaskPage">
                 <StackPanel Orientation="Horizontal">
                     <SymbolIcon Width="48"
                                 Height="48"
-                                Symbol="Home" />
+                                Symbol="List" />
                     <TextBlock Margin="12,0,0,0"
                                VerticalAlignment="Center"
-                               Text="Home" />
+                               Text="Tasks" />
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
         </Controls:HamburgerMenu.PrimaryButtons>

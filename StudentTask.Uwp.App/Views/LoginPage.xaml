@@ -44,6 +44,7 @@
                     HorizontalAlignment="Stretch" 
                     Foreground="AliceBlue"
                     Click="Login">Log in</Button>
+            <ProgressRing Name="ProgressRing" Grid.Row="7" Grid.Column="1" IsActive="False" Foreground="AliceBlue" />
         </Grid>
     </RelativePanel>
 </Page>

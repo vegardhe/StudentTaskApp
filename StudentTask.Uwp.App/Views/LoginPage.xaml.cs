@@ -45,6 +45,7 @@ namespace StudentTask.Uwp.App.Views
         private async void Login(object sender, RoutedEventArgs e)
         {
             var student = new Student { Username = UsernameBox.Text, Password = PasswordBox.Password};
+            ProgressRing.IsActive = true;
             try
             {
                 Student loginStudent;
@@ -57,6 +58,7 @@ namespace StudentTask.Uwp.App.Views
             {
                 //TODO: Exception handling.
             }
+            ProgressRing.IsActive = false;
         }
     }
 }
