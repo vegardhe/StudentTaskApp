@@ -37,10 +37,55 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Grid RelativePanel.Below="pageHeader" RelativePanel.RightOf="TasksListView" Margin="10,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="{Binding SelectedItem.Title, ElementName=TasksListView}" FontSize="24" />
+                <TextBlock Text="{Binding SelectedItem.Description, ElementName=TasksListView}" TextWrapping="WrapWholeWords" />
+                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center">Due Date: &#160;</TextBlock>
+                    <TextBlock Text="{Binding SelectedItem.DueDate.DateTime, ElementName=TasksListView}" />
+                </StackPanel>
+                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                    <TextBlock>Task status: </TextBlock>
+                    <TextBlock Text="{Binding SelectedItem.TaskStatus, ElementName=TasksListView}" Margin="5,0,0,0" />
+                </StackPanel>
+                <Button Name="EditButton" HorizontalAlignment="Right" Width="100" Height="50" Click="EditButton_OnClick" Margin="0,10,0,0">Edit</Button>
+            </StackPanel>
+        </Grid>
 
-        <StackPanel RelativePanel.Below="pageHeader" RelativePanel.RightOf="TasksListView" Margin="10,10,0,0">
-            <TextBlock Text="{Binding SelectedItem.Title, ElementName=TasksListView}" FontSize="24"></TextBlock>
-        </StackPanel>
+        <SplitView DisplayMode="Overlay"
+                   IsPaneOpen="True"
+                   OpenPaneLength="320"
+                   Name="EditSplitView"
+                   RelativePanel.AlignRightWithPanel="True"
+                   RelativePanel.AlignBottomWithPanel="True"
+                   RelativePanel.AlignTopWithPanel="True"
+                   PanePlacement="Right">
+            <SplitView.Pane>
+                <StackPanel Margin="10" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <TextBlock Text="{Binding SelectedItem.Title, ElementName=TasksListView}" FontSize="24" />
+                    <TextBox Text="{Binding SelectedItem.Title, ElementName=TasksListView, Mode=TwoWay}" Header="Title:" Margin="0,10,0,0" />
+                    <TextBox Text="{Binding SelectedItem.Description, ElementName=TasksListView, Mode=TwoWay}" 
+                             Header="Description:" 
+                             Margin="0,10,0,0" 
+                             TextWrapping="Wrap"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             MaxHeight="300"/>
+                    <DatePicker Date="{Binding SelectedItem.DueDate, ElementName=TasksListView, Mode=TwoWay}" Header="Due Date:" Margin="0,10,0,0" />
+                    <!-- TODO: Add time picker -->
+                    <ComboBox Name="StatusComboBox" 
+                              Header="Status:" 
+                              Margin="0,10,0,0"
+                              ItemsSource="{Binding Path=Enumval}"
+                              SelectedItem="{Binding SelectedItem.TaskStatus, ElementName=TasksListView, Mode=TwoWay}" />
+                    <Button Name="SaveButton" HorizontalAlignment="Right" Width="100" Height="50" Margin="0,50,0,0" Click="SaveButton_OnClick">Save</Button>
+                </StackPanel>
+            </SplitView.Pane>
+        </SplitView>
     </RelativePanel>
     
 

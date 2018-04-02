@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Windows.UI.Xaml.Navigation;
 using StudentTask.Model;
 using Template10.Mvvm;
@@ -9,6 +11,9 @@ namespace StudentTask.Uwp.App.ViewModels
     public class TaskPageViewModel : ViewModelBase
     {
         public Student SessionStudent { get; set; }
+
+        public static List<Model.Task.Status> Enumval =>
+            Enum.GetValues(typeof(Model.Task.Status)).Cast<Model.Task.Status>().ToList();
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {

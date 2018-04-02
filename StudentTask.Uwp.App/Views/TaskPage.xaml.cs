@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using StudentTask.Model;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -22,9 +23,20 @@ namespace StudentTask.Uwp.App.Views
     /// </summary>
     public sealed partial class TaskPage : Page
     {
+
         public TaskPage()
         {
             this.InitializeComponent();
+        }
+
+    private void EditButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            EditSplitView.IsPaneOpen = !EditSplitView.IsPaneOpen;
+        }
+
+        private void SaveButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

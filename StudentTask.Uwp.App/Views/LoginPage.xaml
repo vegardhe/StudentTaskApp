@@ -33,9 +33,9 @@
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
-            <TextBox Grid.Row="3" Grid.Column="1" Height="35" PlaceholderText="Username" Name="UsernameBox"></TextBox>
-            <PasswordBox Grid.Row="4" Grid.Column="1" Height="35" PlaceholderText="Password" Name="PasswordBox"></PasswordBox>
+            <!-- TODO: Remove default uid/pwd -->
+            <TextBox Grid.Row="3" Grid.Column="1" Height="35" PlaceholderText="Username" Name="UsernameBox" Text="vegardhe"></TextBox>
+            <PasswordBox Grid.Row="4" Grid.Column="1" Height="35" PlaceholderText="Password" Name="PasswordBox" Password="Password123"></PasswordBox>
             <TextBlock Grid.Row="5" Grid.Column="1" Name="ErrorBlock" Foreground="Red"></TextBlock>
             <Button Name="LoginButton" 
                     Grid.Row="6" 
