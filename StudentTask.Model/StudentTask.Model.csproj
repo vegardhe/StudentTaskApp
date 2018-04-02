@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="Course.cs" />
     <Compile Include="Exercise.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

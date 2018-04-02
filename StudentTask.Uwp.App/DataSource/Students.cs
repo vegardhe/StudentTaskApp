@@ -48,5 +48,13 @@ namespace StudentTask.Uwp.App.DataSource
             Task[] tasks = JsonConvert.DeserializeObject<Task[]>(json);
             return tasks;
         }
+
+        public async Task<bool> UpdateTask(Task changedTask)
+        {
+            var putBody = JsonConvert.SerializeObject(changedTask);
+            var response = await _client.PutAsync($"tasks\\{changedTask.TaskId}",
+                new StringContent(putBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
+            return response.IsSuccessStatusCode;
+        }
     }
 }

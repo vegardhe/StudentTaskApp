@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using StudentTask.Model.Annotations;
 
 namespace StudentTask.Model
 {
     /// <summary>
     /// Represents a taks.
     /// </summary>
-    public class Task
+    public class Task : INotifyPropertyChanged
     {
         /// <summary>
         /// enum used for task status.
@@ -41,7 +44,12 @@ namespace StudentTask.Model
         /// <value>
         /// The title.
         /// </value>
-        public string Title { get; set; }
+        private string _title;
+        public string Title
+        {
+            get => _title;
+            set => SetField(ref _title, value);
+        }
 
         /// <summary>
         /// Gets or sets the description.
@@ -49,7 +57,12 @@ namespace StudentTask.Model
         /// <value>
         /// The description.
         /// </value>
-        public string Description { get; set; }
+        private string _description;
+        public string Description
+        {
+            get => _description;
+            set => SetField(ref _description, value);
+        }
 
         /// <summary>
         /// Gets or sets the due date.
@@ -57,7 +70,12 @@ namespace StudentTask.Model
         /// <value>
         /// The due date.
         /// </value>
-        public DateTimeOffset DueDate { get; set; }
+        private DateTimeOffset _dueDate;
+        public DateTimeOffset DueDate
+        {
+            get => _dueDate;
+            set => SetField(ref _dueDate, value);
+        }
 
         /// <summary>
         /// Gets or sets the task status.
@@ -65,7 +83,12 @@ namespace StudentTask.Model
         /// <value>
         /// The task status.
         /// </value>
-        public Status TaskStatus { get; set; }
+        private Status _taskStatus;
+        public Status TaskStatus
+        {
+            get => _taskStatus;
+            set => SetField(ref _taskStatus, value);
+        }
 
         /// <summary>
         /// Gets or sets the notes.
@@ -90,5 +113,23 @@ namespace StudentTask.Model
         /// The students.
         /// </value>
         public List<Student> Students { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool SetField<T>(ref T field, T value,
+            [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value))
+                return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
     }
 }

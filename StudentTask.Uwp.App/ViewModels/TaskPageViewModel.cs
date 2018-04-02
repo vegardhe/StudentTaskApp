@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Windows.UI.Xaml.Navigation;
 using StudentTask.Model;
@@ -12,6 +13,8 @@ namespace StudentTask.Uwp.App.ViewModels
     {
         public Student SessionStudent { get; set; }
 
+        public ObservableCollection<Model.Task> Tasks { get; set; }
+
         public static List<Model.Task.Status> Enumval =>
             Enum.GetValues(typeof(Model.Task.Status)).Cast<Model.Task.Status>().ToList();
 
@@ -20,8 +23,8 @@ namespace StudentTask.Uwp.App.ViewModels
             if (SessionStudent == null)
                 SessionStudent = DataSource.Students.Instance.UserStudent;
 
-            if(SessionStudent.Tasks == null)
-                SessionStudent.Tasks = new List<Model.Task>(await DataSource.Students.Instance.GetTasks(SessionStudent));
+            if(Tasks == null)
+                Tasks = new ObservableCollection<Model.Task>(await DataSource.Students.Instance.GetTasks(SessionStudent));
 
             await Task.CompletedTask;
         }

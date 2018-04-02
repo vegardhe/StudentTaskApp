@@ -34,9 +34,22 @@ namespace StudentTask.Uwp.App.Views
             EditSplitView.IsPaneOpen = !EditSplitView.IsPaneOpen;
         }
 
-        private void SaveButton_OnClick(object sender, RoutedEventArgs e)
+        private async void SaveTask()
         {
-            
+            var changedTask = (Task)TasksListView.SelectedItem;
+            if(changedTask.TaskStatus == Task.Status.Finished)
+                changedTask.CompletedOn = DateTimeOffset.Now;
+            try
+            {
+                if (await DataSource.Students.Instance.UpdateTask(changedTask))
+                {
+                    
+                }
+            }
+            catch (Exception)
+            {
+                // TODO: Exception handling
+            }
         }
     }
 }
