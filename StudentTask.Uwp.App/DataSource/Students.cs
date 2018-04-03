@@ -28,7 +28,7 @@ namespace StudentTask.Uwp.App.DataSource
             };
         }
 
-        public async Task<Student> LoginTask(Student student)
+        public async Task<Student> Login(Student student)
         {
             var postBody = JsonConvert.SerializeObject(student);
             var response = await _client
@@ -40,21 +40,6 @@ namespace StudentTask.Uwp.App.DataSource
                 UserStudent = sessionStudent;
 
             return sessionStudent;
-        }
-
-        public async Task<Task[]> GetTasks(Student student)
-        {
-            var json = await _client.GetStringAsync($"students\\{student.Username}/tasks").ConfigureAwait(false);
-            Task[] tasks = JsonConvert.DeserializeObject<Task[]>(json);
-            return tasks;
-        }
-
-        public async Task<bool> UpdateTask(Task changedTask)
-        {
-            var putBody = JsonConvert.SerializeObject(changedTask);
-            var response = await _client.PutAsync($"tasks\\{changedTask.TaskId}",
-                new StringContent(putBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
-            return response.IsSuccessStatusCode;
         }
     }
 }

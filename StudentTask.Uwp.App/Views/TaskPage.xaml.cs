@@ -41,7 +41,7 @@ namespace StudentTask.Uwp.App.Views
                 changedTask.CompletedOn = DateTimeOffset.Now;
             try
             {
-                if (await DataSource.Students.Instance.UpdateTask(changedTask))
+                if (await DataSource.Tasks.Instance.UpdateTask(changedTask))
                 {
                     
                 }

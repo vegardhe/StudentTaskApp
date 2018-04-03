@@ -24,7 +24,7 @@ namespace StudentTask.Uwp.App.ViewModels
                 SessionStudent = DataSource.Students.Instance.UserStudent;
 
             if(Tasks == null)
-                Tasks = new ObservableCollection<Model.Task>(await DataSource.Students.Instance.GetTasks(SessionStudent));
+                Tasks = new ObservableCollection<Model.Task>(await DataSource.Tasks.Instance.GetTasks(SessionStudent));
 
             await Task.CompletedTask;
         }

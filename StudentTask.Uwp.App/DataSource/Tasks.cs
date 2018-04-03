@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using StudentTask.Model;
+using Task = StudentTask.Model.Task;
+
+namespace StudentTask.Uwp.App.DataSource
+{
+    public class Tasks
+    {
+        public static Tasks Instance = new Tasks();
+
+        private const string BaseUri = "http://localhost:52988/api/";
+
+        private HttpClient _client;
+
+        private Tasks()
+        {
+            _client = new HttpClient
+            {
+                BaseAddress = new Uri(BaseUri)
+            };
+        }
+
+        public async Task<Task[]> GetTasks(Student student)
+        {
+            var json = await _client.GetStringAsync($"students\\{student.Username}/tasks").ConfigureAwait(false);
+            Task[] tasks = JsonConvert.DeserializeObject<Task[]>(json);
+            return tasks;
+        }
+
+        public async Task<bool> UpdateTask(Task changedTask)
+        {
+            var putBody = JsonConvert.SerializeObject(changedTask);
+            var response = await _client.PutAsync($"tasks\\{changedTask.TaskId}",
+                new StringContent(putBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
+            return response.IsSuccessStatusCode;
+        }
+    }
+}
