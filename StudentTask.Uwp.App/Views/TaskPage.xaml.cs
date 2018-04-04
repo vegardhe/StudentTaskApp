@@ -29,7 +29,7 @@ namespace StudentTask.Uwp.App.Views
             this.InitializeComponent();
         }
 
-    private void EditButton_OnClick(object sender, RoutedEventArgs e)
+        private void EditButton_OnClick(object sender, RoutedEventArgs e)
         {
             EditSplitView.IsPaneOpen = !EditSplitView.IsPaneOpen;
         }
@@ -49,6 +49,30 @@ namespace StudentTask.Uwp.App.Views
             catch (Exception)
             {
                 // TODO: Exception handling
+            }
+        }
+
+        private async void AddTask()
+        {
+            var newTask = new Task();
+            AddTaskContentDialog.DataContext = newTask;
+
+            var result = await AddTaskContentDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                try
+                {
+                    newTask.TaskStatus = Task.Status.Added;
+                    Task addedTask;
+                    if ((addedTask = await DataSource.Tasks.Instance.AddTask(newTask)) != null)
+                    {
+                        ViewModel.Tasks.Add(addedTask);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // TODO: Exception handling.
+                }
             }
         }
     }

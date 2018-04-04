@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using StudentTask.Model.Annotations;
 
@@ -48,7 +49,11 @@ namespace StudentTask.Model
         public string Title
         {
             get => _title;
-            set => SetField(ref _title, value);
+            set
+            {
+                if (SetField(ref _title, value))
+                    OnPropertyChanged(nameof(IsValid));
+            } 
         }
 
         /// <summary>
@@ -70,8 +75,8 @@ namespace StudentTask.Model
         /// <value>
         /// The due date.
         /// </value>
-        private DateTimeOffset _dueDate;
-        public DateTimeOffset DueDate
+        private DateTimeOffset? _dueDate;
+        public DateTimeOffset? DueDate
         {
             get => _dueDate;
             set => SetField(ref _dueDate, value);
@@ -104,7 +109,7 @@ namespace StudentTask.Model
         /// <value>
         /// The completed on.
         /// </value>
-        public DateTimeOffset CompletedOn { get; set; }
+        public DateTimeOffset? CompletedOn { get; set; }
 
         /// <summary>
         /// Gets or sets the students.
@@ -131,5 +136,7 @@ namespace StudentTask.Model
             OnPropertyChanged(propertyName);
             return true;
         }
+
+        public bool IsValid => !string.IsNullOrEmpty(Title);
     }
 }

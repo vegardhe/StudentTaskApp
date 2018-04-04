@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Newtonsoft.Json;
+using StudentTask.Model;
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using StudentTask.Model;
-using Task = StudentTask.Model.Task;
 
 namespace StudentTask.Uwp.App.DataSource
 {
@@ -36,9 +33,7 @@ namespace StudentTask.Uwp.App.DataSource
                 .ConfigureAwait(false);
             var responseBody = await response.Content.ReadAsStringAsync();
             var sessionStudent = JsonConvert.DeserializeObject<Student>(responseBody);
-            if (sessionStudent != null)
-                UserStudent = sessionStudent;
-
+            UserStudent = sessionStudent;
             return sessionStudent;
         }
     }

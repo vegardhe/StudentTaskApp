@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using StudentTask.Model;
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using StudentTask.Model;
 using Task = StudentTask.Model.Task;
 
 namespace StudentTask.Uwp.App.DataSource
@@ -38,6 +37,16 @@ namespace StudentTask.Uwp.App.DataSource
             var response = await _client.PutAsync($"tasks\\{changedTask.TaskId}",
                 new StringContent(putBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
             return response.IsSuccessStatusCode;
+        }
+
+        public async Task<Task> AddTask(Task newTask)
+        {
+            var postBody = JsonConvert.SerializeObject(newTask);
+            var response = await _client
+                .PostAsync("tasks", new StringContent(postBody, Encoding.UTF8, "application/json"))
+                .ConfigureAwait(false);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Task>(responseBody);
         }
     }
 }
