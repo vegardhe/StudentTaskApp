@@ -63,6 +63,7 @@ namespace StudentTask.Uwp.App.Views
                 try
                 {
                     newTask.TaskStatus = Task.Status.Added;
+                    newTask.Students = new List<Student>{ ViewModel.SessionStudent };
                     Task addedTask;
                     if ((addedTask = await DataSource.Tasks.Instance.AddTask(newTask)) != null)
                     {

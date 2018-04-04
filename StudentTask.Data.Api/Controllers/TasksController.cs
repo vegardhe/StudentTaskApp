@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -72,7 +73,7 @@ namespace StudentTask.Data.Api.Controllers
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-
+        /*
         // POST: api/Tasks
         [ResponseType(typeof(Task))]
         public async Task<IHttpActionResult> PostTask(Task task)
@@ -85,6 +86,36 @@ namespace StudentTask.Data.Api.Controllers
             db.Tasks.Add(task);
             await db.SaveChangesAsync();
 
+            return CreatedAtRoute("DefaultApi", new { id = task.TaskId }, task);
+        }*/
+
+        // POST: api/Tasks
+        [ResponseType(typeof(Task))]
+        public async Task<IHttpActionResult> PostTask(Task task)
+        {
+            var owner = task.Students[0].Username;
+            task.Students = null;
+            db.Tasks.Add(task);
+            await db.SaveChangesAsync();
+
+            try
+            {
+                using (var conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                {
+                    var cmd = new SqlCommand("INSERT INTO StudentTask VALUES (@Username, @TaskId);",
+                        conn);
+                    cmd.Parameters.AddWithValue("@Username", owner);
+                    cmd.Parameters.AddWithValue("@TaskId", task.TaskId);
+
+                    conn.Open();
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError();
+            }
             return CreatedAtRoute("DefaultApi", new { id = task.TaskId }, task);
         }
 
