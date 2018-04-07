@@ -31,6 +31,12 @@ namespace StudentTask.Uwp.App.DataSource
             return tasks;
         }
 
+        public async Task<bool> DeleteTask(Task task)
+        {
+            var response = await _client.DeleteAsync($"tasks\\{task.TaskId}").ConfigureAwait(false);
+            return response.IsSuccessStatusCode || response.StatusCode == System.Net.HttpStatusCode.NotFound;
+        }
+
         public async Task<bool> UpdateTask(Task changedTask)
         {
             var putBody = JsonConvert.SerializeObject(changedTask);

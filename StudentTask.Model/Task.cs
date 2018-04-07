@@ -83,6 +83,19 @@ namespace StudentTask.Model
         }
 
         /// <summary>
+        /// Gets or sets the due time.
+        /// </summary>
+        /// <value>
+        /// The due time.
+        /// </value>
+        private TimeSpan _dueTime;
+        public TimeSpan DueTime
+        {
+            get => _dueTime;
+            set => SetField(ref _dueTime, value);
+        }
+
+        /// <summary>
         /// Gets or sets the task status.
         /// </summary>
         /// <value>

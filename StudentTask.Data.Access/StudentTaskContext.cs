@@ -88,6 +88,16 @@ namespace StudentTask.Data.Access
                     m.MapLeftKey("Username");
                     m.MapRightKey("TaskId");
                 });
+
+            modelBuilder.Entity<Student>()
+                .HasMany(a => a.Courses)
+                .WithMany(b => b.Students)
+                .Map(m =>
+                {
+                    m.ToTable("StudentCourse");
+                    m.MapLeftKey("Username");
+                    m.MapRightKey("CourseId");
+                });
         }
     }
 }

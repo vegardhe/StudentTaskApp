@@ -26,7 +26,8 @@ namespace StudentTask.Data.Access
                 Title = "Flyplassen",
                 Description =
                     "I den første obligatoriske oppgaven skal det lages et Java-program som simulerer et køsystem. Det skal brukes tidsdrevet simulering, dvs. at programmet skal 'gå i små tidssteg' og simulere hva som skjer innenfor hver tidsperiode.",
-                DueDate = new DateTimeOffset(2018, 2, 9, 23, 0, 0, new TimeSpan(0, 1, 0, 0)),
+                DueDate = new DateTimeOffset(2018, 2, 9, 23, 0, 0, new TimeSpan()),
+                DueTime = new TimeSpan(0, 1, 0, 0),
                 TaskStatus = Task.Status.Added,
             });
 
@@ -40,11 +41,22 @@ namespace StudentTask.Data.Access
                 Resources = new List<Resource> { sampleResource }
             });
 
+            var sampleCourseTwo = context.Courses.Add(new Course
+            {
+                CourseCode = "ITD20106",
+                Name = "Statistikk og økonomi",
+                Information =
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nulla ut ipsum tempor tristique. Sed consequat lorem felis, vel fringilla enim posuere fermentum. Curabitur efficitur tortor id mi iaculis luctus. Aliquam dictum leo risus, vel lacinia sem dignissim a. Aenean tortor dui, condimentum a pretium sit amet, iaculis id massa. Donec nec iaculis lectus, eget vulputate nisl. Cras ullamcorper urna id rhoncus accumsan. Vestibulum gravida eros at erat laoreet elementum. Praesent rhoncus lectus ipsum, at sagittis mi vestibulum ac. Suspendisse tincidunt egestas cursus. Donec varius eros in arcu finibus sodales. Integer cursus cursus massa, et suscipit metus suscipit ac. Cras ut vehicula nisl. Donec at lorem a sem mattis tincidunt id quis dolor. Sed condimentum egestas justo. Sed quis volutpat dui, vitae maximus lorem.",
+                Exercises = new List<Exercise>(),
+                Resources = new List<Resource>()
+            });
+
             var sampleTask = context.Tasks.Add(new Task
             {
                 Title = "Read chapter 4, AlgDat",
                 Description = "Read pages 45-67.",
-                DueDate = new DateTimeOffset(2018, 2, 2, 23, 0, 0, new TimeSpan(0, 1, 0, 0)),
+                DueDate = new DateTimeOffset(2018, 2, 2, 23, 0, 0, new TimeSpan()),
+                DueTime = new TimeSpan(0, 1, 0, 0),
                 TaskStatus = Task.Status.Added
             });
 
@@ -53,7 +65,7 @@ namespace StudentTask.Data.Access
                 FirstName = "Vegard",
                 LastName = "Hermansen",
                 Username = "vegardhe",
-                Courses = new List<Course> { sampleCourse },
+                Courses = new List<Course> { sampleCourse, sampleCourseTwo },
                 Email = "vegardhe@hiof.no",
                 Password = "Password123", //TODO: Add hashing
                 Tasks = new List<Task> { sampleTask, sampleExcercise }

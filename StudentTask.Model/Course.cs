@@ -54,5 +54,13 @@ namespace StudentTask.Model
         /// The resources.
         /// </value>
         public List<Resource> Resources { get; set; }
+
+        /// <summary>
+        /// Gets or sets the students.
+        /// </summary>
+        /// <value>
+        /// The students.
+        /// </value>
+        public List<Student> Students { get; set; }
     }
 }
