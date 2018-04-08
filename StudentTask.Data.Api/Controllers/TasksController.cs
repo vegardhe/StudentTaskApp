@@ -78,8 +78,8 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Task))]
         public async Task<IHttpActionResult> PostTask(Task task)
         {
-            var owner = task.Students[0].Username;
-            task.Students = null;
+            var owner = task.Users[0].Username;
+            task.Users = null;
             db.Tasks.Add(task);
             await db.SaveChangesAsync();
 
@@ -87,7 +87,7 @@ namespace StudentTask.Data.Api.Controllers
             {
                 using (var conn = new SqlConnection(db.Database.Connection.ConnectionString))
                 {
-                    var cmd = new SqlCommand("INSERT INTO StudentTask VALUES (@Username, @TaskId);",
+                    var cmd = new SqlCommand("INSERT INTO UserTask VALUES (@Username, @TaskId);",
                         conn);
                     cmd.Parameters.AddWithValue("@Username", owner);
                     cmd.Parameters.AddWithValue("@TaskId", task.TaskId);

@@ -38,8 +38,8 @@ namespace StudentTask.Uwp.App.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (DataSource.Students.Instance.UserStudent != null &&
-                DataSource.Students.Instance.UserStudent.GroupUsergroup == Student.Usergroup.User)
+            if (DataSource.Users.Instance.SessionUser != null &&
+                DataSource.Users.Instance.SessionUser.GroupUsergroup == User.Usergroup.Admin)
                 NewCourseButton.Visibility = Visibility.Visible;
         }
 
@@ -53,7 +53,7 @@ namespace StudentTask.Uwp.App.Views
             {
                 try
                 {
-                    newCourse.Students = new List<Student>{ DataSource.Students.Instance.UserStudent };
+                    newCourse.Users = new List<User>{ DataSource.Users.Instance.SessionUser };
                     Course addedCourse;
                     if ((addedCourse = await DataSource.Courses.Instance.AddCourse(newCourse)) != null)
                     {

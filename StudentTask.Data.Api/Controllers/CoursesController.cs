@@ -101,8 +101,8 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Course))]
         public async Task<IHttpActionResult> PostCourse(Course course)
         {
-            var student = course.Students[0].Username;
-            course.Students = null;
+            var user = course.Users[0].Username;
+            course.Users = null;
             db.Courses.Add(course);
             await db.SaveChangesAsync();
 
@@ -110,8 +110,8 @@ namespace StudentTask.Data.Api.Controllers
             {
                 using (var conn = new SqlConnection(db.Database.Connection.ConnectionString))
                 {
-                    var cmd = new SqlCommand("INSERT INTO StudentCourse VALUES (@Username, @CourseId);", conn);
-                    cmd.Parameters.AddWithValue("@Username", student);
+                    var cmd = new SqlCommand("INSERT INTO UserCourse VALUES (@Username, @CourseId);", conn);
+                    cmd.Parameters.AddWithValue("@Username", user);
                     cmd.Parameters.AddWithValue("@CourseId", course.CourseId);
 
                     conn.Open();

@@ -35,12 +35,12 @@ namespace StudentTask.Data.Access
         public virtual DbSet<Resource> Resources { get; set; }
 
         /// <summary>
-        /// Gets or sets the students.
+        /// Gets or sets the users.
         /// </summary>
         /// <value>
-        /// The students.
+        /// The users.
         /// </value>
-        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         /// <summary>
         /// Gets or sets the tasks.
@@ -79,22 +79,22 @@ namespace StudentTask.Data.Access
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            modelBuilder.Entity<Student>()
+            modelBuilder.Entity<User>()
                 .HasMany(a => a.Tasks)
-                .WithMany(b => b.Students)
+                .WithMany(b => b.Users)
                 .Map(m =>
                 {
-                    m.ToTable("StudentTask");
+                    m.ToTable("UserTask");
                     m.MapLeftKey("Username");
                     m.MapRightKey("TaskId");
                 });
 
-            modelBuilder.Entity<Student>()
+            modelBuilder.Entity<User>()
                 .HasMany(a => a.Courses)
-                .WithMany(b => b.Students)
+                .WithMany(b => b.Users)
                 .Map(m =>
                 {
-                    m.ToTable("StudentCourse");
+                    m.ToTable("UserCourse");
                     m.MapLeftKey("Username");
                     m.MapRightKey("CourseId");
                 });

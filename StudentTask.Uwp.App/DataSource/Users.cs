@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace StudentTask.Uwp.App.DataSource
 {
-    public class Students
+    public class Users
     {
-        public static Students Instance { get; } = new Students();
+        public static Users Instance { get; } = new Users();
 
-        public Student UserStudent { get; set; }
+        public User SessionUser { get; set; }
 
         private const string BaseUri = "http://localhost:52988/api/";
 
         private HttpClient _client;
 
-        private Students()
+        private Users()
         {
             _client = new HttpClient
             {
@@ -25,16 +25,16 @@ namespace StudentTask.Uwp.App.DataSource
             };
         }
 
-        public async Task<Student> Login(Student student)
+        public async Task<User> Login(User user)
         {
-            var postBody = JsonConvert.SerializeObject(student);
+            var postBody = JsonConvert.SerializeObject(user);
             var response = await _client
-                .PostAsync("students/login", new StringContent(postBody, Encoding.UTF8, "application/json"))
+                .PostAsync("users/login", new StringContent(postBody, Encoding.UTF8, "application/json"))
                 .ConfigureAwait(false);
             var responseBody = await response.Content.ReadAsStringAsync();
-            var sessionStudent = JsonConvert.DeserializeObject<Student>(responseBody);
-            UserStudent = sessionStudent;
-            return sessionStudent;
+            var sessionUser = JsonConvert.DeserializeObject<User>(responseBody);
+            SessionUser = sessionUser;
+            return sessionUser;
         }
     }
 }

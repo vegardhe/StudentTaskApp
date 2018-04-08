@@ -39,7 +39,7 @@ namespace StudentTask.Uwp.App.ViewModels
             DeleteTaskCommand = new DeleteTaskCommand(this);
         }
 
-        public Student SessionStudent { get; set; }
+        public User SessionUser { get; set; }
 
         public ObservableCollection<Model.Task> Tasks { get; set; }
 
@@ -48,11 +48,11 @@ namespace StudentTask.Uwp.App.ViewModels
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
-            if (SessionStudent == null)
-                SessionStudent = DataSource.Students.Instance.UserStudent;
+            if (SessionUser == null)
+                SessionUser = DataSource.Users.Instance.SessionUser;
 
             if(Tasks == null)
-                Tasks = new ObservableCollection<Model.Task>(await DataSource.Tasks.Instance.GetTasks(SessionStudent));
+                Tasks = new ObservableCollection<Model.Task>(await DataSource.Tasks.Instance.GetTasks(SessionUser));
 
             await Task.CompletedTask;
         }

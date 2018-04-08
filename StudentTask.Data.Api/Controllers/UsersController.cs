@@ -10,69 +10,69 @@ using System.Web.Http.Description;
 
 namespace StudentTask.Data.Api.Controllers
 {
-    public class StudentsController : ApiController
+    public class UsersController : ApiController
     {
         private StudentTaskContext db = new StudentTaskContext();
 
-        // GET: api/Students
-        public IQueryable<Student> GetStudents()
+        // GET: api/Users
+        public IQueryable<User> GetUsers()
         {
-            return db.Students;
+            return db.Users;
         }
 
         // TODO: Make api not return passwords.
-        // GET: api/Students/5
-        [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> GetStudent(string id)
+        // GET: api/Users/5
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> GetUser(string id)
         {
-            Student student = await db.Students.FindAsync(id);
-            if (student == null)
+            User user = await db.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(student);
+            return Ok(user);
         }
 
-        // GET: api/students/username/tasks
+        // GET: api/users/username/tasks
         [HttpGet]
-        [Route("api/Students/{username}/tasks")]
-        [ResponseType(typeof(Student))]
+        [Route("api/Users/{username}/tasks")]
+        [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> GetTasks(string username)
         {
             var query = await (from tasks in db.Tasks
-                where tasks.Students.Any(s => s.Username == username)
+                where tasks.Users.Any(s => s.Username == username)
                 select tasks).ToListAsync();
             return Ok(query);
         }
 
-        // GET: api/students/username/courses
+        // GET: api/users/username/courses
         [HttpGet]
-        [Route("api/Students/{username}/courses")]
-        [ResponseType(typeof(Student))]
+        [Route("api/Users/{username}/courses")]
+        [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> GetCourses(string username)
         {
             var query = await (from courses in db.Courses
-                where courses.Students.Any(s => s.Username == username)
+                where courses.Users.Any(u => u.Username == username)
                 select courses).ToListAsync();
             return Ok(query);
         }
 
-        // PUT: api/Students/5
+        // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutStudent(string id, Student student)
+        public async Task<IHttpActionResult> PutUser(string id, User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != student.Username)
+            if (id != user.Username)
             {
                 return BadRequest();
             }
 
-            db.Entry(student).State = EntityState.Modified;
+            db.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -80,7 +80,7 @@ namespace StudentTask.Data.Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -93,16 +93,16 @@ namespace StudentTask.Data.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Students
-        [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> PostStudent(Student student)
+        // POST: api/Users
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> PostUser(User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Students.Add(student);
+            db.Users.Add(user);
 
             try
             {
@@ -110,7 +110,7 @@ namespace StudentTask.Data.Api.Controllers
             }
             catch (DbUpdateException)
             {
-                if (StudentExists(student.Username))
+                if (UserExists(user.Username))
                 {
                     return Conflict();
                 }
@@ -120,39 +120,39 @@ namespace StudentTask.Data.Api.Controllers
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = student.Username }, student);
+            return CreatedAtRoute("DefaultApi", new { id = user.Username }, user);
         }
 
-        // POST: api/Students/Login
+        // POST: api/Users/Login
         [HttpPost]
-        [Route("api/Students/Login")]
-        [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> StudentLogin(Student student)
+        [Route("api/Users/Login")]
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> UserLogin(User user)
         {
-            Student dbStudent = await db.Students.FindAsync(student.Username);
-            if (dbStudent == null)
+            User dbUser = await db.Users.FindAsync(user.Username);
+            if (dbUser == null)
                 return NotFound();
 
-            if (dbStudent.Password == student.Password)
-                return Ok(dbStudent);
+            if (dbUser.Password == user.Password)
+                return Ok(dbUser);
 
             return InternalServerError();
         }
 
-        // DELETE: api/Students/5
-        [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> DeleteStudent(string id)
+        // DELETE: api/Users/5
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> DeleteUser(string id)
         {
-            Student student = await db.Students.FindAsync(id);
-            if (student == null)
+            User user = await db.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            db.Students.Remove(student);
+            db.Users.Remove(user);
             await db.SaveChangesAsync();
 
-            return Ok(student);
+            return Ok(user);
         }
 
         protected override void Dispose(bool disposing)
@@ -164,9 +164,9 @@ namespace StudentTask.Data.Api.Controllers
             base.Dispose(disposing);
         }
 
-        private bool StudentExists(string id)
+        private bool UserExists(string id)
         {
-            return db.Students.Count(e => e.Username == id) > 0;
+            return db.Users.Count(e => e.Username == id) > 0;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace StudentTask.Uwp.App.ViewModels
             if (Courses == null)
             {
                 Courses = new ObservableCollection<Course>(
-                    await DataSource.Courses.Instance.GetStudentCourses(DataSource.Students.Instance.UserStudent));
+                    await DataSource.Courses.Instance.GetUserCourses(DataSource.Users.Instance.SessionUser));
             }
         }
     }

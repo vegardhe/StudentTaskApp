@@ -30,12 +30,12 @@ namespace StudentTask.Uwp.App.Views
 
         private async void Login(object sender, RoutedEventArgs e)
         {
-            var student = new Student { Username = UsernameBox.Text, Password = PasswordBox.Password};
+            var user = new User { Username = UsernameBox.Text, Password = PasswordBox.Password};
             ProgressRing.IsActive = true;
             try
             {
-                Student loginStudent;
-                if ((loginStudent = await DataSource.Students.Instance.Login(student)) != null)
+                User loginUser;
+                if ((loginUser = await DataSource.Users.Instance.Login(user)) != null)
                     Frame.Navigate(typeof(TaskPage));
                 else
                     ErrorBlock.Text = "Invalid username/password.";

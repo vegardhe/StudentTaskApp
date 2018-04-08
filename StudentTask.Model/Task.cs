@@ -125,12 +125,12 @@ namespace StudentTask.Model
         public DateTimeOffset? CompletedOn { get; set; }
 
         /// <summary>
-        /// Gets or sets the students.
+        /// Gets or sets the users.
         /// </summary>
         /// <value>
-        /// The students.
+        /// The users.
         /// </value>
-        public List<Student> Students { get; set; }
+        public List<User> Users { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

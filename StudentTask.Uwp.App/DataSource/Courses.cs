@@ -26,9 +26,9 @@ namespace StudentTask.Uwp.App.DataSource
             };
         }
 
-        public async Task<Course[]> GetStudentCourses(Student student)
+        public async Task<Course[]> GetUserCourses(User user)
         {
-            var json = await _client.GetStringAsync($"students\\{student.Username}/courses").ConfigureAwait(false);
+            var json = await _client.GetStringAsync($"users\\{user.Username}/courses").ConfigureAwait(false);
             var courses = JsonConvert.DeserializeObject<Course[]>(json);
             return courses;
         }

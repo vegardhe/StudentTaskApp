@@ -60,12 +60,12 @@ namespace StudentTask.Data.Access
                 TaskStatus = Task.Status.Added
             });
 
-            context.Students.Add(new Student
+            context.Users.Add(new User
             {
                 FirstName = "Vegard",
                 LastName = "Hermansen",
                 Username = "vegardhe",
-                GroupUsergroup = Student.Usergroup.User,
+                GroupUsergroup = User.Usergroup.Admin,
                 Courses = new List<Course> { sampleCourse, sampleCourseTwo },
                 Email = "vegardhe@hiof.no",
                 Password = "Password123", //TODO: Add hashing
