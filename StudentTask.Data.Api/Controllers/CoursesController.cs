@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using StudentTask.Data.Access;
+using StudentTask.Model;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using StudentTask.Data.Access;
-using StudentTask.Model;
 
 namespace StudentTask.Data.Api.Controllers
 {
@@ -102,13 +101,28 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Course))]
         public async Task<IHttpActionResult> PostCourse(Course course)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
+            var student = course.Students[0].Username;
+            course.Students = null;
             db.Courses.Add(course);
             await db.SaveChangesAsync();
+
+            try
+            {
+                using (var conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                {
+                    var cmd = new SqlCommand("INSERT INTO StudentCourse VALUES (@Username, @CourseId);", conn);
+                    cmd.Parameters.AddWithValue("@Username", student);
+                    cmd.Parameters.AddWithValue("@CourseId", course.CourseId);
+
+                    conn.Open();
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception)
+            {
+                return InternalServerError();
+            }
 
             return CreatedAtRoute("DefaultApi", new { id = course.CourseId }, course);
         }

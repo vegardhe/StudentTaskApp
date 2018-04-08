@@ -13,6 +13,7 @@ namespace StudentTask.Uwp.App.ViewModels
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
+
             if (Courses == null)
             {
                 Courses = new ObservableCollection<Course>(

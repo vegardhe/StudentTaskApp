@@ -62,5 +62,15 @@ namespace StudentTask.Uwp.App.DataSource
             selectedCourse.Exercises = exerciseList;
             return exercises;
         }
+
+        public async Task<Course> AddCourse(Course newCourse)
+        {
+            var postBody = JsonConvert.SerializeObject(newCourse);
+            var response = await _client
+                .PostAsync("courses", new StringContent(postBody, Encoding.UTF8, "application/json"))
+                .ConfigureAwait(false);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Course>(responseBody);
+        }
     }
 }

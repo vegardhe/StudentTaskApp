@@ -73,21 +73,6 @@ namespace StudentTask.Data.Api.Controllers
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-        /*
-        // POST: api/Tasks
-        [ResponseType(typeof(Task))]
-        public async Task<IHttpActionResult> PostTask(Task task)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Tasks.Add(task);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = task.TaskId }, task);
-        }*/
 
         // POST: api/Tasks
         [ResponseType(typeof(Task))]

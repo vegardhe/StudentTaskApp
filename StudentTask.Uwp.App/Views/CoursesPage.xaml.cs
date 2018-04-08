@@ -36,6 +36,37 @@ namespace StudentTask.Uwp.App.Views
             CourseExercises = new ObservableCollection<Exercise>();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (DataSource.Students.Instance.UserStudent != null &&
+                DataSource.Students.Instance.UserStudent.GroupUsergroup == Student.Usergroup.User)
+                NewCourseButton.Visibility = Visibility.Visible;
+        }
+
+        private async void AddCourse()
+        {
+            var newCourse = new Course();
+            AddCourseContentDialog.DataContext = newCourse;
+
+            var result = await AddCourseContentDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                try
+                {
+                    newCourse.Students = new List<Student>{ DataSource.Students.Instance.UserStudent };
+                    Course addedCourse;
+                    if ((addedCourse = await DataSource.Courses.Instance.AddCourse(newCourse)) != null)
+                    {
+                        ViewModel.Courses.Add(addedCourse);
+                    }
+                }
+                catch (Exception)
+                {
+                    // TODO: Exception handling.
+                }
+            }
+        }
+
         private async void CoursesListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedCourse = (Course) CoursesListView.SelectedItem;

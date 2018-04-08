@@ -46,7 +46,7 @@ namespace StudentTask.Data.Access
                 CourseCode = "ITD20106",
                 Name = "Statistikk og økonomi",
                 Information =
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nulla ut ipsum tempor tristique. Sed consequat lorem felis, vel fringilla enim posuere fermentum. Curabitur efficitur tortor id mi iaculis luctus. Aliquam dictum leo risus, vel lacinia sem dignissim a. Aenean tortor dui, condimentum a pretium sit amet, iaculis id massa. Donec nec iaculis lectus, eget vulputate nisl. Cras ullamcorper urna id rhoncus accumsan. Vestibulum gravida eros at erat laoreet elementum. Praesent rhoncus lectus ipsum, at sagittis mi vestibulum ac. Suspendisse tincidunt egestas cursus. Donec varius eros in arcu finibus sodales. Integer cursus cursus massa, et suscipit metus suscipit ac. Cras ut vehicula nisl. Donec at lorem a sem mattis tincidunt id quis dolor. Sed condimentum egestas justo. Sed quis volutpat dui, vitae maximus lorem.",
+                    "Proin a ex lectus. Sed blandit ante ligula, et cursus dui ornare a. Quisque tincidunt cursus volutpat. In hac habitasse platea dictumst. Cras eu placerat metus. Nullam malesuada vehicula diam et laoreet. Morbi bibendum diam eu velit porta consequat. Mauris posuere rhoncus augue, ac rutrum massa tempor et. Maecenas non diam sed lacus luctus varius ac sed mauris. Mauris eleifend, neque vehicula pharetra tempus, dolor velit ornare lacus, suscipit rutrum nisi erat sed turpis. Curabitur sodales eget turpis sed sagittis. Donec egestas mauris id sapien blandit fermentum. Maecenas placerat enim diam, ac porttitor enim tincidunt quis. Fusce at ligula a nulla interdum ornare in id arcu.",
                 Exercises = new List<Exercise>(),
                 Resources = new List<Resource>()
             });
@@ -65,6 +65,7 @@ namespace StudentTask.Data.Access
                 FirstName = "Vegard",
                 LastName = "Hermansen",
                 Username = "vegardhe",
+                GroupUsergroup = Student.Usergroup.User,
                 Courses = new List<Course> { sampleCourse, sampleCourseTwo },
                 Email = "vegardhe@hiof.no",
                 Password = "Password123", //TODO: Add hashing

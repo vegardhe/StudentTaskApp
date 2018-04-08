@@ -9,6 +9,20 @@ namespace StudentTask.Model
     public class Student
     {
         /// <summary>
+        /// Enum that defines the usergroup.
+        /// </summary>
+        public enum Usergroup
+        {
+            /// <summary>
+            /// The user
+            /// </summary>
+            User,
+            /// <summary>
+            /// The admin
+            /// </summary>
+            Admin
+        }
+        /// <summary>
         /// Gets or sets the username.
         /// </summary>
         /// <value>
@@ -64,5 +78,7 @@ namespace StudentTask.Model
         /// The courses.
         /// </value>
         public List<Course> Courses { get; set; }
+
+        public Usergroup GroupUsergroup { get; set; }
     }
 }
