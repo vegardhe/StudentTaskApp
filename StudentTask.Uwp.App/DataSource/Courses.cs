@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Contacts;
 using Newtonsoft.Json;
 using StudentTask.Model;
+using Task = System.Threading.Tasks.Task;
 
 namespace StudentTask.Uwp.App.DataSource
 {
@@ -71,6 +72,14 @@ namespace StudentTask.Uwp.App.DataSource
                 .ConfigureAwait(false);
             var responseBody = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Course>(responseBody);
+        }
+
+        public async Task<bool> UpdateCourse(Course selectedCourse)
+        {
+            var putBody = JsonConvert.SerializeObject(selectedCourse);
+            var response = await _client.PutAsync(($"courses\\{selectedCourse.CourseId}"),
+                new StringContent(putBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
+            return response.IsSuccessStatusCode;
         }
     }
 }

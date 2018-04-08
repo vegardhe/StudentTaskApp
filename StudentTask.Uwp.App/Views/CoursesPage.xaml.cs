@@ -40,7 +40,10 @@ namespace StudentTask.Uwp.App.Views
         {
             if (DataSource.Users.Instance.SessionUser != null &&
                 DataSource.Users.Instance.SessionUser.GroupUsergroup == User.Usergroup.Admin)
+            {
                 NewCourseButton.Visibility = Visibility.Visible;
+                EditCourseButton.Visibility = Visibility.Visible;
+            }
         }
 
         private async void AddCourse()
@@ -59,6 +62,24 @@ namespace StudentTask.Uwp.App.Views
                     {
                         ViewModel.Courses.Add(addedCourse);
                     }
+                }
+                catch (Exception)
+                {
+                    // TODO: Exception handling.
+                }
+            }
+        }
+
+        private async void EditCourse()
+        {
+            var selectedCourse = (Course)CoursesListView.SelectedItem;
+            AddCourseContentDialog.DataContext = selectedCourse;
+            var result = await EditCourseContentDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                try
+                {
+                    await DataSource.Courses.Instance.UpdateCourse(selectedCourse);
                 }
                 catch (Exception)
                 {
