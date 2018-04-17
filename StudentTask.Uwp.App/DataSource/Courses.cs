@@ -77,7 +77,7 @@ namespace StudentTask.Uwp.App.DataSource
         public async Task<bool> UpdateCourse(Course selectedCourse)
         {
             var putBody = JsonConvert.SerializeObject(selectedCourse);
-            var response = await _client.PutAsync(($"courses\\{selectedCourse.CourseId}"),
+            var response = await _client.PutAsync($"courses\\{selectedCourse.CourseId}",
                 new StringContent(putBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
             return response.IsSuccessStatusCode;
         }

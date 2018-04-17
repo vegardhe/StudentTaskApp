@@ -129,7 +129,7 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> UserLogin(User user)
         {
-            User dbUser = await db.Users.FindAsync(user.Username);
+            var dbUser = await db.Users.FindAsync(user.Username);
             if (dbUser == null)
                 return NotFound();
 

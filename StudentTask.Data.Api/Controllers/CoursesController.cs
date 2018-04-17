@@ -1,6 +1,7 @@
 ﻿using StudentTask.Data.Access;
 using StudentTask.Model;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -125,6 +126,20 @@ namespace StudentTask.Data.Api.Controllers
             }
 
             return CreatedAtRoute("DefaultApi", new { id = course.CourseId }, course);
+        }
+
+        // POST api/Courses/courseId/Resources
+        [HttpPost]
+        [Route("api/Courses/{courseId}/Resources")]
+        [ResponseType(typeof(Resource))]
+        public async Task<IHttpActionResult> PostResource(Resource resource, int courseId)
+        {
+            db.Resources.Add(resource);
+            await db.SaveChangesAsync();
+            var course = await db.Courses.FindAsync(courseId);
+            if (course != null) course.Resources = new List<Resource> {resource};
+            await db.SaveChangesAsync();
+            return CreatedAtRoute("DefaultApi", new {controller = "resources", id = resource.ResourceId }, resource);
         }
 
         // DELETE: api/Courses/5

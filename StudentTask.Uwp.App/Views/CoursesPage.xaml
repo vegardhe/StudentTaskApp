@@ -27,6 +27,7 @@
             <controls:PageHeader.PrimaryCommands>
                 <AppBarButton Click="{x:Bind AddCourse}" Name="NewCourseButton" Icon="Add" Label="Add Course" Visibility="Collapsed" />
                 <AppBarButton Click="{x:Bind EditCourse}" Name="EditCourseButton" Icon="Edit" Label="Edit Course" Visibility="Collapsed" />
+                <AppBarButton Click="{x:Bind ManageResources}" Name="ManageResourcesButton" Icon="Link" Label="Manage Resources" Visibility="Collapsed" />
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
         <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" 
@@ -193,6 +194,42 @@
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          MaxHeight="300"/>
+            </Grid>
+        </ContentDialog>
+
+        <ContentDialog x:Name="ManageResourcesContentDialog"
+                       PrimaryButtonText="Save"
+                       IsPrimaryButtonEnabled="True"
+                       SecondaryButtonText="Cancel"
+                       IsSecondaryButtonEnabled="True"
+                       Title="Manage Course Resources">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                    <Button Content="New" Margin="0,10,10,0" Click="AddResource" />
+                    <Button Content="Delete" Margin="0,10,10,0" Click="RemoveResource" />
+                </StackPanel>
+                <ListView ItemsSource="{x:Bind CourseResources}"
+                          Margin="0,10,0,0" Grid.Row="1" Grid.Column="0"
+                          Name="ManageResourcesListView" Padding="10,0,10,10"
+                          SelectionChanged="ManageResourcesListView_OnSelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Resource">
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackPanel Grid.Row="1" Grid.Column="1" Margin="10" Visibility="Collapsed" Name="EditResourcePanel">
+                    <TextBox Text="{Binding SelectedItem.Name, ElementName=ManageResourcesListView, Mode=TwoWay}" Header="Resource Name:" />
+                    <TextBox Text="{Binding SelectedItem.Link, ElementName=ManageResourcesListView, Mode=TwoWay}" Header="Resource Link:" />
+                </StackPanel>
             </Grid>
         </ContentDialog>
 

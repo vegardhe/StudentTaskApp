@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataSource\Courses.cs" />
+    <Compile Include="DataSource\Resources.cs" />
     <Compile Include="DataSource\Users.cs" />
     <Compile Include="DataSource\Tasks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
