@@ -13,6 +13,9 @@ namespace StudentTask.Uwp.App.DataSource
 
         public User SessionUser { get; set; }
 
+        // TODO: Better solution for this.
+        public bool Changed { get; set; }
+
         private const string BaseUri = "http://localhost:52988/api/";
 
         private HttpClient _client;

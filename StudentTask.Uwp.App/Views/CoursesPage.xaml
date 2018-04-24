@@ -28,6 +28,8 @@
                 <AppBarButton Click="{x:Bind AddCourse}" Name="NewCourseButton" Icon="Add" Label="Add Course" Visibility="Collapsed" />
                 <AppBarButton Click="{x:Bind EditCourse}" Name="EditCourseButton" Icon="Edit" Label="Edit Course" Visibility="Collapsed" />
                 <AppBarButton Click="{x:Bind ManageResources}" Name="ManageResourcesButton" Icon="Link" Label="Manage Resources" Visibility="Collapsed" />
+                <AppBarButton Click="{x:Bind AddExercise}"  Name="NewExerciseButton" Icon="Bullets" Label="Add Exercise" Visibility="Collapsed" />
+                <AppBarButton Click="{x:Bind DeleteCourse}" Name="DeleteCourseButton" Icon="Delete" Label="Delete Course"/>
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
         <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" 
@@ -84,7 +86,10 @@
                   ItemsSource="{x:Bind CourseExercises}"
                   Header=" Exercises" 
                   FontSize="24" 
-                  Padding="0,20,0,0">
+                  Padding="0,20,0,0"
+                  Name="ExercisesListView"
+                  IsItemClickEnabled="True"
+                  ItemClick="ExercisesListView_OnItemClick">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Exercise">
                     <TextBlock Text="{Binding Title}" FontSize="20" />
@@ -231,6 +236,89 @@
                     <TextBox Text="{Binding SelectedItem.Link, ElementName=ManageResourcesListView, Mode=TwoWay}" Header="Resource Link:" />
                 </StackPanel>
             </Grid>
+        </ContentDialog>
+
+        <ContentDialog x:Name="AddExerciseContentDialog"
+                       PrimaryButtonText="Add"
+                       IsPrimaryButtonEnabled="True"
+                       SecondaryButtonText="Cancel"
+                       IsSecondaryButtonEnabled="True">
+            <ContentDialog.TitleTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Add" />
+                        <TextBlock Margin="10,0,0,0" Text="Add Exercise: " />
+                        <TextBlock Text="{Binding Title, Mode=OneWay}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ContentDialog.TitleTemplate>
+            <Grid Padding="10" Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBox Text="{Binding Title, Mode=TwoWay}" 
+                         PlaceholderText="Enter exercise title" 
+                         Grid.Row="0" 
+                         Header="Title: " />
+                <TextBox Text="{Binding Description, Mode=TwoWay}"
+                         PlaceholderText="Enter exercise information"
+                         Header="Description: "
+                         Grid.Row="1"
+                         TextWrapping="Wrap"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         MaxHeight="300"/>
+                <TextBlock Grid.Row="2" Text="Due:" />
+                <CalendarDatePicker Date="{Binding DueDate, Mode=TwoWay}" Grid.Row="3" Header="" Name="NewExerciseDatePicker"/>
+                <TimePicker Grid.Row="4" Time="{Binding DueTime, Mode=TwoWay}" Header="Time:" />
+            </Grid>
+        </ContentDialog>
+
+        <ContentDialog x:Name="ViewExerciseContentDialog"
+                       PrimaryButtonText="Subscribe"
+                       SecondaryButtonText="Close"
+                       IsSecondaryButtonEnabled="True">
+            <ContentDialog.TitleTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding SelectedItem.Title, ElementName=ExercisesListView}" />
+                </DataTemplate>
+            </ContentDialog.TitleTemplate>
+            <StackPanel>
+                <TextBlock Text="{Binding SelectedItem.Description, ElementName=ExercisesListView}" TextWrapping="Wrap" />
+                <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
+                    <!-- TODO: Make Printing date nicer -->
+                    <TextBlock Name="DueDateText" VerticalAlignment="Center" Text="Due Date:" Margin="0,0,10,0" />
+                    <TextBlock Text="{Binding SelectedItem.DueDate.Day, ElementName=ExercisesListView}" />
+                    <TextBlock Text="-" />
+                    <TextBlock Text="{Binding SelectedItem.DueDate.Month, ElementName=ExercisesListView}" />
+                    <TextBlock Text="-" />
+                    <TextBlock Text="{Binding SelectedItem.DueDate.Year, ElementName=ExercisesListView}" />
+                    <TextBlock Margin="10,0,0,0" Text="{Binding SelectedItem.DueTime, ElementName=ExercisesListView}" />
+                </StackPanel>
+            </StackPanel>
+        </ContentDialog>
+        
+        <ContentDialog x:Name="DeleteCourseContentDialog"
+                       PrimaryButtonText="Delete"
+                       IsPrimaryButtonEnabled="True"
+                       SecondaryButtonText="Cancel"
+                       IsSecondaryButtonEnabled="True">
+            <ContentDialog.TitleTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Delete Course"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ContentDialog.TitleTemplate>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Are you sure you want to delete '" />
+                <TextBlock Text="{Binding SelectedItem.Name, ElementName=CoursesListView}" />
+                <TextBlock Text="'?" />
+            </StackPanel>
         </ContentDialog>
 
     </RelativePanel>

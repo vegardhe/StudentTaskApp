@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,5 +82,23 @@ namespace StudentTask.Uwp.App.DataSource
                 new StringContent(putBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<bool> DeleteCourse(Course course)
+        {
+            var response = await _client.DeleteAsync($"courses\\{course.CourseId}").ConfigureAwait(false);
+            return response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.NotFound;
+        }
+
+        public async Task<Exercise> AddExercise(Exercise exercise, Course course)
+        {
+            var postBody = JsonConvert.SerializeObject(exercise);
+            var response = await _client
+                .PostAsync($"courses\\{course.CourseId}/Exercises",
+                    new StringContent(postBody, Encoding.UTF8, "application/json"))
+                .ConfigureAwait(false);
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Exercise>(responseBody);
+        }
+
     }
 }

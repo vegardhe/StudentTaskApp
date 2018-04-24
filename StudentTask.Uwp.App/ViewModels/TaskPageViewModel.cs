@@ -51,8 +51,11 @@ namespace StudentTask.Uwp.App.ViewModels
             if (SessionUser == null)
                 SessionUser = DataSource.Users.Instance.SessionUser;
 
-            if(Tasks == null)
+            if(Tasks == null || DataSource.Users.Instance.Changed)
+            {
                 Tasks = new ObservableCollection<Model.Task>(await DataSource.Tasks.Instance.GetTasks(SessionUser));
+                DataSource.Users.Instance.Changed = false;
+            }
 
             await Task.CompletedTask;
         }

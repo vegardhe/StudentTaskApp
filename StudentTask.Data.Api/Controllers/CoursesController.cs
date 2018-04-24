@@ -139,7 +139,21 @@ namespace StudentTask.Data.Api.Controllers
             var course = await db.Courses.FindAsync(courseId);
             if (course != null) course.Resources = new List<Resource> {resource};
             await db.SaveChangesAsync();
-            return CreatedAtRoute("DefaultApi", new {controller = "resources", id = resource.ResourceId }, resource);
+            return CreatedAtRoute("DefaultApi", new { controller = "resources", id = resource.ResourceId }, resource);
+        }
+
+        // POST: api/Courses/5/Exercises
+        [HttpPost]
+        [Route("api/Courses/{courseId}/Exercises")]
+        [ResponseType(typeof(Exercise))]
+        public async Task<IHttpActionResult> PostExercise(int courseId, Exercise exercise)
+        {
+            db.Exercises.Add(exercise);
+            await db.SaveChangesAsync();
+            var course = await db.Courses.FindAsync(courseId);
+            if (course != null) course.Exercises = new List<Exercise> {exercise};
+            await db.SaveChangesAsync();
+            return CreatedAtRoute("DefaultApi", new { controller = "exercise", id = exercise.TaskId }, exercise);
         }
 
         // DELETE: api/Courses/5

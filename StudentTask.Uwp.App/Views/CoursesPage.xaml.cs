@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -37,6 +38,8 @@ namespace StudentTask.Uwp.App.Views
                 NewCourseButton.Visibility = Visibility.Visible;
                 EditCourseButton.Visibility = Visibility.Visible;
                 ManageResourcesButton.Visibility = Visibility.Visible;
+                NewExerciseButton.Visibility = Visibility.Visible;
+                DeleteCourseButton.Visibility = Visibility.Visible;
             }
         }
 
@@ -60,6 +63,48 @@ namespace StudentTask.Uwp.App.Views
                 catch (Exception)
                 {
                     // TODO: Exception handling.
+                }
+            }
+        }
+
+        private async void DeleteCourse()
+        {
+            var result = await DeleteCourseContentDialog.ShowAsync();
+            var selectedCourse = (Course) CoursesListView.SelectedItem;
+
+            if (result == ContentDialogResult.Primary)
+            {
+                if (selectedCourse != null)
+                {
+                    await DataSource.Courses.Instance.DeleteCourse(selectedCourse);
+                    ViewModel.Courses.Remove(selectedCourse);
+                }
+            }
+        }
+
+        private async void AddExercise()
+        {
+            var newExercise = new Exercise();
+            NewExerciseDatePicker.MinDate=DateTimeOffset.Now;
+            AddExerciseContentDialog.DataContext = newExercise;
+
+            var result = await AddExerciseContentDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                try
+                {
+                    newExercise.TaskStatus = Task.Status.Added;
+                    var selectedCourse = (Course)CoursesListView.SelectedItem;
+                    Exercise addedExercise;
+                    if ((addedExercise = await DataSource.Courses.Instance.AddExercise(newExercise,
+                            selectedCourse)) != null)
+                    {
+                        CourseExercises.Add(addedExercise);
+                    }
+                }
+                catch
+                {
+                    // TODO: Exeption handling.
                 }
             }
         }
@@ -90,16 +135,24 @@ namespace StudentTask.Uwp.App.Views
             var selectedCourse = (Course)CoursesListView.SelectedItem;
             if (result == ContentDialogResult.Primary)
             {
-                foreach (var cr in CourseResources)
+                // TODO: Make this prettier.
+                if (selectedCourse == null) return;
+                foreach (var selectedCourseResource in selectedCourse.Resources.ToArray())
                 {
-                    if (cr.ResourceId == 0)
-                        await DataSource.Resources.Instance.AddResource(cr, selectedCourse);
+                    if (CourseResources.Contains(selectedCourseResource)) continue;
+                    await DataSource.Resources.Instance.DeleteResource(selectedCourseResource);
+                    selectedCourse.Resources.Remove(selectedCourseResource);
+                }
+
+                foreach (var courseResource in CourseResources)
+                {
+                    if (courseResource.ResourceId == 0)
+                        selectedCourse.Resources.Add(await DataSource.Resources.Instance.AddResource(courseResource, selectedCourse));
                     else
                     {
-                        if (selectedCourse == null) continue;
-                        var originalResource = selectedCourse.Resources.Find(r => r.ResourceId == cr.ResourceId);
-                        if (originalResource.Name != cr.Name || originalResource.Link != cr.Link)
-                            await DataSource.Resources.Instance.UpdateResource(cr);
+                        var originalResource = selectedCourse.Resources.Find(r => r.ResourceId == courseResource.ResourceId);
+                        if (originalResource.Name != courseResource.Name || originalResource.Link != courseResource.Link)
+                            await DataSource.Resources.Instance.UpdateResource(courseResource);
                     }
                 }
             }
@@ -112,15 +165,19 @@ namespace StudentTask.Uwp.App.Views
             var selectedCourse = (Course) CoursesListView.SelectedItem;
             if (selectedCourse != null)
             {
+                ExercisesListView.Visibility = Visibility.Visible;
+                SeparatorLine.Visibility = Visibility.Visible;
+
                 if (selectedCourse.Resources == null)
-                {
                     await DataSource.Courses.Instance.GetCourseResources(selectedCourse);
-                }
 
                 if (selectedCourse.Exercises == null)
-                {
                     await DataSource.Courses.Instance.GetCourseExercises(selectedCourse);
-                }
+            }
+            else
+            {
+                ExercisesListView.Visibility = Visibility.Collapsed;
+                SeparatorLine.Visibility = Visibility.Collapsed;
             }
             UpdateCourseResources(selectedCourse);
             UpdateCourseExercises(selectedCourse);
@@ -128,6 +185,7 @@ namespace StudentTask.Uwp.App.Views
 
         private void UpdateCourseResources(Course course)
         {
+            if (course == null) return;
             CourseResources.Clear();
             foreach (var r in course.Resources)
             {
@@ -137,6 +195,7 @@ namespace StudentTask.Uwp.App.Views
 
         private void UpdateCourseExercises(Course course)
         {
+            if (course == null) return;
             CourseExercises.Clear();
             foreach (var e in course.Exercises)
             {
@@ -157,6 +216,32 @@ namespace StudentTask.Uwp.App.Views
         private void ManageResourcesListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EditResourcePanel.Visibility = ManageResourcesListView.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private async void ExercisesListView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            var result = await ViewExerciseContentDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                var selectedExercise = (Exercise) ExercisesListView.SelectedItem;
+
+                if (selectedExercise == null) return;
+                var copyExercise = new Task
+                {
+                    Title = selectedExercise.Title,
+                    Description = selectedExercise.Description,
+                    DueDate = selectedExercise.DueDate,
+                    DueTime = selectedExercise.DueTime,
+                    Users = new List<User> {DataSource.Users.Instance.SessionUser},
+                    TaskStatus = Task.Status.Added
+                };
+
+                if (await DataSource.Tasks.Instance.AddTask(copyExercise) != null)
+                {
+                    DataSource.Users.Instance.Changed = true;
+                }
+            }
         }
     }
 }

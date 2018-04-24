@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Task = System.Threading.Tasks.Task;
 
 namespace StudentTask.Uwp.App.DataSource
 {
@@ -38,6 +39,12 @@ namespace StudentTask.Uwp.App.DataSource
                 new StringContent(postBody, Encoding.UTF8, "application/json")).ConfigureAwait(false);
             var responseBody = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Resource>(responseBody);
+        }
+
+        public async Task<bool> DeleteResource(Resource resource)
+        {
+            var response = await _client.DeleteAsync($"resources\\{resource.ResourceId}").ConfigureAwait(false);
+            return response.IsSuccessStatusCode || response.StatusCode == System.Net.HttpStatusCode.NotFound;
         }
     }
 }
