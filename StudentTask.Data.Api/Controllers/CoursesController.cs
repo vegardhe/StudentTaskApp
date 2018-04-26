@@ -2,7 +2,6 @@
 using StudentTask.Model;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
@@ -12,6 +11,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 
+[assembly: CLSCompliant(false)]
+
 namespace StudentTask.Data.Api.Controllers
 {
     public class CoursesController : ApiController
@@ -19,10 +20,7 @@ namespace StudentTask.Data.Api.Controllers
         private StudentTaskContext db = new StudentTaskContext();
 
         // GET: api/Courses
-        public IQueryable<Course> GetCourses()
-        {
-            return db.Courses;
-        }
+        public IQueryable<Course> GetCourses() => db.Courses;
 
         // GET: api/Courses/5
         [ResponseType(typeof(Course))]

@@ -11,12 +11,12 @@ namespace StudentTask.Uwp.App.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class TaskPage : Page
+    public sealed partial class TaskPage
     {
 
         public TaskPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void EditButton_OnClick(object sender, RoutedEventArgs e)
@@ -27,7 +27,7 @@ namespace StudentTask.Uwp.App.Views
         private async void SaveTask()
         {
             var changedTask = (Task)TasksListView.SelectedItem;
-            if(changedTask.TaskStatus == Task.Status.Finished)
+            if(changedTask != null && changedTask.TaskStatus == Task.Status.Finished)
                 changedTask.CompletedOn = DateTimeOffset.Now;
             try
             {
@@ -61,7 +61,7 @@ namespace StudentTask.Uwp.App.Views
                         ViewModel.Tasks.Add(addedTask);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // TODO: Exception handling.
                 }

@@ -28,7 +28,7 @@ namespace StudentTask.Uwp.App.DataSource
             };
         }
 
-        public async Task<User> Login(User user)
+        public async Task<User> LogOn(User user)
         {
             var postBody = JsonConvert.SerializeObject(user);
             var response = await _client

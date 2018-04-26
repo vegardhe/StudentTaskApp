@@ -1,14 +1,10 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Template10.Common;
+﻿using Template10.Common;
 using Template10.Controls;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace StudentTask.Uwp.App.Views
 {
-    public sealed partial class Busy : UserControl
+    public sealed partial class Busy
     {
         public Busy()
         {
@@ -37,6 +33,7 @@ namespace StudentTask.Uwp.App.Views
             WindowWrapper.Current().Dispatcher.Dispatch(() =>
             {
                 var modal = Window.Current.Content as ModalDialog;
+                if (modal == null) return;
                 var view = modal.ModalContent as Busy;
                 if (view == null)
                     modal.ModalContent = view = new Busy();

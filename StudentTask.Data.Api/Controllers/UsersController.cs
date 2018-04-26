@@ -15,10 +15,7 @@ namespace StudentTask.Data.Api.Controllers
         private StudentTaskContext db = new StudentTaskContext();
 
         // GET: api/Users
-        public IQueryable<User> GetUsers()
-        {
-            return db.Users;
-        }
+        public IQueryable<User> GetUsers() => db.Users;
 
         // TODO: Make api not return passwords.
         // GET: api/Users/5
@@ -127,7 +124,7 @@ namespace StudentTask.Data.Api.Controllers
         [HttpPost]
         [Route("api/Users/Login")]
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> UserLogin(User user)
+        public async Task<IHttpActionResult> UserLogOn(User user)
         {
             var dbUser = await db.Users.FindAsync(user.Username);
             if (dbUser == null)

@@ -1,10 +1,9 @@
-﻿using StudentTask.Model;
+﻿using Newtonsoft.Json;
+using StudentTask.Model;
 using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Task = System.Threading.Tasks.Task;
 
 namespace StudentTask.Uwp.App.DataSource
 {

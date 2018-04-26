@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using StudentTask.Model;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Contacts;
-using Newtonsoft.Json;
-using StudentTask.Model;
-using Task = System.Threading.Tasks.Task;
+
+[assembly: CLSCompliant(false)]
 
 namespace StudentTask.Uwp.App.DataSource
 {

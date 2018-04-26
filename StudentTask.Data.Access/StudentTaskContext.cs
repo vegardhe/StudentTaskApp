@@ -1,6 +1,9 @@
-﻿using StudentTask.Model;
+﻿using System;
+using StudentTask.Model;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+
+[assembly:CLSCompliant(false)]
 
 namespace StudentTask.Data.Access
 {
@@ -77,6 +80,7 @@ namespace StudentTask.Data.Access
         /// </remarks>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            if (modelBuilder == null) return;
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Entity<User>()

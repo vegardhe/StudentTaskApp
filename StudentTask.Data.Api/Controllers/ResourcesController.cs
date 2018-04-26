@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using StudentTask.Data.Access;
+using StudentTask.Model;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using StudentTask.Data.Access;
-using StudentTask.Model;
 
 namespace StudentTask.Data.Api.Controllers
 {
@@ -19,10 +15,7 @@ namespace StudentTask.Data.Api.Controllers
         private StudentTaskContext db = new StudentTaskContext();
 
         // GET: api/Resources
-        public IQueryable<Resource> GetResources()
-        {
-            return db.Resources;
-        }
+        public IQueryable<Resource> GetResources() => db.Resources;
 
         // GET: api/Resources/5
         [ResponseType(typeof(Resource))]

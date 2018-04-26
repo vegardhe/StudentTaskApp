@@ -9,7 +9,7 @@ namespace StudentTask.Uwp.App.ViewModels
 {
     public class CoursesPageViewModel : ViewModelBase
     {
-        public ObservableCollection<Course> Courses { get; set; }
+        public ObservableCollection<Course> Courses { get; private set; }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {

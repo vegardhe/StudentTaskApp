@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using StudentTask.Data.Access;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using StudentTask.Data.Access;
-using StudentTask.Model;
 using Task = StudentTask.Model.Task;
 
 namespace StudentTask.Data.Api.Controllers
@@ -21,10 +17,7 @@ namespace StudentTask.Data.Api.Controllers
         private StudentTaskContext db = new StudentTaskContext();
 
         // GET: api/Tasks
-        public IQueryable<Task> GetTasks()
-        {
-            return db.Tasks;
-        }
+        public IQueryable<Task> GetTasks() => db.Tasks;
 
         // GET: api/Tasks/5
         [ResponseType(typeof(Task))]
@@ -97,7 +90,7 @@ namespace StudentTask.Data.Api.Controllers
                     await cmd.ExecuteNonQueryAsync();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return InternalServerError();
             }

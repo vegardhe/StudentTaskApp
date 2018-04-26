@@ -1,6 +1,5 @@
 ﻿using StudentTask.Uwp.App.Services.SettingsServices;
 using System.Threading.Tasks;
-using Template10.Common;
 using Template10.Controls;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -44,7 +43,7 @@ namespace StudentTask.Uwp.App
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             // TODO: add your long-running task here
-            await NavigationService.NavigateAsync(typeof(Views.LoginPage));
+            await NavigationService.NavigateAsync(typeof(Views.LogOnPage));
         }
     }
 }

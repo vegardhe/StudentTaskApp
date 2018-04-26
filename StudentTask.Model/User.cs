@@ -11,7 +11,7 @@ namespace StudentTask.Model
         /// <summary>
         /// Enum that defines the usergroup.
         /// </summary>
-        public enum Usergroup
+        public enum UserGroup
         {
             /// <summary>
             /// The student
@@ -89,6 +89,6 @@ namespace StudentTask.Model
         /// <value>
         /// The group usergroup.
         /// </value>
-        public Usergroup GroupUsergroup { get; set; }
+        public UserGroup GroupUserGroup { get; set; }
     }
 }

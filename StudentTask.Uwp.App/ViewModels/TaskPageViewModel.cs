@@ -18,9 +18,9 @@ namespace StudentTask.Uwp.App.ViewModels
         {
             _viewModel = viewModel;
         }
-
+        #pragma warning disable 0067
         public event EventHandler CanExecuteChanged;
-
+        #pragma warning restore 0067
         public bool CanExecute(object parameter) => parameter != null;
 
         public async void Execute(object parameter)
@@ -41,7 +41,7 @@ namespace StudentTask.Uwp.App.ViewModels
 
         public User SessionUser { get; set; }
 
-        public ObservableCollection<Model.Task> Tasks { get; set; }
+        public ObservableCollection<Model.Task> Tasks { get; private set; }
 
         public static List<Model.Task.Status> Enumval =>
             Enum.GetValues(typeof(Model.Task.Status)).Cast<Model.Task.Status>().ToList();

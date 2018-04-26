@@ -1,11 +1,10 @@
-﻿using System;
-using Windows.ApplicationModel.Activation;
+﻿using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace StudentTask.Uwp.App.Views
 {
-    public sealed partial class Splash : UserControl
+    public sealed partial class Splash
     {
         public Splash(SplashScreen splashScreen)
         {
@@ -15,23 +14,28 @@ namespace StudentTask.Uwp.App.Views
             Opacity = 0;
         }
 
+        public Splash()
+        {
+        }
+
         private void Resize(SplashScreen splashScreen)
         {
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
             if (splashScreen.ImageLocation.Top == 0)
             {
-                splashImage.Visibility = Visibility.Collapsed;
+                SplashImage.Visibility = Visibility.Collapsed;
                 return;
             }
             else
             {
-                rootCanvas.Background = null;
-                splashImage.Visibility = Visibility.Visible;
+                RootCanvas.Background = null;
+                SplashImage.Visibility = Visibility.Visible;
             }
-            splashImage.Height = splashScreen.ImageLocation.Height;
-            splashImage.Width = splashScreen.ImageLocation.Width;
-            splashImage.SetValue(Canvas.TopProperty, splashScreen.ImageLocation.Top);
-            splashImage.SetValue(Canvas.LeftProperty, splashScreen.ImageLocation.Left);
-            ProgressTransform.TranslateY = splashImage.Height / 2;
+            SplashImage.Height = splashScreen.ImageLocation.Height;
+            SplashImage.Width = splashScreen.ImageLocation.Width;
+            SplashImage.SetValue(Canvas.TopProperty, splashScreen.ImageLocation.Top);
+            SplashImage.SetValue(Canvas.LeftProperty, splashScreen.ImageLocation.Left);
+            ProgressTransform.TranslateY = SplashImage.Height / 2;
         }
 
         private void Image_Loaded(object sender, RoutedEventArgs e)

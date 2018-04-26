@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using StudentTask.Model.Annotations;
+using StudentTask.Model.Properties;
 
 namespace StudentTask.Model
 {

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -14,16 +13,16 @@ namespace StudentTask.Uwp.App.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CoursesPage : Page
+    public sealed partial class CoursesPage
     {
 
-        public ObservableCollection<Resource> CourseResources { get; set; }
+        public ObservableCollection<Resource> CourseResources { get; }
 
-        public ObservableCollection<Exercise> CourseExercises { get; set; }
+        public ObservableCollection<Exercise> CourseExercises { get; }
 
         public CoursesPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
             CourseResources = new ObservableCollection<Resource>();
             CourseExercises = new ObservableCollection<Exercise>();
         }
@@ -32,8 +31,8 @@ namespace StudentTask.Uwp.App.Views
         {
             // TODO: Check if teacher is teacher for current course.
             if (DataSource.Users.Instance.SessionUser != null &&
-                (DataSource.Users.Instance.SessionUser.GroupUsergroup == User.Usergroup.Admin ||
-                 DataSource.Users.Instance.SessionUser.GroupUsergroup == User.Usergroup.Teacher))
+                (DataSource.Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin ||
+                 DataSource.Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Teacher))
             {
                 NewCourseButton.Visibility = Visibility.Visible;
                 EditCourseButton.Visibility = Visibility.Visible;

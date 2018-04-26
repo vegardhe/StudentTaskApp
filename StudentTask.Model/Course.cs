@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using StudentTask.Model.Annotations;
+using System.Runtime.InteropServices;
+using StudentTask.Model.Properties;
+
+[assembly:CLSCompliant(false)]
+[assembly:ComVisible(false)]
 
 namespace StudentTask.Model
+
 {
     /// <summary>
     /// Represents a course.
