@@ -49,7 +49,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackPanel Name="DetailsPanel" Grid.Column="0" Visibility="Visible">
+            <StackPanel Name="DetailsPanel" Grid.Column="0" Visibility="Collapsed">
                 <TextBlock Text="{Binding SelectedItem.Title, ElementName=TasksListView}" FontSize="24" />
                 <TextBlock Text="{Binding SelectedItem.Description, ElementName=TasksListView}" TextWrapping="WrapWholeWords" />
                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
@@ -60,7 +60,7 @@
                     <TextBlock Text="{Binding SelectedItem.DueDate.Month, ElementName=TasksListView}" />
                     <TextBlock Text="-" />
                     <TextBlock Text="{Binding SelectedItem.DueDate.Year, ElementName=TasksListView}" />
-                    <TextBlock Text=":"></TextBlock>
+                    <TextBlock Text=":" />
                     <TextBlock Text="{Binding SelectedItem.DueTime, ElementName=TasksListView}" />
                 </StackPanel>
                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">

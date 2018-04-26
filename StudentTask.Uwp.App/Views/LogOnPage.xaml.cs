@@ -44,5 +44,8 @@ namespace StudentTask.Uwp.App.Views
             }
             ProgressRing.IsActive = false;
         }
+
+        private void Hyperlink_OnClick(Windows.UI.Xaml.Documents.Hyperlink sender,
+            Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args) => Frame.Navigate(typeof(CreateAccountPage));
     }
 }

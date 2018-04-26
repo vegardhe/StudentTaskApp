@@ -44,6 +44,9 @@
                     Foreground="AliceBlue"
                     Click="Login">Log in</Button>
             <ProgressRing Name="ProgressRing" Grid.Row="7" Grid.Column="1" IsActive="False" Foreground="AliceBlue" />
+            <TextBlock Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Hyperlink Foreground="Black" Click="Hyperlink_OnClick">Create Account</Hyperlink>
+            </TextBlock>
         </Grid>
     </RelativePanel>
 </Page>

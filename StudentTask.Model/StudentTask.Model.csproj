@@ -43,6 +43,7 @@
     <Compile Include="Exercise.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Resource.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

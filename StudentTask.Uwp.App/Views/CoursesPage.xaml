@@ -28,7 +28,7 @@
                 <AppBarButton Click="{x:Bind EditCourse}" Name="EditCourseButton" Icon="Edit" Label="Edit Course" Visibility="Collapsed" />
                 <AppBarButton Click="{x:Bind ManageResources}" Name="ManageResourcesButton" Icon="Link" Label="Manage Resources" Visibility="Collapsed" />
                 <AppBarButton Click="{x:Bind AddExercise}"  Name="NewExerciseButton" Icon="Bullets" Label="Add Exercise" Visibility="Collapsed" />
-                <AppBarButton Click="{x:Bind DeleteCourse}" Name="DeleteCourseButton" Icon="Delete" Label="Delete Course"/>
+                <AppBarButton Click="{x:Bind DeleteCourse}" Name="DeleteCourseButton" Icon="Delete" Label="Delete Course" Visibility="Collapsed"/>
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
         <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" 
@@ -77,7 +77,8 @@
               RelativePanel.Below="CoursesListView"
               RelativePanel.Above="ResourcesListView"
               Width="2"
-              Fill="DarkGray"/>
+              Fill="DarkGray"
+                   Visibility="Collapsed"/>
         <ListView RelativePanel.RightOf="SeparatorLine"
                   RelativePanel.Below="CoursesListView"
                   RelativePanel.AlignRightWithPanel="True"
@@ -88,7 +89,8 @@
                   Padding="0,20,0,0"
                   Name="ExercisesListView"
                   IsItemClickEnabled="True"
-                  ItemClick="ExercisesListView_OnItemClick">
+                  ItemClick="ExercisesListView_OnItemClick"
+                  Visibility="Collapsed">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Exercise">
                     <TextBlock Text="{Binding Title}" FontSize="20" />

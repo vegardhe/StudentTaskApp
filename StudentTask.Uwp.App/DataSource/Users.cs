@@ -39,5 +39,14 @@ namespace StudentTask.Uwp.App.DataSource
             SessionUser = sessionUser;
             return sessionUser;
         }
+
+        public async Task<bool> CreateUser(User user)
+        {
+            var postBody = JsonConvert.SerializeObject(user);
+            var response = await _client
+                .PostAsync("users", new StringContent(postBody, Encoding.UTF8, "application/json"))
+                .ConfigureAwait(false);
+            return response.IsSuccessStatusCode;
+        }
     }
 }
