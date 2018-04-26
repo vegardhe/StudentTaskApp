@@ -60,6 +60,10 @@ namespace StudentTask.Uwp.App.Views
             {
                 Frame.Navigate(typeof(LogOnPage));
             }
+            else
+            {
+                // TODO: Display why creating user failed.
+            }
         }
     }
 }

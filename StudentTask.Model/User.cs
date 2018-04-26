@@ -36,9 +36,8 @@ namespace StudentTask.Model
         /// <value>
         /// The username.
         /// </value>
-        [Key]
         private string _username;
-
+        [Key]
         public string Username
         {
             get => _username;
@@ -55,9 +54,8 @@ namespace StudentTask.Model
         /// <value>
         /// The email.
         /// </value>
-        [Required]
         private string _email;
-
+        [Required]
         public string Email
         {
             get => _email;
@@ -74,9 +72,8 @@ namespace StudentTask.Model
         /// <value>
         /// The password.
         /// </value>
-        [Required]
         private string _password;
-
+        [Required]
         public string Password
         {
             get => _password;
@@ -95,9 +92,8 @@ namespace StudentTask.Model
         /// <value>
         /// The first name.
         /// </value>
-        [Required]
         private string _firstName;
-
+        [Required]
         public string FirstName
         {
             get => _firstName;
@@ -116,9 +112,8 @@ namespace StudentTask.Model
         /// <value>
         /// The last name.
         /// </value>
-        [Required]
         private string _lastName;
-
+        [Required]
         public string LastName
         {
             get => _lastName;
