@@ -49,5 +49,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Task.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Security.Cryptography.Algorithms">
+      <HintPath>..\..\..\..\.nuget\packages\system.security.cryptography.algorithms\4.2.0\ref\netstandard1.4\System.Security.Cryptography.Algorithms.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 </Project>

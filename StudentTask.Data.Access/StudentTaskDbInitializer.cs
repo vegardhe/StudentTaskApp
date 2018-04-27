@@ -70,11 +70,10 @@ namespace StudentTask.Data.Access
                     GroupUserGroup = User.UserGroup.Admin,
                     Courses = new List<Course> { sampleCourse, sampleCourseTwo },
                     Email = "vegardhe@hiof.no",
-                    Password = "Password123", //TODO: Add hashing
+                    Password = "E3NSHDEdrqU5iziilh5Zb+G0W2cFPpIRHf+ypo7UZzIsi0GF",
                     Tasks = new List<Task> { sampleTask, sampleExcercise }
                 });
             }
-
             base.Seed(context);
         }
     }

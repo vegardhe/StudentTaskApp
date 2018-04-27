@@ -1,9 +1,11 @@
-﻿using StudentTask.Data.Access;
+﻿using System;
+using StudentTask.Data.Access;
 using StudentTask.Model;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -13,23 +15,6 @@ namespace StudentTask.Data.Api.Controllers
     public class UsersController : ApiController
     {
         private StudentTaskContext db = new StudentTaskContext();
-
-        // GET: api/Users
-        public IQueryable<User> GetUsers() => db.Users;
-
-        // TODO: Make api not return passwords.
-        // GET: api/Users/5
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(string id)
-        {
-            User user = await db.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
-        }
 
         // GET: api/users/username/tasks
         [HttpGet]
@@ -99,6 +84,8 @@ namespace StudentTask.Data.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            user.Password = Encrypt(user.Password);
+
             db.Users.Add(user);
 
             try
@@ -117,6 +104,7 @@ namespace StudentTask.Data.Api.Controllers
                 }
             }
 
+            user.Password = null;
             return CreatedAtRoute("DefaultApi", new { id = user.Username }, user);
         }
 
@@ -130,10 +118,12 @@ namespace StudentTask.Data.Api.Controllers
             if (dbUser == null)
                 return NotFound();
 
-            if (dbUser.Password == user.Password)
-                return Ok(dbUser);
+            if (!Verify(user.Password, dbUser.Password))
+                return BadRequest();
 
-            return InternalServerError();
+            dbUser.Password = null;
+            return Ok(dbUser);
+
         }
 
         // DELETE: api/Users/5
@@ -149,6 +139,7 @@ namespace StudentTask.Data.Api.Controllers
             db.Users.Remove(user);
             await db.SaveChangesAsync();
 
+            user.Password = null;
             return Ok(user);
         }
 
@@ -164,6 +155,36 @@ namespace StudentTask.Data.Api.Controllers
         private bool UserExists(string id)
         {
             return db.Users.Count(e => e.Username == id) > 0;
+        }
+
+        // TODO: Add these to new class?
+        private static string Encrypt(string password)
+        {
+            byte[] salt;
+            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+            var hash = pbkdf2.GetBytes(20);
+
+            var hashBytes = new byte[36];
+            Array.Copy(salt, 0, hashBytes, 0, 16);
+            Array.Copy(hash, 0, hashBytes, 16, 20);
+
+            return Convert.ToBase64String(hashBytes);
+        }
+
+        private static bool Verify(string password, string savedPasswordHash)
+        {
+            var hashBytes = Convert.FromBase64String(savedPasswordHash);
+
+            var salt = new byte[16];
+            Array.Copy(hashBytes, 0, salt, 0, 16);
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+            var hash = pbkdf2.GetBytes(20);
+            for (var i=0; i < 20; i++)
+                if (hashBytes[i + 16] != hash[i])
+                    return false;
+            return true;
         }
     }
 }
