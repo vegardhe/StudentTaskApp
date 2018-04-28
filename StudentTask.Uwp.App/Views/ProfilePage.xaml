@@ -1,0 +1,73 @@
+﻿<Page
+    x:Class="StudentTask.Uwp.App.Views.ProfilePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Template10.Controls"
+    xmlns:viewModels="using:StudentTask.Uwp.App.ViewModels"
+    mc:Ignorable="d">
+    
+    <Page.DataContext>
+        <viewModels:ProfilePageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <RelativePanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <controls:PageHeader x:Name="PageHeader"
+                             RelativePanel.AlignLeftWithPanel="True"
+                             RelativePanel.AlignRightWithPanel="True"
+                             RelativePanel.AlignTopWithPanel="True"
+                             Text="Profile" />
+        <StackPanel Orientation="Horizontal" Margin="10,10,0,0" 
+                    RelativePanel.Below="PageHeader"
+                    x:Name="NamePanel">
+            <TextBlock Text="{x:Bind ViewModel.SessionUser.FirstName}"
+                       FontSize="28"/>
+            <TextBlock Text="{x:Bind ViewModel.SessionUser.LastName}"
+                       Margin="5,0,0,0"
+                       FontSize="28"/>
+        </StackPanel>
+
+        <ListView x:Name="CoursesListView"
+                  ItemsSource="{x:Bind ViewModel.SessionUser.Courses}"
+                  RelativePanel.Below="NamePanel"
+                  RelativePanel.AlignBottomWithPanel="True"
+                  RelativePanel.AlignLeftWithPanel="True"
+                  Margin="10"
+                  Header="My Courses"
+                  FontSize="24">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name, Mode=OneWay}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <StackPanel RelativePanel.RightOf="CoursesListView" 
+                    RelativePanel.AlignTopWith="CoursesListView"
+                    Margin="50,10,10,10">
+            <TextBlock Text="Statistics" FontSize="24" />
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Courses following: " />
+                <TextBlock Text="{x:Bind ViewModel.SessionUser.Courses.Count}" Margin="2,0,0,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Tasks completed: " />
+                <TextBlock Margin="2,0,0,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Tasks completed this week: " />
+                <TextBlock Margin="2,0,0,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Tasks due this week: " />
+                <TextBlock Margin="2,0,0,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Tasks due today: " />
+                <TextBlock Margin="2,0,0,0" />
+            </StackPanel>
+        </StackPanel>
+        
+    </RelativePanel>
+</Page>

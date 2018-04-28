@@ -2,6 +2,7 @@
 using StudentTask.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -31,6 +32,7 @@ namespace StudentTask.Uwp.App.DataSource
         {
             var json = await _client.GetStringAsync($"users\\{user.Username}/courses").ConfigureAwait(false);
             var courses = JsonConvert.DeserializeObject<Course[]>(json);
+            Users.Instance.SessionUser.Courses = courses.ToList();
             return courses;
         }
 

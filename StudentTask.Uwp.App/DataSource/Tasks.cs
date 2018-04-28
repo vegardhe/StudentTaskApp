@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using StudentTask.Model;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace StudentTask.Uwp.App.DataSource
         {
             var json = await _client.GetStringAsync($"users\\{user.Username}/tasks").ConfigureAwait(false);
             var tasks = JsonConvert.DeserializeObject<Task[]>(json);
+            Users.Instance.SessionUser.Tasks = tasks.ToList();
             return tasks;
         }
 
