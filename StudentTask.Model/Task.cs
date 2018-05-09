@@ -9,6 +9,7 @@ namespace StudentTask.Model
     /// <summary>
     /// Represents a taks.
     /// </summary>
+    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class Task : INotifyPropertyChanged
     {
         /// <summary>
@@ -52,7 +53,7 @@ namespace StudentTask.Model
             {
                 if (SetField(ref _title, value))
                     OnPropertyChanged(nameof(IsValid));
-            } 
+            }
         }
 
         /// <summary>
@@ -75,6 +76,7 @@ namespace StudentTask.Model
         /// The due date.
         /// </value>
         private DateTimeOffset? _dueDate;
+
         public DateTimeOffset? DueDate
         {
             get => _dueDate;
@@ -104,7 +106,12 @@ namespace StudentTask.Model
         public Status TaskStatus
         {
             get => _taskStatus;
-            set => SetField(ref _taskStatus, value);
+            set
+            {
+                if (SetField(ref _taskStatus, value))
+                    if (_taskStatus == Status.Finished)
+                        CompletedOn = DateTimeOffset.Now;
+            }
         }
 
         /// <summary>

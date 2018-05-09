@@ -53,19 +53,19 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Text="Tasks completed: " />
-                <TextBlock Margin="2,0,0,0" />
+                <TextBlock Text="{x:Bind ViewModel.CompletedTasks}" Margin="2,0,0,0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Text="Tasks completed this week: " />
-                <TextBlock Margin="2,0,0,0" />
+                <TextBlock Text="{x:Bind ViewModel.CompletedTasksThisWeek}" Margin="2,0,0,0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Text="Tasks due this week: " />
-                <TextBlock Margin="2,0,0,0" />
+                <TextBlock Text="{x:Bind ViewModel.TasksDueThisWeek}" Margin="2,0,0,0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Text="Tasks due today: " />
-                <TextBlock Margin="2,0,0,0" />
+                <TextBlock Text="{x:Bind ViewModel.TasksDueToday}" Margin="2,0,0,0" />
             </StackPanel>
         </StackPanel>
         

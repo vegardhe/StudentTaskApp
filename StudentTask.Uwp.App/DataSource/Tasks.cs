@@ -54,7 +54,9 @@ namespace StudentTask.Uwp.App.DataSource
                 .PostAsync("tasks", new StringContent(postBody, Encoding.UTF8, "application/json"))
                 .ConfigureAwait(false);
             var responseBody = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<Task>(responseBody);
+            var createdTask = JsonConvert.DeserializeObject<Task>(responseBody);
+            Users.Instance.SessionUser.Tasks.Add(createdTask);
+            return createdTask;
         }
     }
 }

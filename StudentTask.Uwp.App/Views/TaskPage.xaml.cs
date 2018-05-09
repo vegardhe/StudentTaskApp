@@ -45,6 +45,7 @@ namespace StudentTask.Uwp.App.Views
         private async void AddTask()
         {
             var newTask = new Task();
+            newTask.DueDate=DateTimeOffset.Now;
             NewTaskDatePicker.MinDate=DateTimeOffset.Now;
             AddTaskContentDialog.DataContext = newTask;
 
