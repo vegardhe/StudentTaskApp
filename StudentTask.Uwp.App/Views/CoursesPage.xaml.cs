@@ -39,6 +39,8 @@ namespace StudentTask.Uwp.App.Views
                 ManageResourcesButton.Visibility = Visibility.Visible;
                 NewExerciseButton.Visibility = Visibility.Visible;
                 DeleteCourseButton.Visibility = Visibility.Visible;
+                EditExerciseButton.Visibility = Visibility.Visible;
+                DeleteExerciseButton.Visibility = Visibility.Visible;
             }
         }
 
@@ -81,6 +83,22 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        private async void DeleteExercise()
+        {
+            ViewExerciseContentDialog.Hide();
+            var result = await DeleteExerciseContentDialog.ShowAsync();
+            var selectedExercise = (Exercise) ExercisesListView.SelectedItem;
+
+            if (result == ContentDialogResult.Primary)
+            {
+                if (selectedExercise != null)
+                {
+                    await DataSource.Tasks.Instance.DeleteTask(selectedExercise);
+                    CourseExercises.Remove(selectedExercise);
+                }
+            }
+        }
+
         private async void AddExercise()
         {
             var newExercise = new Exercise();
@@ -104,6 +122,25 @@ namespace StudentTask.Uwp.App.Views
                 catch
                 {
                     // TODO: Exeption handling.
+                }
+            }
+        }
+
+        private async void EditExercise()
+        {
+            ViewExerciseContentDialog.Hide();
+            var selectedExercise = (Exercise) ExercisesListView.SelectedItem;
+            EditExerciseContentDialog.DataContext = selectedExercise;
+            var result = await EditExerciseContentDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                try
+                {
+                    await DataSource.Tasks.Instance.UpdateTask(selectedExercise);
+                }
+                catch (Exception)
+                {
+                    // TODO: Exception handling.
                 }
             }
         }
@@ -202,15 +239,9 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
-        private void AddResource(object sender, RoutedEventArgs e)
-        {
-            CourseResources.Add(new Resource { Name = "New Resource" } );
-        }
+        private void AddResource(object sender, RoutedEventArgs e) => CourseResources.Add(new Resource { Name = "New Resource" });
 
-        private void RemoveResource(object sender, RoutedEventArgs e)
-        {
-            CourseResources.Remove((Resource) ManageResourcesListView.SelectedItem);
-        }
+        private void RemoveResource(object sender, RoutedEventArgs e) => CourseResources.Remove((Resource)ManageResourcesListView.SelectedItem);
 
         private void ManageResourcesListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {

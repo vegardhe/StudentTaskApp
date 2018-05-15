@@ -7,6 +7,7 @@
     xmlns:viewModels="using:StudentTask.Uwp.App.ViewModels"
     xmlns:controls="using:Template10.Controls"
     xmlns:model="using:StudentTask.Model"
+    xmlns:converters="using:StudentTask.Uwp.App.Converters"
     mc:Ignorable="d">
 
     <Page.DataContext>
@@ -14,7 +15,8 @@
     </Page.DataContext>
 
     <Page.Resources>
-        <CollectionViewSource x:Name="TaskViewSource" Source="{x:Bind ViewModel.Tasks}" />
+        <CollectionViewSource x:Name="TaskViewSource" Source="{x:Bind ViewModel.ActiveTasks}" />
+        <converters:TaskColorConverter x:Key="TaskColorConverter" />
     </Page.Resources>
 
     <RelativePanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
@@ -29,6 +31,7 @@
                               CommandParameter="{Binding SelectedItem, ElementName=TasksListView}" 
                               Icon="Delete"
                               Label="Delete Task"/>
+                <AppBarButton Click="ToggleFinishedTasks" Icon="Accept" Label="Toggle Completed Tasks" />
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
         
@@ -40,7 +43,7 @@
                   SelectionChanged="TasksListView_OnSelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Task">
-                    <TextBlock Text="{Binding Title, Mode=OneWay}" />
+                    <TextBlock Text="{Binding Title, Mode=OneWay}" Foreground="{Binding TaskId, Converter={StaticResource TaskColorConverter}}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -54,7 +57,7 @@
                 <TextBlock Text="{Binding SelectedItem.Description, ElementName=TasksListView}" TextWrapping="WrapWholeWords" />
                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                     <!-- TODO: Make Printing date nicer -->
-                    <TextBlock Name="DueDateText" VerticalAlignment="Center" Text="Due Date: &#160;" />
+                    <TextBlock Name="DueDateText" VerticalAlignment="Center" Text="Due Date: &#160;" Margin="0,0,5,0" />
                     <TextBlock Text="{Binding SelectedItem.DueDate.Day, ElementName=TasksListView}" />
                     <TextBlock Text="-" />
                     <TextBlock Text="{Binding SelectedItem.DueDate.Month, ElementName=TasksListView}" />

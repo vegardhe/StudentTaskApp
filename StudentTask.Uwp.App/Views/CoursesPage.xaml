@@ -300,6 +300,10 @@
                     <TextBlock Text="{Binding SelectedItem.DueDate.Year, ElementName=ExercisesListView}" />
                     <TextBlock Margin="10,0,0,0" Text="{Binding SelectedItem.DueTime, ElementName=ExercisesListView}" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="EditExerciseButton" Visibility="Collapsed" Content="Edit" Width="233" Margin="0,10,0,0" Click="{x:Bind EditExercise}" />
+                    <Button Name="DeleteExerciseButton" Visibility="Collapsed" Content="Delete" Width="237" Margin="4,10,0,0" Click="{x:Bind DeleteExercise}" />
+                </StackPanel>
             </StackPanel>
         </ContentDialog>
         
@@ -318,6 +322,57 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Are you sure you want to delete '" />
                 <TextBlock Text="{Binding SelectedItem.Name, ElementName=CoursesListView}" />
+                <TextBlock Text="'?" />
+            </StackPanel>
+        </ContentDialog>
+
+        <ContentDialog x:Name="EditExerciseContentDialog"
+                       PrimaryButtonText="Save"
+                       IsPrimaryButtonEnabled="True"
+                       SecondaryButtonText="Cancel"
+                       IsSecondaryButtonEnabled="True"
+                       Title="Edit Exercise">
+            <Grid Padding="10" Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBox Text="{Binding Title, Mode=TwoWay}" 
+                         PlaceholderText="Enter exercise title" 
+                         Grid.Row="0" 
+                         Header="Title: " />
+                <TextBox Text="{Binding Description, Mode=TwoWay}"
+                         PlaceholderText="Enter exercise information"
+                         Header="Description: "
+                         Grid.Row="1"
+                         TextWrapping="Wrap"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         MaxHeight="300"/>
+                <TextBlock Grid.Row="2" Text="Due:" />
+                <CalendarDatePicker Date="{Binding DueDate, Mode=TwoWay}" Grid.Row="3"/>
+                <TimePicker Grid.Row="4" Time="{Binding DueTime, Mode=TwoWay}" Header="Time:" />
+            </Grid>
+        </ContentDialog>
+
+        <ContentDialog x:Name="DeleteExerciseContentDialog"
+                       PrimaryButtonText="Delete"
+                       IsPrimaryButtonEnabled="True"
+                       SecondaryButtonText="Cancel"
+                       IsSecondaryButtonEnabled="True">
+            <ContentDialog.TitleTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Delete Course"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ContentDialog.TitleTemplate>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Are you sure you want to delete '" />
+                <TextBlock Text="{Binding SelectedItem.Title, ElementName=ExercisesListView}" />
                 <TextBlock Text="'?" />
             </StackPanel>
         </ContentDialog>

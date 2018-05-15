@@ -96,6 +96,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\TaskColorConverter.cs" />
     <Compile Include="DataSource\Courses.cs" />
     <Compile Include="DataSource\Resources.cs" />
     <Compile Include="DataSource\Users.cs" />

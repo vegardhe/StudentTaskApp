@@ -33,7 +33,7 @@ namespace StudentTask.Uwp.App.Views
             {
                 if (await DataSource.Tasks.Instance.UpdateTask(changedTask))
                 {
-                    
+                    EditSplitView.IsPaneOpen = false;
                 }
             }
             catch (Exception)
@@ -74,6 +74,11 @@ namespace StudentTask.Uwp.App.Views
             var selectedTask = (Task) TasksListView.SelectedItem;
             DetailsPanel.Visibility = selectedTask == null ? Visibility.Collapsed : Visibility.Visible;
             DueDateText.Visibility = selectedTask != null && selectedTask.DueDate == null ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private void ToggleFinishedTasks(object sender, RoutedEventArgs e)
+        {
+            TaskViewSource.Source = TaskViewSource.Source == ViewModel.Tasks ? ViewModel.ActiveTasks : ViewModel.Tasks;
         }
     }
 }

@@ -43,6 +43,8 @@ namespace StudentTask.Uwp.App.ViewModels
 
         public ObservableCollection<Model.Task> Tasks { get; private set; }
 
+        public ObservableCollection<Model.Task> ActiveTasks { get; set; }
+
         public static List<Model.Task.Status> Enumval =>
             Enum.GetValues(typeof(Model.Task.Status)).Cast<Model.Task.Status>().ToList();
 
@@ -54,6 +56,14 @@ namespace StudentTask.Uwp.App.ViewModels
             if(Tasks == null || DataSource.Users.Instance.Changed)
             {
                 Tasks = new ObservableCollection<Model.Task>(await DataSource.Tasks.Instance.GetTasks(SessionUser));
+                ActiveTasks = new ObservableCollection<Model.Task>();
+                foreach (var task in Tasks)
+                {
+                    if (task.TaskStatus != Model.Task.Status.Finished)
+                    {
+                        ActiveTasks.Add(task);
+                    }
+                }
                 DataSource.Users.Instance.Changed = false;
             }
 
