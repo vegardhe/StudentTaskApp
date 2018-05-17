@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -41,6 +42,7 @@ namespace StudentTask.Uwp.App.Views
                 DeleteCourseButton.Visibility = Visibility.Visible;
                 EditExerciseButton.Visibility = Visibility.Visible;
                 DeleteExerciseButton.Visibility = Visibility.Visible;
+                AddUserToCourseButton.Visibility = Visibility.Visible;
             }
         }
 
@@ -122,6 +124,25 @@ namespace StudentTask.Uwp.App.Views
                 catch
                 {
                     // TODO: Exeption handling.
+                }
+            }
+        }
+
+        private async void AddUserToCourse()
+        {
+            var result = await AddUserContentDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                try
+                {
+                    var user = (User)AddUserContentDialog.DataContext;
+                    var course = (Course)CoursesListView.SelectedItem;
+
+                    await DataSource.Courses.Instance.AddUserToCourse(user, course);
+                }
+                catch (Exception)
+                {
+                    // TODO: Exception handling.
                 }
             }
         }
@@ -271,6 +292,38 @@ namespace StudentTask.Uwp.App.Views
                 {
                     DataSource.Users.Instance.Changed = true;
                 }
+            }
+        }
+
+        private void UserAutoSuggestBox_OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if (args.SelectedItem is User user)
+            {
+                sender.Text = user.FullName;
+            }
+        }
+
+        private async void UserAutoSuggestBox_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (DataSource.Users.Instance.UserList == null)
+                await DataSource.Users.Instance.GetUsers();
+            var suggestions = DataSource.Users.Instance.UserList
+                .Where(p => p.FullName.ToLower().Contains(sender.Text.ToLower())).ToArray();
+            
+            if(suggestions.Length > 0)
+                sender.ItemsSource = suggestions;
+            else
+            {
+                sender.ItemsSource = new[] {"No results found"};
+            }
+
+        }
+
+        private void UserAutoSuggestBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            if (args.ChosenSuggestion is User user)
+            {
+                AddUserContentDialog.DataContext = user;
             }
         }
     }

@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 [assembly: CLSCompliant(false)]
 
@@ -101,5 +102,11 @@ namespace StudentTask.Uwp.App.DataSource
             return JsonConvert.DeserializeObject<Exercise>(responseBody);
         }
 
+        public async Task<bool> AddUserToCourse(User user, Course course)
+        {
+            var response = await _client.PostAsync($"courses\\{course.CourseId}/users\\{user.Username}", null)
+                .ConfigureAwait(false);
+            return response.IsSuccessStatusCode;
+        }
     }
 }

@@ -16,6 +16,17 @@ namespace StudentTask.Data.Api.Controllers
     {
         private StudentTaskContext db = new StudentTaskContext();
 
+        // GET: api/users
+        public IQueryable<User> GetUsers()
+        {
+            // Removing passwords from return values.
+            var users = db.Users;
+            foreach (var user in users)
+                user.Password = null;
+
+            return users;
+        }
+
         // GET: api/users/username/tasks
         [HttpGet]
         [Route("api/Users/{username}/tasks")]

@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using StudentTask.Model;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +17,8 @@ namespace StudentTask.Uwp.App.DataSource
 
         // TODO: Better solution for this.
         public bool Changed { get; set; }
+
+        public List<User> UserList { get; set; }
 
         private const string BaseUri = "http://localhost:52988/api/";
 
@@ -47,6 +51,14 @@ namespace StudentTask.Uwp.App.DataSource
                 .PostAsync("users", new StringContent(postBody, Encoding.UTF8, "application/json"))
                 .ConfigureAwait(false);
             return response.IsSuccessStatusCode;
+        }
+
+        public async Task<User[]> GetUsers()
+        {
+            var json = await _client.GetStringAsync("users").ConfigureAwait(false);
+            var users = JsonConvert.DeserializeObject<User[]>(json);
+            Instance.UserList = users.ToList();
+            return users;
         }
     }
 }

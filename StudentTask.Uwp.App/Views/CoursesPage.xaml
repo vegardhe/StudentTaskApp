@@ -29,6 +29,7 @@
                 <AppBarButton Click="{x:Bind ManageResources}" Name="ManageResourcesButton" Icon="Link" Label="Manage Resources" Visibility="Collapsed" />
                 <AppBarButton Click="{x:Bind AddExercise}"  Name="NewExerciseButton" Icon="Bullets" Label="Add Exercise" Visibility="Collapsed" />
                 <AppBarButton Click="{x:Bind DeleteCourse}" Name="DeleteCourseButton" Icon="Delete" Label="Delete Course" Visibility="Collapsed"/>
+                <AppBarButton Click="{x:Bind AddUserToCourse}" Name="AddUserToCourseButton" Icon="AddFriend" Label="Add User" Visibility="Collapsed" />
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
         <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" 
@@ -374,6 +375,42 @@
                 <TextBlock Text="Are you sure you want to delete '" />
                 <TextBlock Text="{Binding SelectedItem.Title, ElementName=ExercisesListView}" />
                 <TextBlock Text="'?" />
+            </StackPanel>
+        </ContentDialog>
+
+        <ContentDialog x:Name="AddUserContentDialog"
+                       PrimaryButtonText="Add"
+                       IsPrimaryButtonEnabled="True"
+                       SecondaryButtonText="Cancel"
+                       IsSecondaryButtonEnabled="True"
+                       Title="Add User">
+        <StackPanel>
+            <AutoSuggestBox PlaceholderText="Search for user"
+                            QueryIcon="Find"
+                            Width="200"
+                            Margin="0,20,0,0"
+                            Name="UserAutoSuggestBox"
+                            SuggestionChosen="UserAutoSuggestBox_OnSuggestionChosen"
+                            TextChanged="UserAutoSuggestBox_OnTextChanged"
+                            QuerySubmitted="UserAutoSuggestBox_OnQuerySubmitted"
+                            DisplayMemberPath="FullName"
+                            Header="User:" />
+                <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                    <TextBlock Text="Username: "/>
+                    <TextBlock Margin="5,0,0,0" Text="{Binding Username}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Name: "/>
+                    <TextBlock Margin="5,0,0,0" Text="{Binding FullName}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Email: "/>
+                    <TextBlock Margin="5,0,0,0" Text="{Binding Email}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Usergroup: "/>
+                    <TextBlock Margin="5,0,0,0" Text="{Binding GroupUserGroup}" />
+                </StackPanel>
             </StackPanel>
         </ContentDialog>
 

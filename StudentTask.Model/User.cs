@@ -101,7 +101,10 @@ namespace StudentTask.Model
             {
                 {
                     if (SetField(ref _firstName, value))
+                    {
                         OnPropertyChanged(nameof(IsValid));
+                        OnPropertyChanged(nameof(FullName));
+                    }
                 }
             }
         }
@@ -121,10 +124,15 @@ namespace StudentTask.Model
             {
                 {
                     if (SetField(ref _lastName, value))
+                    {
                         OnPropertyChanged(nameof(IsValid));
+                        OnPropertyChanged(nameof(FullName));
+                    }
                 }
             }
         }
+
+        public string FullName => $"{FirstName} {LastName}";
 
         /// <summary>
         /// Gets or sets the tasks.

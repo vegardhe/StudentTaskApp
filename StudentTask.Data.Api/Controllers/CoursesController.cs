@@ -154,6 +154,34 @@ namespace StudentTask.Data.Api.Controllers
             return CreatedAtRoute("DefaultApi", new { controller = "exercise", id = exercise.TaskId }, exercise);
         }
 
+        // POST: api/Courses/5/Users/username
+        [HttpPost]
+        [Route("api/Courses/{courseId}/users/{username}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PostUserToCourse(int courseId, string username)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                {
+                    var cmd = new SqlCommand("INSERT INTO UserCourse VALUES (@Username, @CourseId);", conn);
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    cmd.Parameters.AddWithValue("@CourseId", courseId);
+
+                    await conn.OpenAsync();
+
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception)
+            {
+                // TODO: Exception handling
+                return InternalServerError();
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
         // DELETE: api/Courses/5
         [ResponseType(typeof(Course))]
         public async Task<IHttpActionResult> DeleteCourse(int id)
