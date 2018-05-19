@@ -42,6 +42,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
 
@@ -51,7 +52,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
+
             <TextBlock Text="Create Account" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" FontSize="32" />
 
             <TextBlock Text="First name: " Grid.Row="2" Grid.Column="1" Style="{StaticResource FormTextBlockStyle}" />
@@ -71,8 +72,11 @@
 
             <TextBlock Text="Repeat Password: " Grid.Row="7" Grid.Column="1" Style="{StaticResource FormTextBlockStyle}" />
             <PasswordBox Grid.Row="7" Grid.Column="2" Style="{StaticResource FormPasswordBoxStyle}" Name="RepeatPasswordBox" />
-            
-            <Button Content="Create" Grid.Row="8" Grid.Column="1"
+
+            <TextBlock Text="Usergroup:" Style="{StaticResource FormTextBlockStyle}" Grid.Row="8" Grid.Column="1" Visibility="Collapsed" Name="UsergroupTextBlock" />
+            <ComboBox Grid.Row="8" Grid.Column="2" VerticalAlignment="Center" Margin="5,0,0,0" Visibility="Collapsed" Name="UsergroupComboBox" />
+
+            <Button Content="Create" Grid.Row="9" Grid.Column="1"
                     IsEnabled="{Binding IsValid}"
                     Name="CreateAccountButton"
                     Grid.ColumnSpan="2"
@@ -80,7 +84,7 @@
                     HorizontalAlignment="Stretch"
                     Foreground="Gainsboro"
                     Click="CreateAccountButton_OnClick"/>
-            <TextBlock Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Name="ErrorTextBlock" Foreground="Red" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBlock Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" Name="ErrorTextBlock" Foreground="Red" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Grid>
     </RelativePanel>
 </Page>

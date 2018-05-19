@@ -1,4 +1,5 @@
-﻿using StudentTask.Model;
+﻿using System;
+using StudentTask.Model;
 using System.Text.RegularExpressions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
@@ -21,8 +22,16 @@ namespace StudentTask.Uwp.App.Views
             InitializeComponent();
         }
 
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) => Shell.HamburgerMenu.IsFullScreen = false;
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if (DataSource.Users.Instance.SessionUser != null && DataSource.Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin)
+            {
+                UsergroupTextBlock.Visibility = Visibility.Visible;
+                UsergroupComboBox.Visibility = Visibility.Visible;
+                UsergroupComboBox.ItemsSource = Enum.GetValues(typeof(User.UserGroup));
+            }
             Shell.HamburgerMenu.IsFullScreen = true;
             NewUser = new User();
             NewAccountGrid.DataContext = NewUser;
@@ -43,9 +52,16 @@ namespace StudentTask.Uwp.App.Views
                 return;
             }
 
+            if (DataSource.Users.Instance.SessionUser != null &&
+                DataSource.Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin)
+            {
+                if (UsergroupComboBox.SelectedValue != null)
+                    NewUser.GroupUserGroup = (User.UserGroup) UsergroupComboBox.SelectedValue;
+            }
+
             if (await DataSource.Users.Instance.CreateUser(NewUser))
             {
-                Frame.Navigate(typeof(LogOnPage));
+                Frame.Navigate(DataSource.Users.Instance.SessionUser != null ? typeof(ProfilePage) : typeof(LogOnPage));
             }
             else
             {

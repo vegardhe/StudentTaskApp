@@ -56,7 +56,7 @@ namespace StudentTask.Data.Access
         /// <summary>
         /// Initializes a new instance of the <see cref="StudentTaskContext"/> class.
         /// </summary>
-        public StudentTaskContext()
+        public StudentTaskContext() : base("Data Source=donau.hiof.no;Initial Catalog=vegardhe;User ID=vegardhe;Password=Uh6teB")
         {
             Configuration.ProxyCreationEnabled = false;
 

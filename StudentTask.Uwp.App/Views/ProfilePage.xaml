@@ -17,7 +17,11 @@
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True"
-                             Text="Profile" />
+                             Text="Profile" >
+            <controls:PageHeader.PrimaryCommands>
+                <AppBarButton Name="AddNewUserButton" Icon="AddFriend" Label="Add New User" Visibility="Collapsed" Click="AddNewUser" />
+            </controls:PageHeader.PrimaryCommands>
+        </controls:PageHeader>
         <StackPanel Orientation="Horizontal" Margin="10,10,0,0" 
                     RelativePanel.Below="PageHeader"
                     x:Name="NamePanel">

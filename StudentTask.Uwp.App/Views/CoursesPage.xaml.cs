@@ -30,19 +30,14 @@ namespace StudentTask.Uwp.App.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // TODO: Check if teacher is teacher for current course.
             if (DataSource.Users.Instance.SessionUser != null &&
                 (DataSource.Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin ||
                  DataSource.Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Teacher))
             {
-                NewCourseButton.Visibility = Visibility.Visible;
-                EditCourseButton.Visibility = Visibility.Visible;
-                ManageResourcesButton.Visibility = Visibility.Visible;
-                NewExerciseButton.Visibility = Visibility.Visible;
-                DeleteCourseButton.Visibility = Visibility.Visible;
-                EditExerciseButton.Visibility = Visibility.Visible;
-                DeleteExerciseButton.Visibility = Visibility.Visible;
-                AddUserToCourseButton.Visibility = Visibility.Visible;
+                NewCourseButton.Visibility = EditCourseButton.Visibility = ManageResourcesButton.Visibility =
+                    NewExerciseButton.Visibility = DeleteCourseButton.Visibility = DeleteCourseButton.Visibility =
+                        EditExerciseButton.Visibility = DeleteExerciseButton.Visibility =
+                            AddUserToCourseButton.Visibility = Visibility.Visible;
             }
         }
 
