@@ -59,7 +59,7 @@ namespace StudentTask.Uwp.App.Views
                     NewUser.GroupUserGroup = (User.UserGroup) UsergroupComboBox.SelectedValue;
             }
 
-            if (await DataSource.Users.Instance.CreateUser(NewUser))
+            if (await DataSource.Users.Instance.PostUser(NewUser))
             {
                 Frame.Navigate(DataSource.Users.Instance.SessionUser != null ? typeof(ProfilePage) : typeof(LogOnPage));
             }

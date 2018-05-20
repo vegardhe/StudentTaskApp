@@ -1,10 +1,9 @@
 ﻿// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 
-using Windows.Devices.AllJoyn;
+using StudentTask.Model;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
-using StudentTask.Model;
 
 namespace StudentTask.Uwp.App.Views
 {

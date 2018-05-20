@@ -26,12 +26,11 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Course))]
         public async Task<IHttpActionResult> GetCourse(int id)
         {
-            Course course = await db.Courses.FindAsync(id);
+            var course = await db.Courses.FindAsync(id);
             if (course == null)
             {
                 return NotFound();
             }
-
             return Ok(course);
         }
 
@@ -118,8 +117,9 @@ namespace StudentTask.Data.Api.Controllers
                     await cmd.ExecuteNonQueryAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await ex.Log(db);
                 return InternalServerError();
             }
 
@@ -173,9 +173,9 @@ namespace StudentTask.Data.Api.Controllers
                     await cmd.ExecuteNonQueryAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: Exception handling
+                await ex.Log(db);
                 return InternalServerError();
             }
 

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Newtonsoft.Json;
+using StudentTask.Model;
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using StudentTask.Model;
 
 namespace StudentTask.Uwp.App.DataSource
 {
@@ -25,7 +23,7 @@ namespace StudentTask.Uwp.App.DataSource
             };
         }
 
-        public async Task<bool> AddExceptionLogElement(LogElement logElement)
+        public async Task<bool> AddLogElement(LogElement logElement)
         {
             var postBody = JsonConvert.SerializeObject(logElement);
             var response = await _client

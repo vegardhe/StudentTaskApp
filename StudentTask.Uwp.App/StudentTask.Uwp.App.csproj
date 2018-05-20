@@ -102,6 +102,7 @@
     <Compile Include="DataSource\Resources.cs" />
     <Compile Include="DataSource\Users.cs" />
     <Compile Include="DataSource\Tasks.cs" />
+    <Compile Include="ErrorLogging.cs" />
     <Compile Include="ExceptionExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

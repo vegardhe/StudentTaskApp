@@ -1,8 +1,6 @@
-﻿using System;
-using StudentTask.Model;
+﻿using StudentTask.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using Template10.Mvvm;
 using Windows.UI.Xaml.Navigation;
 using Task = System.Threading.Tasks.Task;

@@ -17,18 +17,7 @@ namespace StudentTask.Uwp.App
 
         public static async Task<Exception> Log(this Exception ex)
         {
-            var logElement = new LogElement
-            {
-                Message = ex.Message,
-                Type = ex.GetType().Name,
-                Source = ex.StackTrace
-            };
-
-            if (!await DataSource.Exception.Instance.AddExceptionLogElement(logElement))
-            {
-                // TODO: Log to file or event log.
-            }
-
+            await ErrorLogging.LogToDb(ex);
             return ex;
         }
     }
