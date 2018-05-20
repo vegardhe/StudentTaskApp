@@ -54,9 +54,25 @@ namespace StudentTask.Data.Access
         public virtual DbSet<Task> Tasks { get; set; }
 
         /// <summary>
+        /// Gets or sets the log elements.
+        /// </summary>
+        /// <value>
+        /// The log elements.
+        /// </value>
+        public virtual DbSet<LogElement> LogElements { get; set; }
+
+        /// <summary>
+        /// Gets or sets the exception log elements.
+        /// </summary>
+        /// <value>
+        /// The exception log elements.
+        /// </value>
+        public virtual DbSet<ExceptionLogElement> ExceptionLogElements { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="StudentTaskContext"/> class.
         /// </summary>
-        public StudentTaskContext() : base("Data Source=donau.hiof.no;Initial Catalog=vegardhe;User ID=vegardhe;Password=Uh6teB")
+        public StudentTaskContext() //: base("Data Source=donau.hiof.no;Initial Catalog=vegardhe;User ID=vegardhe;Password=Uh6teB")
         {
             Configuration.ProxyCreationEnabled = false;
 

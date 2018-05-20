@@ -178,6 +178,6 @@ namespace StudentTask.Model
 
         public bool IsValid => !string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName) &&
                    !string.IsNullOrEmpty(Username)
-                   && !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password);
+                   && !string.IsNullOrEmpty(Email);
     }
 }

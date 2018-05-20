@@ -1,5 +1,7 @@
 ﻿using StudentTask.Model;
 using System;
+using System.IO;
+using System.Net;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
@@ -12,37 +14,38 @@ namespace StudentTask.Uwp.App.Views
     /// </summary>
     public sealed partial class LogOnPage
     {
-        public LogOnPage()
-        {
-            InitializeComponent();
-        }
+        public LogOnPage() => InitializeComponent();
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            Shell.HamburgerMenu.IsFullScreen = true;
-        }
+        protected override void OnNavigatedTo(NavigationEventArgs e) => Shell.HamburgerMenu.IsFullScreen = true;
 
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-        {
-            Shell.HamburgerMenu.IsFullScreen = false;
-        }
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) => Shell.HamburgerMenu.IsFullScreen = false;
 
         private async void Login(object sender, RoutedEventArgs e)
         {
-            var user = new User { Username = UsernameBox.Text, Password = PasswordBox.Password};
+            var user = new User {Username = UsernameBox.Text, Password = PasswordBox.Password};
             ProgressRing.IsActive = true;
             try
             {
                 if (await DataSource.Users.Instance.LogOn(user) != null)
                     Frame.Navigate(typeof(TaskPage));
-                else
-                    ErrorBlock.Text = "Invalid username/password.";
             }
-            catch (Exception)
+            catch (WebException ex)
             {
-                //TODO: Exception handling.
+                await ex.Display("Could not establish a connection.");
             }
-            ProgressRing.IsActive = false;
+            catch (InvalidDataException ex)
+            {
+                ErrorBlock.Text = "Invalid username or password.";
+                // TODO: Log error
+            }
+            catch (Exception ex)
+            {
+                await ex.Display("An error occured.");
+            }
+            finally
+            {
+                ProgressRing.IsActive = false;
+            }
         }
 
         private void Hyperlink_OnClick(Windows.UI.Xaml.Documents.Hyperlink sender,

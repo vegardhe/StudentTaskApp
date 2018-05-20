@@ -2,8 +2,11 @@
 using StudentTask.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,6 +43,14 @@ namespace StudentTask.Uwp.App.DataSource
                 .ConfigureAwait(false);
             var responseBody = await response.Content.ReadAsStringAsync();
             var sessionUser = JsonConvert.DeserializeObject<User>(responseBody);
+            if (!response.IsSuccessStatusCode)
+            {
+                if(!NetworkInterface.GetIsNetworkAvailable())
+                    throw new WebException();
+
+                if(sessionUser is null || !sessionUser.IsValid)
+                    throw new InvalidDataException("User is invalid!");
+            }
             SessionUser = sessionUser;
             return sessionUser;
         }

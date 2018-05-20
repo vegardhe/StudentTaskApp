@@ -98,6 +98,7 @@
     </Compile>
     <Compile Include="Converters\TaskColorConverter.cs" />
     <Compile Include="DataSource\Courses.cs" />
+    <Compile Include="DataSource\Exception.cs" />
     <Compile Include="DataSource\Resources.cs" />
     <Compile Include="DataSource\Users.cs" />
     <Compile Include="DataSource\Tasks.cs" />
