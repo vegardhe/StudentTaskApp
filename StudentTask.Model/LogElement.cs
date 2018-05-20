@@ -24,6 +24,22 @@ namespace StudentTask.Model
         public string Message { get; set; }
 
         /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the source.
+        /// </summary>
+        /// <value>
+        /// The source.
+        /// </value>
+        public string Source { get; set; }
+
+        /// <summary>
         /// Gets or sets the timestamp.
         /// </summary>
         /// <value>

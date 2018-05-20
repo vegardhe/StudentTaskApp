@@ -58,9 +58,10 @@ namespace StudentTask.Uwp.App.Views
                         ViewModel.Courses.Add(addedCourse);
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // TODO: Exception handling.
+                    await ex.Display("Failed to add course");
+                    await ex.Log();
                 }
             }
         }
@@ -116,9 +117,10 @@ namespace StudentTask.Uwp.App.Views
                         CourseExercises.Add(addedExercise);
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
-                    // TODO: Exeption handling.
+                    await ex.Display("Failed to add exercise.");
+                    await ex.Log();
                 }
             }
         }
@@ -135,9 +137,10 @@ namespace StudentTask.Uwp.App.Views
 
                     await DataSource.Courses.Instance.AddUserToCourse(user, course);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // TODO: Exception handling.
+                    await ex.Display("Failed to add user.");
+                    await ex.Log();
                 }
             }
         }
@@ -154,9 +157,10 @@ namespace StudentTask.Uwp.App.Views
                 {
                     await DataSource.Tasks.Instance.UpdateTask(selectedExercise);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // TODO: Exception handling.
+                    await ex.Display("Failed to edit exercise.");
+                    await ex.Log();
                 }
             }
         }
@@ -172,9 +176,10 @@ namespace StudentTask.Uwp.App.Views
                 {
                     await DataSource.Courses.Instance.UpdateCourse(selectedCourse);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // TODO: Exception handling.
+                    await ex.Display("Failed to edit course.");
+                    await ex.Log();
                 }
             }
         }

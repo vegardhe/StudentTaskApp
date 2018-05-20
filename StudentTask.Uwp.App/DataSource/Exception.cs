@@ -25,9 +25,9 @@ namespace StudentTask.Uwp.App.DataSource
             };
         }
 
-        public async Task<bool> AddExceptionLogElement(ExceptionLogElement exceptionLogElement)
+        public async Task<bool> AddExceptionLogElement(LogElement logElement)
         {
-            var postBody = JsonConvert.SerializeObject(exceptionLogElement);
+            var postBody = JsonConvert.SerializeObject(logElement);
             var response = await _client
                 .PostAsync("logelements", new StringContent(postBody, Encoding.UTF8, "application/json"))
                 .ConfigureAwait(false);

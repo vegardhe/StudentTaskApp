@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Course.cs" />
-    <Compile Include="ExceptionLogElement.cs" />
     <Compile Include="Exercise.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="LogElement.cs" />

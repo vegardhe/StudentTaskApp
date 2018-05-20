@@ -17,7 +17,7 @@ namespace StudentTask.Uwp.App
 
         public static async Task<Exception> Log(this Exception ex)
         {
-            var logElement = new ExceptionLogElement
+            var logElement = new LogElement
             {
                 Message = ex.Message,
                 Type = ex.GetType().Name,

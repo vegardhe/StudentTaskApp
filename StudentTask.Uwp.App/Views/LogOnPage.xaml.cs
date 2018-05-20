@@ -36,7 +36,7 @@ namespace StudentTask.Uwp.App.Views
             catch (InvalidDataException ex)
             {
                 ErrorBlock.Text = "Invalid username or password.";
-                // TODO: Log error
+                await ex.Log();
             }
             catch (Exception ex)
             {

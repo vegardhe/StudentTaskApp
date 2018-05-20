@@ -36,9 +36,10 @@ namespace StudentTask.Uwp.App.Views
                     EditSplitView.IsPaneOpen = false;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: Exception handling
+                await ex.Display("Saving task failed.");
+                await ex.Log();
             }
         }
 
@@ -62,9 +63,10 @@ namespace StudentTask.Uwp.App.Views
                         ViewModel.Tasks.Add(addedTask);
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // TODO: Exception handling.
+                    await ex.Display("Failed to add task.");
+                    await ex.Log();
                 }
             }
         }
