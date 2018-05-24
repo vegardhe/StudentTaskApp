@@ -7,13 +7,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace StudentTask.Uwp.App.DataSource
 {
     /// <summary>
-    /// Handles database interaction for users.
+    /// Database interaction for users.
     /// </summary>
     public class Users
     {
@@ -35,7 +36,7 @@ namespace StudentTask.Uwp.App.DataSource
 
         // TODO: Better solution for this.
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Users"/> is changed.
+        /// Gets or sets a value indicating whether this <see cref="Users" /> is changed.
         /// </summary>
         /// <value>
         ///   <c>true</c> if changed; otherwise, <c>false</c>.
@@ -61,7 +62,7 @@ namespace StudentTask.Uwp.App.DataSource
         private HttpClient _client;
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="Users"/> class from being created.
+        /// Prevents a default instance of the <see cref="Users" /> class from being created.
         /// </summary>
         private Users()
         {
@@ -78,6 +79,7 @@ namespace StudentTask.Uwp.App.DataSource
         /// <returns></returns>
         /// <exception cref="WebException"></exception>
         /// <exception cref="InvalidDataException">User is invalid!</exception>
+        /// <exception cref="CommunicationException"></exception>
         public async Task<User> LogOn(User user)
         {
             var postBody = JsonConvert.SerializeObject(user);
@@ -91,34 +93,51 @@ namespace StudentTask.Uwp.App.DataSource
                 if(!NetworkInterface.GetIsNetworkAvailable())
                     throw new WebException();
 
-                if(sessionUser is null || !sessionUser.IsValid)
+                if (sessionUser is null)
                     throw new InvalidDataException("User is invalid!");
+
+                if (!sessionUser.IsValid)
+                    throw new CommunicationException();
             }
             SessionUser = sessionUser;
             return sessionUser;
         }
 
         /// <summary>
-        /// Creates the user.
+        /// Posts the user.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns></returns>
+        /// <exception cref="WebException"></exception>
+        /// <exception cref="InvalidDataException"></exception>
         public async Task<bool> PostUser(User user)
         {
             var postBody = JsonConvert.SerializeObject(user);
             var response = await _client
                 .PostAsync("users", new StringContent(postBody, Encoding.UTF8, "application/json"))
                 .ConfigureAwait(false);
-            return response.IsSuccessStatusCode;
+            if (response.IsSuccessStatusCode) return response.IsSuccessStatusCode;
+            if (!NetworkInterface.GetIsNetworkAvailable())
+                throw new WebException();
+            throw new InvalidDataException();
         }
 
         /// <summary>
         /// Gets the users.
         /// </summary>
         /// <returns></returns>
+        /// <exception cref="HttpRequestException">Failed to get users.</exception>
         public async Task<User[]> GetUsers()
         {
-            var json = await _client.GetStringAsync("users").ConfigureAwait(false);
+            string json;
+            try
+            {
+                json = await _client.GetStringAsync("users").ConfigureAwait(false);
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new HttpRequestException("Failed to get users.", ex);
+            }
             var users = JsonConvert.DeserializeObject<User[]>(json);
             Instance.UserList = users.ToList();
             return users;

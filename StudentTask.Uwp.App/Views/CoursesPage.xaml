@@ -120,7 +120,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        
+
         <ContentDialog x:Name="AddCourseContentDialog"
                        PrimaryButtonText="Add"
                        IsPrimaryButtonEnabled="True"

@@ -1,8 +1,11 @@
 ﻿using StudentTask.Model;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using StudentTask.Uwp.App.DataSource;
+using Exception = System.Exception;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -51,23 +54,22 @@ namespace StudentTask.Uwp.App.Views
             AddTaskContentDialog.DataContext = newTask;
 
             var result = await AddTaskContentDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            if (result != ContentDialogResult.Primary) return;
+            try
             {
-                try
-                {
-                    newTask.TaskStatus = Task.Status.Added;
-                    newTask.Users = new List<User>{ ViewModel.SessionUser };
-                    Task addedTask;
-                    if ((addedTask = await DataSource.Tasks.Instance.AddTask(newTask)) != null)
-                    {
-                        ViewModel.Tasks.Add(addedTask);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    await ex.Display("Failed to add task.");
-                    await ex.Log();
-                }
+                newTask.TaskStatus = Task.Status.Added;
+                newTask.Users = new List<User> {ViewModel.SessionUser};
+                ViewModel.Tasks.Add(await Tasks.Instance.AddTask(newTask));
+            }
+            catch (WebException ex)
+            {
+                await ex.Display("Failed to establish internet connection.");
+                await ex.Log();
+            }
+            catch (Exception ex)
+            {
+                await ex.Display("Failed to add task.");
+                await ex.Log();
             }
         }
 

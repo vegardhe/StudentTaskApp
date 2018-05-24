@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using Windows.ApplicationModel;
+using Windows.Foundation.Diagnostics;
+using Windows.Storage;
 using Newtonsoft.Json;
 using StudentTask.Model;
 using Task = System.Threading.Tasks.Task;
@@ -16,17 +19,46 @@ namespace StudentTask.Uwp.App
                 Type = ex.GetType().Name,
                 Source = ex.StackTrace
             };
-
-            if (!await DataSource.Exception.Instance.AddLogElement(logElement))
+            try
+            {
+                if(!await DataSource.Exception.Instance.AddLogElement(logElement))
+                    LogToFile(logElement);
+            }
+            catch (Exception e)
+            {
+                LogToFile(new LogElement
+                {
+                    Message = e.Message,
+                    Type = e.GetType().Name,
+                    Source = e.StackTrace
+                });
                 LogToFile(logElement);
+            }
+            
         }
 
-        private static void LogToFile(LogElement logElement)
+        private static async void LogToFile(LogElement logElement)
         {
             var json = JsonConvert.SerializeObject(logElement);
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "ErrorLog.txt");
+            var path = Path.Combine(ApplicationData.Current.LocalFolder.Path, "ErrorLog.json");
 
-            File.WriteAllText(path, json);
+            try
+            {
+                if (!File.Exists(path))
+                    using (var sw = File.CreateText(path))
+                        await sw.WriteLineAsync(Package.Current.DisplayName + " - Error log:");
+
+                using (var sw = File.AppendText(path))
+                    await sw.WriteLineAsync(json);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                await ex.Display("Unable to access error log file.");
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
         }
     }
 }

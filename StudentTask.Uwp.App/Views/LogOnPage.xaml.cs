@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.ServiceModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
@@ -31,7 +32,12 @@ namespace StudentTask.Uwp.App.Views
             }
             catch (WebException ex)
             {
-                await ex.Display("Could not establish a connection.");
+                await ex.Display("Could not establish a connection to internet.");
+            }
+            catch (CommunicationException ex)
+            {
+                await ex.Display("Could not establish a database connection.");
+                await ex.Log();
             }
             catch (InvalidDataException ex)
             {

@@ -1,11 +1,16 @@
-﻿using StudentTask.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using StudentTask.Model;
+using StudentTask.Uwp.App.DataSource;
+using Exception = System.Exception;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,9 +35,9 @@ namespace StudentTask.Uwp.App.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (DataSource.Users.Instance.SessionUser != null &&
-                (DataSource.Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin ||
-                 DataSource.Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Teacher))
+            if (Users.Instance.SessionUser != null &&
+                (Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin ||
+                 Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Teacher))
             {
                 NewCourseButton.Visibility = EditCourseButton.Visibility = ManageResourcesButton.Visibility =
                     NewExerciseButton.Visibility = DeleteCourseButton.Visibility = DeleteCourseButton.Visibility =
@@ -47,22 +52,25 @@ namespace StudentTask.Uwp.App.Views
             AddCourseContentDialog.DataContext = newCourse;
 
             var result = await AddCourseContentDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            if (result != ContentDialogResult.Primary) return;
+            try
             {
-                try
+                newCourse.Users = new List<User> {Users.Instance.SessionUser};
+                Course addedCourse;
+                if ((addedCourse = await Courses.Instance.AddCourse(newCourse)) != null)
                 {
-                    newCourse.Users = new List<User>{ DataSource.Users.Instance.SessionUser };
-                    Course addedCourse;
-                    if ((addedCourse = await DataSource.Courses.Instance.AddCourse(newCourse)) != null)
-                    {
-                        ViewModel.Courses.Add(addedCourse);
-                    }
+                    ViewModel.Courses.Add(addedCourse);
                 }
-                catch (Exception ex)
-                {
-                    await ex.Display("Failed to add course");
-                    await ex.Log();
-                }
+            }
+            catch (WebException ex)
+            {
+                await ex.Display("Failed to establish connection to internet.");
+                await ex.Log();
+            }
+            catch (Exception ex)
+            {
+                await ex.Display("Failed to add course");
+                await ex.Log();
             }
         }
 
@@ -71,14 +79,19 @@ namespace StudentTask.Uwp.App.Views
             var result = await DeleteCourseContentDialog.ShowAsync();
             var selectedCourse = (Course) CoursesListView.SelectedItem;
 
-            if (result == ContentDialogResult.Primary)
+            if (result != ContentDialogResult.Primary) return;
+            if (selectedCourse == null) return;
+            try
             {
-                if (selectedCourse != null)
-                {
-                    await DataSource.Courses.Instance.DeleteCourse(selectedCourse);
-                    ViewModel.Courses.Remove(selectedCourse);
-                }
+                if (!await Courses.Instance.DeleteCourse(selectedCourse))
+                    await new MessageDialog("Failed to delete course.", "Error").ShowAsync();
             }
+            catch (Exception e)
+            {
+                await e.Log();
+                await e.Display("Failed to delete course.");
+            }
+            ViewModel.Courses.Remove(selectedCourse);
         }
 
         private async void DeleteExercise()
@@ -87,14 +100,19 @@ namespace StudentTask.Uwp.App.Views
             var result = await DeleteExerciseContentDialog.ShowAsync();
             var selectedExercise = (Exercise) ExercisesListView.SelectedItem;
 
-            if (result == ContentDialogResult.Primary)
+            if (result != ContentDialogResult.Primary) return;
+            if (selectedExercise == null) return;
+            try
             {
-                if (selectedExercise != null)
-                {
-                    await DataSource.Tasks.Instance.DeleteTask(selectedExercise);
-                    CourseExercises.Remove(selectedExercise);
-                }
+                if (!await Tasks.Instance.DeleteTask(selectedExercise))
+                    await new MessageDialog("Failed to delete exercise", "Error").ShowAsync();
             }
+            catch (Exception e)
+            {
+                await e.Display("Failed to delete exercise.");
+                await e.Log();
+            }
+            CourseExercises.Remove(selectedExercise);
         }
 
         private async void AddExercise()
@@ -109,13 +127,18 @@ namespace StudentTask.Uwp.App.Views
                 try
                 {
                     newExercise.TaskStatus = Task.Status.Added;
-                    var selectedCourse = (Course)CoursesListView.SelectedItem;
+                    var selectedCourse = (Course) CoursesListView.SelectedItem;
                     Exercise addedExercise;
-                    if ((addedExercise = await DataSource.Courses.Instance.AddExercise(newExercise,
+                    if ((addedExercise = await Courses.Instance.AddExercise(newExercise,
                             selectedCourse)) != null)
                     {
                         CourseExercises.Add(addedExercise);
                     }
+                }
+                catch (WebException ex)
+                {
+                    await ex.Log();
+                    await ex.Display("Failed to establish connection to internet.");
                 }
                 catch(Exception ex)
                 {
@@ -128,20 +151,19 @@ namespace StudentTask.Uwp.App.Views
         private async void AddUserToCourse()
         {
             var result = await AddUserContentDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            if (result != ContentDialogResult.Primary) return;
+            try
             {
-                try
-                {
-                    var user = (User)AddUserContentDialog.DataContext;
-                    var course = (Course)CoursesListView.SelectedItem;
+                var user = (User)AddUserContentDialog.DataContext;
+                var course = (Course)CoursesListView.SelectedItem;
 
-                    await DataSource.Courses.Instance.AddUserToCourse(user, course);
-                }
-                catch (Exception ex)
-                {
-                    await ex.Display("Failed to add user.");
-                    await ex.Log();
-                }
+                if (!await Courses.Instance.AddUserToCourse(user, course))
+                    await new MessageDialog("Failed to add user", "Error").ShowAsync();
+            }
+            catch (Exception ex)
+            {
+                await ex.Display("Failed to add user.");
+                await ex.Log();
             }
         }
 
@@ -151,17 +173,15 @@ namespace StudentTask.Uwp.App.Views
             var selectedExercise = (Exercise) ExercisesListView.SelectedItem;
             EditExerciseContentDialog.DataContext = selectedExercise;
             var result = await EditExerciseContentDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            if (result != ContentDialogResult.Primary) return;
+            try
             {
-                try
-                {
-                    await DataSource.Tasks.Instance.UpdateTask(selectedExercise);
-                }
-                catch (Exception ex)
-                {
-                    await ex.Display("Failed to edit exercise.");
-                    await ex.Log();
-                }
+                await Tasks.Instance.UpdateTask(selectedExercise);
+            }
+            catch (Exception ex)
+            {
+                await ex.Display("Failed to edit exercise.");
+                await ex.Log();
             }
         }
 
@@ -170,17 +190,19 @@ namespace StudentTask.Uwp.App.Views
             var selectedCourse = (Course)CoursesListView.SelectedItem;
             AddCourseContentDialog.DataContext = selectedCourse;
             var result = await EditCourseContentDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
+            if (result != ContentDialogResult.Primary) return;
+            try
             {
-                try
+                if (!await Courses.Instance.UpdateCourse(selectedCourse))
                 {
-                    await DataSource.Courses.Instance.UpdateCourse(selectedCourse);
+                    await new MessageDialog("Failed to update course.", "Error").ShowAsync();
                 }
-                catch (Exception ex)
-                {
-                    await ex.Display("Failed to edit course.");
-                    await ex.Log();
-                }
+
+            }
+            catch (Exception ex)
+            {
+                await ex.Display("Failed to edit course.");
+                await ex.Log();
             }
         }
 
@@ -190,31 +212,78 @@ namespace StudentTask.Uwp.App.Views
 
             var result = await ManageResourcesContentDialog.ShowAsync();
             var selectedCourse = (Course)CoursesListView.SelectedItem;
-            if (result == ContentDialogResult.Primary)
+            if (result != ContentDialogResult.Primary)
+            {
+                if (result == ContentDialogResult.Secondary)
+                    UpdateCourseResources(selectedCourse);
+            }
+            else
             {
                 // TODO: Make this prettier.
                 if (selectedCourse == null) return;
                 foreach (var selectedCourseResource in selectedCourse.Resources.ToArray())
                 {
                     if (CourseResources.Contains(selectedCourseResource)) continue;
-                    await DataSource.Resources.Instance.DeleteResource(selectedCourseResource);
-                    selectedCourse.Resources.Remove(selectedCourseResource);
+                    try
+                    {
+                        if (!await DataSource.Resources.Instance.DeleteResource(selectedCourseResource))
+                        {
+                            await new MessageDialog("Failed to remove resource", "Error").ShowAsync();
+                            return;
+                        }
+                        selectedCourse.Resources.Remove(selectedCourseResource);
+                    }
+                    catch (Exception e)
+                    {
+                        await e.Display("Failed to remove resource.");
+                        await e.Log();
+                        return;
+                    }
                 }
 
                 foreach (var courseResource in CourseResources)
                 {
                     if (courseResource.ResourceId == 0)
-                        selectedCourse.Resources.Add(await DataSource.Resources.Instance.AddResource(courseResource, selectedCourse));
+                    {
+                        try
+                        {
+                            selectedCourse.Resources.Add(
+                                await DataSource.Resources.Instance.AddResource(courseResource, selectedCourse));
+                        }
+                        catch (WebException ex)
+                        {
+                            await ex.Log();
+                            await ex.Display("Failed to establish internet connection.");
+                            return;
+                        }
+                        catch (Exception ex)
+                        {
+                            await ex.Log();
+                            await ex.Display("Failed to add resource.");
+                            return;
+                        }
+                    }   
                     else
                     {
-                        var originalResource = selectedCourse.Resources.Find(r => r.ResourceId == courseResource.ResourceId);
-                        if (originalResource.Name != courseResource.Name || originalResource.Link != courseResource.Link)
-                            await DataSource.Resources.Instance.UpdateResource(courseResource);
+                        var originalResource =
+                            selectedCourse.Resources.Find(r => r.ResourceId == courseResource.ResourceId);
+                        if (originalResource.Name == courseResource.Name && originalResource.Link == courseResource.Link) continue;
+
+                        try
+                        {
+                            if (await DataSource.Resources.Instance.UpdateResource(courseResource)) continue;
+                            await new MessageDialog("Failed to update resource.", "Error").ShowAsync();
+                            return;
+                        }
+                        catch (Exception e)
+                        {
+                            await e.Log();
+                            await e.Display("Failed to update resource.");
+                            return;
+                        }
                     }
                 }
             }
-            else if (result == ContentDialogResult.Secondary)
-                UpdateCourseResources(selectedCourse);
         }
 
         private async void CoursesListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -226,10 +295,31 @@ namespace StudentTask.Uwp.App.Views
                 SeparatorLine.Visibility = Visibility.Visible;
 
                 if (selectedCourse.Resources == null)
-                    await DataSource.Courses.Instance.GetCourseResources(selectedCourse);
+                {
+                    try
+                    {
+                        await Courses.Instance.GetCourseResources(selectedCourse);
+                    }
+                    catch (HttpRequestException ex)
+                    {
+                        await ex.Log();
+                        await ex.Display("Failed to get course resources.");
+                    }
+                }
 
                 if (selectedCourse.Exercises == null)
-                    await DataSource.Courses.Instance.GetCourseExercises(selectedCourse);
+                {
+                    try
+                    {
+                        await Courses.Instance.GetCourseExercises(selectedCourse);
+                    }
+                    catch (HttpRequestException ex)
+                    {
+                        await ex.Log();
+                        await ex.Display("Failed to get course exercises.");
+                    }
+                }
+                    
             }
             else
             {
@@ -273,26 +363,35 @@ namespace StudentTask.Uwp.App.Views
         {
             var result = await ViewExerciseContentDialog.ShowAsync();
 
-            if (result == ContentDialogResult.Primary)
+            if (result != ContentDialogResult.Primary) return;
+            var selectedExercise = (Exercise) ExercisesListView.SelectedItem;
+
+            if (selectedExercise == null) return;
+            var copyExercise = new Task
             {
-                var selectedExercise = (Exercise) ExercisesListView.SelectedItem;
+                Title = selectedExercise.Title,
+                Description = selectedExercise.Description,
+                DueDate = selectedExercise.DueDate,
+                DueTime = selectedExercise.DueTime,
+                Users = new List<User> {Users.Instance.SessionUser},
+                TaskStatus = Task.Status.Added
+            };
 
-                if (selectedExercise == null) return;
-                var copyExercise = new Task
-                {
-                    Title = selectedExercise.Title,
-                    Description = selectedExercise.Description,
-                    DueDate = selectedExercise.DueDate,
-                    DueTime = selectedExercise.DueTime,
-                    Users = new List<User> {DataSource.Users.Instance.SessionUser},
-                    TaskStatus = Task.Status.Added
-                };
-
-                if (await DataSource.Tasks.Instance.AddTask(copyExercise) != null)
-                {
-                    DataSource.Users.Instance.Changed = true;
-                }
+            try
+            {
+                await Tasks.Instance.AddTask(copyExercise);
             }
+            catch (WebException ex)
+            {
+                await ex.Display("Failed to establish internet connection.");
+                await ex.Log();
+            }
+            catch (Exception ex)
+            {
+                await ex.Display("Failed to add task.");
+                await ex.Log();
+            }
+            Users.Instance.Changed = true;
         }
 
         private void UserAutoSuggestBox_OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
@@ -305,9 +404,21 @@ namespace StudentTask.Uwp.App.Views
 
         private async void UserAutoSuggestBox_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            if (DataSource.Users.Instance.UserList == null)
-                await DataSource.Users.Instance.GetUsers();
-            var suggestions = DataSource.Users.Instance.UserList
+            if (Users.Instance.UserList == null)
+            {
+                try
+                {
+                    await Users.Instance.GetUsers();
+                }
+                catch (Exception ex)
+                {
+                    await ex.Display("Failed to get users.");
+                    await ex.Log();
+                    return;
+                }
+            }
+
+            var suggestions = Users.Instance.UserList
                 .Where(p => p.FullName.ToLower().Contains(sender.Text.ToLower())).ToArray();
             
             if(suggestions.Length > 0)
@@ -316,7 +427,6 @@ namespace StudentTask.Uwp.App.Views
             {
                 sender.ItemsSource = new[] {"No results found"};
             }
-
         }
 
         private void UserAutoSuggestBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

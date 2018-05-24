@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Windows.Input;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Navigation;
 using StudentTask.Model;
+using StudentTask.Uwp.App.DataSource;
 using Template10.Mvvm;
+using Exception = System.Exception;
 using Task = System.Threading.Tasks.Task;
 
 namespace StudentTask.Uwp.App.ViewModels
@@ -26,8 +30,18 @@ namespace StudentTask.Uwp.App.ViewModels
         public async void Execute(object parameter)
         {
             if (!CanExecute(parameter)) return;
-            if (await DataSource.Tasks.Instance.DeleteTask((Model.Task) parameter))
-                _viewModel.Tasks.Remove((Model.Task) parameter);
+            try
+            {
+                if (await Tasks.Instance.DeleteTask((Model.Task) parameter))
+                    _viewModel.Tasks.Remove((Model.Task) parameter);
+                else
+                    await new MessageDialog("Failed to delete task", "Error").ShowAsync();
+            }
+            catch (Exception e)
+            {
+                await e.Log();
+                await e.Display("Failed to delete task.");
+            }
         }
     }
 
@@ -55,7 +69,22 @@ namespace StudentTask.Uwp.App.ViewModels
 
             if(Tasks == null || DataSource.Users.Instance.Changed)
             {
-                Tasks = new ObservableCollection<Model.Task>(await DataSource.Tasks.Instance.GetTasks(SessionUser));
+
+                try
+                {
+                    Tasks = new ObservableCollection<Model.Task>(await DataSource.Tasks.Instance.GetTasks(SessionUser));
+                }
+                catch (HttpRequestException ex)
+                {
+                    await ex.Display("Failed to establish database connection.");
+                    await ex.Log();
+                }
+                catch (Exception ex)
+                {
+                    await ex.Display("Failed to get tasks.");
+                    await ex.Log();
+                }
+
                 ActiveTasks = new ObservableCollection<Model.Task>();
                 foreach (var task in Tasks)
                 {
