@@ -5,9 +5,18 @@ using System.Threading.Tasks;
 
 namespace StudentTask.Data.Api
 {
+    /// <summary>
+    /// Extension methods for Exceptions.
+    /// </summary>
     public static class ExceptionExtensions
     {
 
+        /// <summary>
+        /// Logs the specified database.
+        /// </summary>
+        /// <param name="ex">The ex.</param>
+        /// <param name="db">The database.</param>
+        /// <returns></returns>
         public static async Task<Exception> Log(this Exception ex, StudentTaskContext db)
         {
             var logElement = new LogElement
