@@ -14,19 +14,33 @@ namespace StudentTask.Uwp.App.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.Controls.Page" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class TaskPage
     {
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskPage"/> class.
+        /// </summary>
         public TaskPage()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the EditButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void EditButton_OnClick(object sender, RoutedEventArgs e)
         {
             EditSplitView.IsPaneOpen = !EditSplitView.IsPaneOpen;
         }
 
+        /// <summary>
+        /// Saves the task.
+        /// </summary>
         private async void SaveTask()
         {
             var changedTask = (Task)TasksListView.SelectedItem;
@@ -46,6 +60,9 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Adds the task.
+        /// </summary>
         private async void AddTask()
         {
             var newTask = new Task();
@@ -73,6 +90,11 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Handles the OnSelectionChanged event of the TasksListView control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
         private void TasksListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedTask = (Task) TasksListView.SelectedItem;
@@ -80,6 +102,11 @@ namespace StudentTask.Uwp.App.Views
             DueDateText.Visibility = selectedTask != null && selectedTask.DueDate == null ? Visibility.Collapsed : Visibility.Visible;
         }
 
+        /// <summary>
+        /// Toggles the finished tasks.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void ToggleFinishedTasks(object sender, RoutedEventArgs e)
         {
             TaskViewSource.Source = TaskViewSource.Source == ViewModel.Tasks ? ViewModel.ActiveTasks : ViewModel.Tasks;

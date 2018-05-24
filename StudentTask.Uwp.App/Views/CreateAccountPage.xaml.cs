@@ -31,7 +31,7 @@ namespace StudentTask.Uwp.App.Views
         private static readonly Regex EmailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateAccountPage"/> class.
+        /// Initializes a new instance of the <see cref="CreateAccountPage" /> class.
         /// </summary>
         public CreateAccountPage()
         {
@@ -65,7 +65,7 @@ namespace StudentTask.Uwp.App.Views
         /// Handles the OnClick event of the CreateAccountButton control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         // TODO: Cleanup
         private async void CreateAccountButton_OnClick(object sender, RoutedEventArgs e)
         {

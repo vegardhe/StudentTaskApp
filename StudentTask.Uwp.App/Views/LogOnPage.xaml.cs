@@ -13,14 +13,33 @@ namespace StudentTask.Uwp.App.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.Controls.Page" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class LogOnPage
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogOnPage"/> class.
+        /// </summary>
         public LogOnPage() => InitializeComponent();
 
+        /// <summary>
+        /// Invoked when the Page is loaded and becomes the current source of a parent Frame.
+        /// </summary>
+        /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the pending navigation that will load the current Page. Usually the most relevant property to examine is Parameter.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e) => Shell.HamburgerMenu.IsFullScreen = true;
 
+        /// <summary>
+        /// Invoked immediately before the Page is unloaded and is no longer the current source of a parent Frame.
+        /// </summary>
+        /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the navigation that will unload the current Page unless canceled. The navigation can potentially be canceled by setting Cancel.</param>
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) => Shell.HamburgerMenu.IsFullScreen = false;
 
+        /// <summary>
+        /// Logins the specified sender.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private async void Login(object sender, RoutedEventArgs e)
         {
             var user = new User {Username = UsernameBox.Text, Password = PasswordBox.Password};
@@ -54,6 +73,11 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Hyperlinks the on click.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="Windows.UI.Xaml.Documents.HyperlinkClickEventArgs"/> instance containing the event data.</param>
         private void Hyperlink_OnClick(Windows.UI.Xaml.Documents.Hyperlink sender,
             Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args) => Frame.Navigate(typeof(CreateAccountPage));
     }

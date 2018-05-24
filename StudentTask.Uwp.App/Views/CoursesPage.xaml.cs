@@ -19,13 +19,31 @@ namespace StudentTask.Uwp.App.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+    /// <seealso cref="Windows.UI.Xaml.Controls.Page" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class CoursesPage
     {
 
+        /// <summary>
+        /// Gets the course resources.
+        /// </summary>
+        /// <value>
+        /// The course resources.
+        /// </value>
         public ObservableCollection<Resource> CourseResources { get; }
 
+        /// <summary>
+        /// Gets the course exercises.
+        /// </summary>
+        /// <value>
+        /// The course exercises.
+        /// </value>
         public ObservableCollection<Exercise> CourseExercises { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoursesPage"/> class.
+        /// </summary>
         public CoursesPage()
         {
             InitializeComponent();
@@ -33,6 +51,10 @@ namespace StudentTask.Uwp.App.Views
             CourseExercises = new ObservableCollection<Exercise>();
         }
 
+        /// <summary>
+        /// Invoked when the Page is loaded and becomes the current source of a parent Frame.
+        /// </summary>
+        /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the pending navigation that will load the current Page. Usually the most relevant property to examine is Parameter.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (Users.Instance.SessionUser != null &&
@@ -46,6 +68,9 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Adds the course.
+        /// </summary>
         private async void AddCourse()
         {
             var newCourse = new Course();
@@ -74,6 +99,9 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Deletes the course.
+        /// </summary>
         private async void DeleteCourse()
         {
             var result = await DeleteCourseContentDialog.ShowAsync();
@@ -94,6 +122,9 @@ namespace StudentTask.Uwp.App.Views
             ViewModel.Courses.Remove(selectedCourse);
         }
 
+        /// <summary>
+        /// Deletes the exercise.
+        /// </summary>
         private async void DeleteExercise()
         {
             ViewExerciseContentDialog.Hide();
@@ -115,6 +146,9 @@ namespace StudentTask.Uwp.App.Views
             CourseExercises.Remove(selectedExercise);
         }
 
+        /// <summary>
+        /// Adds the exercise.
+        /// </summary>
         private async void AddExercise()
         {
             var newExercise = new Exercise();
@@ -148,6 +182,9 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Adds the user to course.
+        /// </summary>
         private async void AddUserToCourse()
         {
             var result = await AddUserContentDialog.ShowAsync();
@@ -167,6 +204,9 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Edits the exercise.
+        /// </summary>
         private async void EditExercise()
         {
             ViewExerciseContentDialog.Hide();
@@ -185,6 +225,9 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Edits the course.
+        /// </summary>
         private async void EditCourse()
         {
             var selectedCourse = (Course)CoursesListView.SelectedItem;
@@ -206,6 +249,9 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Manages the resources.
+        /// </summary>
         private async void ManageResources()
         {
             ManageResourcesContentDialog.DataContext = CourseResources;
@@ -286,6 +332,11 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Handles the OnSelectionChanged event of the CoursesListView control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
         private async void CoursesListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedCourse = (Course) CoursesListView.SelectedItem;
@@ -330,6 +381,10 @@ namespace StudentTask.Uwp.App.Views
             UpdateCourseExercises(selectedCourse);
         }
 
+        /// <summary>
+        /// Updates the course resources.
+        /// </summary>
+        /// <param name="course">The course.</param>
         private void UpdateCourseResources(Course course)
         {
             if (course == null) return;
@@ -340,6 +395,10 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Updates the course exercises.
+        /// </summary>
+        /// <param name="course">The course.</param>
         private void UpdateCourseExercises(Course course)
         {
             if (course == null) return;
@@ -350,15 +409,35 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Adds the resource.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void AddResource(object sender, RoutedEventArgs e) => CourseResources.Add(new Resource { Name = "New Resource" });
 
+        /// <summary>
+        /// Removes the resource.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void RemoveResource(object sender, RoutedEventArgs e) => CourseResources.Remove((Resource)ManageResourcesListView.SelectedItem);
 
+        /// <summary>
+        /// Handles the OnSelectionChanged event of the ManageResourcesListView control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
         private void ManageResourcesListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EditResourcePanel.Visibility = ManageResourcesListView.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Handles the OnItemClick event of the ExercisesListView control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="ItemClickEventArgs"/> instance containing the event data.</param>
         private async void ExercisesListView_OnItemClick(object sender, ItemClickEventArgs e)
         {
             var result = await ViewExerciseContentDialog.ShowAsync();
@@ -394,6 +473,11 @@ namespace StudentTask.Uwp.App.Views
             Users.Instance.Changed = true;
         }
 
+        /// <summary>
+        /// Users the automatic suggest box on suggestion chosen.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="AutoSuggestBoxSuggestionChosenEventArgs"/> instance containing the event data.</param>
         private void UserAutoSuggestBox_OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             if (args.SelectedItem is User user)
@@ -402,6 +486,11 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Users the automatic suggest box on text changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="AutoSuggestBoxTextChangedEventArgs"/> instance containing the event data.</param>
         private async void UserAutoSuggestBox_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (Users.Instance.UserList == null)
@@ -429,6 +518,11 @@ namespace StudentTask.Uwp.App.Views
             }
         }
 
+        /// <summary>
+        /// Users the automatic suggest box on query submitted.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="AutoSuggestBoxQuerySubmittedEventArgs"/> instance containing the event data.</param>
         private void UserAutoSuggestBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             if (args.ChosenSuggestion is User user)

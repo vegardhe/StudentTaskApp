@@ -1,16 +1,23 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using StudentTask.Model;
+using System;
 using System.IO;
 using Windows.ApplicationModel;
-using Windows.Foundation.Diagnostics;
 using Windows.Storage;
-using Newtonsoft.Json;
-using StudentTask.Model;
 using Task = System.Threading.Tasks.Task;
 
 namespace StudentTask.Uwp.App
 {
+    /// <summary>
+    /// Class for logging errors to database or files.
+    /// </summary>
     public static class ErrorLogging
     {
+        /// <summary>
+        /// Logs to database.
+        /// </summary>
+        /// <param name="ex">The ex.</param>
+        /// <returns></returns>
         public static async Task LogToDb(Exception ex)
         {
             var logElement = new LogElement
@@ -37,6 +44,10 @@ namespace StudentTask.Uwp.App
             
         }
 
+        /// <summary>
+        /// Logs to file.
+        /// </summary>
+        /// <param name="logElement">The log element.</param>
         private static async void LogToFile(LogElement logElement)
         {
             var json = JsonConvert.SerializeObject(logElement);
