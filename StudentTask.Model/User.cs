@@ -9,6 +9,7 @@ namespace StudentTask.Model
     /// <summary>
     /// Represents a student.
     /// </summary>
+    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class User : INotifyPropertyChanged
     {
         /// <summary>
@@ -37,6 +38,12 @@ namespace StudentTask.Model
         /// The username.
         /// </value>
         private string _username;
+        /// <summary>
+        /// Gets or sets the username.
+        /// </summary>
+        /// <value>
+        /// The username.
+        /// </value>
         [Key]
         public string Username
         {
@@ -55,6 +62,12 @@ namespace StudentTask.Model
         /// The email.
         /// </value>
         private string _email;
+        /// <summary>
+        /// Gets or sets the email.
+        /// </summary>
+        /// <value>
+        /// The email.
+        /// </value>
         [Required]
         public string Email
         {
@@ -73,6 +86,12 @@ namespace StudentTask.Model
         /// The password.
         /// </value>
         private string _password;
+        /// <summary>
+        /// Gets or sets the password.
+        /// </summary>
+        /// <value>
+        /// The password.
+        /// </value>
         [Required]
         public string Password
         {
@@ -93,6 +112,12 @@ namespace StudentTask.Model
         /// The first name.
         /// </value>
         private string _firstName;
+        /// <summary>
+        /// Gets or sets the first name.
+        /// </summary>
+        /// <value>
+        /// The first name.
+        /// </value>
         [Required]
         public string FirstName
         {
@@ -116,6 +141,12 @@ namespace StudentTask.Model
         /// The last name.
         /// </value>
         private string _lastName;
+        /// <summary>
+        /// Gets or sets the last name.
+        /// </summary>
+        /// <value>
+        /// The last name.
+        /// </value>
         [Required]
         public string LastName
         {
@@ -132,6 +163,12 @@ namespace StudentTask.Model
             }
         }
 
+        /// <summary>
+        /// Gets the full name.
+        /// </summary>
+        /// <value>
+        /// The full name.
+        /// </value>
         public string FullName => $"{FirstName} {LastName}";
 
         /// <summary>
@@ -158,14 +195,29 @@ namespace StudentTask.Model
         /// </value>
         public UserGroup GroupUserGroup { get; set; }
 
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Sets the field.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="field">The field.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
         protected bool SetField<T>(ref T field, T value,
             [CallerMemberName] string propertyName = null)
         {
@@ -176,6 +228,12 @@ namespace StudentTask.Model
             return true;
         }
 
+        /// <summary>
+        /// Returns true if ... is valid.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is valid; otherwise, <c>false</c>.
+        /// </value>
         public bool IsValid => !string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName) &&
                    !string.IsNullOrEmpty(Username)
                    && !string.IsNullOrEmpty(Email);

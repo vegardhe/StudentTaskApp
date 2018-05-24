@@ -12,14 +12,30 @@ using Task = StudentTask.Model.Task;
 
 namespace StudentTask.Data.Api.Controllers
 {
+    /// <summary>
+    /// CRUD operations for Tasks.
+    /// </summary>
+    /// <seealso cref="System.Web.Http.ApiController" />
     public class TasksController : ApiController
     {
+        /// <summary>
+        /// The database
+        /// </summary>
         private StudentTaskContext db = new StudentTaskContext();
 
         // GET: api/Tasks
+        /// <summary>
+        /// Gets the tasks.
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<Task> GetTasks() => db.Tasks;
 
         // GET: api/Tasks/5
+        /// <summary>
+        /// Gets the task.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [ResponseType(typeof(Task))]
         public async Task<IHttpActionResult> GetTask(int id)
         {
@@ -33,6 +49,12 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // PUT: api/Tasks/5
+        /// <summary>
+        /// Puts the task.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="task">The task.</param>
+        /// <returns></returns>
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutTask(int id, Task task)
         {
@@ -68,6 +90,11 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // POST: api/Tasks
+        /// <summary>
+        /// Posts the task.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <returns></returns>
         [ResponseType(typeof(Task))]
         public async Task<IHttpActionResult> PostTask(Task task)
         {
@@ -98,6 +125,11 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // DELETE: api/Tasks/5
+        /// <summary>
+        /// Deletes the task.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [ResponseType(typeof(Task))]
         public async Task<IHttpActionResult> DeleteTask(int id)
         {
@@ -113,6 +145,10 @@ namespace StudentTask.Data.Api.Controllers
             return Ok(task);
         }
 
+        /// <summary>
+        /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -122,6 +158,11 @@ namespace StudentTask.Data.Api.Controllers
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Tasks the exists.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         private bool TaskExists(int id)
         {
             return db.Tasks.Count(e => e.TaskId == id) > 0;

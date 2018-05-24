@@ -10,14 +10,30 @@ using System.Web.Http.Description;
 
 namespace StudentTask.Data.Api.Controllers
 {
+    /// <summary>
+    /// CRUD operations for Resources.
+    /// </summary>
+    /// <seealso cref="System.Web.Http.ApiController" />
     public class ResourcesController : ApiController
     {
+        /// <summary>
+        /// The database
+        /// </summary>
         private StudentTaskContext db = new StudentTaskContext();
 
         // GET: api/Resources
+        /// <summary>
+        /// Gets the resources.
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<Resource> GetResources() => db.Resources;
 
         // GET: api/Resources/5
+        /// <summary>
+        /// Gets the resource.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [ResponseType(typeof(Resource))]
         public async Task<IHttpActionResult> GetResource(int id)
         {
@@ -31,6 +47,12 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // PUT: api/Resources/5
+        /// <summary>
+        /// Puts the resource.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="resource">The resource.</param>
+        /// <returns></returns>
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutResource(int id, Resource resource)
         {
@@ -66,6 +88,11 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // POST: api/Resources
+        /// <summary>
+        /// Posts the resource.
+        /// </summary>
+        /// <param name="resource">The resource.</param>
+        /// <returns></returns>
         [ResponseType(typeof(Resource))]
         public async Task<IHttpActionResult> PostResource(Resource resource)
         {
@@ -81,6 +108,11 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // DELETE: api/Resources/5
+        /// <summary>
+        /// Deletes the resource.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [ResponseType(typeof(Resource))]
         public async Task<IHttpActionResult> DeleteResource(int id)
         {
@@ -96,6 +128,10 @@ namespace StudentTask.Data.Api.Controllers
             return Ok(resource);
         }
 
+        /// <summary>
+        /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -105,6 +141,11 @@ namespace StudentTask.Data.Api.Controllers
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Resources the exists.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         private bool ResourceExists(int id)
         {
             return db.Resources.Count(e => e.ResourceId == id) > 0;

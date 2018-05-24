@@ -1,12 +1,10 @@
 ﻿using StudentTask.Model;
+using StudentTask.Uwp.App.DataSource;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Net.Http;
 using Template10.Mvvm;
 using Windows.UI.Xaml.Navigation;
-using StudentTask.Uwp.App.DataSource;
-using StudentTask.Uwp.App.Views;
 using Task = System.Threading.Tasks.Task;
 
 namespace StudentTask.Uwp.App.ViewModels

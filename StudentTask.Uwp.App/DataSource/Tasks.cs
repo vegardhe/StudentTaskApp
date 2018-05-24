@@ -73,7 +73,7 @@ namespace StudentTask.Uwp.App.DataSource
         public async Task<bool> DeleteTask(Task task)
         {
             var response = await _client.DeleteAsync($"tasks\\{task.TaskId}").ConfigureAwait(false);
-            return response.IsSuccessStatusCode || response.StatusCode == System.Net.HttpStatusCode.NotFound;
+            return response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.NotFound;
         }
 
         /// <summary>

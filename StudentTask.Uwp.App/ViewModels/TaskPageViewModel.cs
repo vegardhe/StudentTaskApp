@@ -1,14 +1,14 @@
-﻿using System;
+﻿using StudentTask.Model;
+using StudentTask.Uwp.App.DataSource;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Windows.Input;
+using Template10.Mvvm;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Navigation;
-using StudentTask.Model;
-using StudentTask.Uwp.App.DataSource;
-using Template10.Mvvm;
 using Exception = System.Exception;
 using Task = System.Threading.Tasks.Task;
 
@@ -128,9 +128,9 @@ namespace StudentTask.Uwp.App.ViewModels
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
         {
             if (SessionUser == null)
-                SessionUser = DataSource.Users.Instance.SessionUser;
+                SessionUser = Users.Instance.SessionUser;
 
-            if(Tasks == null || DataSource.Users.Instance.Changed)
+            if(Tasks == null || Users.Instance.Changed)
             {
 
                 try
@@ -149,14 +149,16 @@ namespace StudentTask.Uwp.App.ViewModels
                 }
 
                 ActiveTasks = new ObservableCollection<Model.Task>();
-                foreach (var task in Tasks)
-                {
-                    if (task.TaskStatus != Model.Task.Status.Finished)
+                if (Tasks != null)
+                    foreach (var task in Tasks)
                     {
-                        ActiveTasks.Add(task);
+                        if (task.TaskStatus != Model.Task.Status.Finished)
+                        {
+                            ActiveTasks.Add(task);
+                        }
                     }
-                }
-                DataSource.Users.Instance.Changed = false;
+
+                Users.Instance.Changed = false;
             }
 
             await Task.CompletedTask;

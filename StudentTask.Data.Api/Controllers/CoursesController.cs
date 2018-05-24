@@ -15,14 +15,30 @@ using System.Web.Http.Description;
 
 namespace StudentTask.Data.Api.Controllers
 {
+    /// <summary>
+    /// CRUD operations for courses.
+    /// </summary>
+    /// <seealso cref="System.Web.Http.ApiController" />
     public class CoursesController : ApiController
     {
+        /// <summary>
+        /// The database
+        /// </summary>
         private StudentTaskContext db = new StudentTaskContext();
 
         // GET: api/Courses
+        /// <summary>
+        /// Gets the courses.
+        /// </summary>
+        /// <returns></returns>
         public IQueryable<Course> GetCourses() => db.Courses;
 
         // GET: api/Courses/5
+        /// <summary>
+        /// Gets the course.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [ResponseType(typeof(Course))]
         public async Task<IHttpActionResult> GetCourse(int id)
         {
@@ -35,6 +51,11 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // GET: api/Courses/5/Resources
+        /// <summary>
+        /// Gets the resources.
+        /// </summary>
+        /// <param name="courseId">The course identifier.</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/Courses/{courseId}/Resources")]
         [ResponseType(typeof(Resource))]
@@ -48,6 +69,11 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // GET: api/Courses/5/Exercises
+        /// <summary>
+        /// Gets the exercises.
+        /// </summary>
+        /// <param name="courseId">The course identifier.</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("api/Courses/{courseId}/Exercises")]
         [ResponseType(typeof(Exercise))]
@@ -61,6 +87,12 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // PUT: api/Courses/5
+        /// <summary>
+        /// Puts the course.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutCourse(int id, Course course)
         {
@@ -96,6 +128,11 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // POST: api/Courses
+        /// <summary>
+        /// Posts the course.
+        /// </summary>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
         [ResponseType(typeof(Course))]
         public async Task<IHttpActionResult> PostCourse(Course course)
         {
@@ -127,6 +164,12 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // POST api/Courses/courseId/Resources
+        /// <summary>
+        /// Posts the resource.
+        /// </summary>
+        /// <param name="resource">The resource.</param>
+        /// <param name="courseId">The course identifier.</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/Courses/{courseId}/Resources")]
         [ResponseType(typeof(Resource))]
@@ -141,6 +184,12 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // POST: api/Courses/5/Exercises
+        /// <summary>
+        /// Posts the exercise.
+        /// </summary>
+        /// <param name="courseId">The course identifier.</param>
+        /// <param name="exercise">The exercise.</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/Courses/{courseId}/Exercises")]
         [ResponseType(typeof(Exercise))]
@@ -155,6 +204,12 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // POST: api/Courses/5/Users/username
+        /// <summary>
+        /// Posts the user to course.
+        /// </summary>
+        /// <param name="courseId">The course identifier.</param>
+        /// <param name="username">The username.</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("api/Courses/{courseId}/users/{username}")]
         [ResponseType(typeof(void))]
@@ -183,6 +238,11 @@ namespace StudentTask.Data.Api.Controllers
         }
 
         // DELETE: api/Courses/5
+        /// <summary>
+        /// Deletes the course.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         [ResponseType(typeof(Course))]
         public async Task<IHttpActionResult> DeleteCourse(int id)
         {
@@ -198,6 +258,10 @@ namespace StudentTask.Data.Api.Controllers
             return Ok(course);
         }
 
+        /// <summary>
+        /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
+        /// </summary>
+        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -207,6 +271,11 @@ namespace StudentTask.Data.Api.Controllers
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Courses the exists.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
         private bool CourseExists(int id)
         {
             return db.Courses.Count(e => e.CourseId == id) > 0;

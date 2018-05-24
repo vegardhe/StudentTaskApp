@@ -46,6 +46,12 @@ namespace StudentTask.Model
         /// The title.
         /// </value>
         private string _title;
+        /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        /// <value>
+        /// The title.
+        /// </value>
         public string Title
         {
             get => _title;
@@ -63,6 +69,12 @@ namespace StudentTask.Model
         /// The description.
         /// </value>
         private string _description;
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
         public string Description
         {
             get => _description;
@@ -77,6 +89,12 @@ namespace StudentTask.Model
         /// </value>
         private DateTimeOffset? _dueDate;
 
+        /// <summary>
+        /// Gets or sets the due date.
+        /// </summary>
+        /// <value>
+        /// The due date.
+        /// </value>
         public DateTimeOffset? DueDate
         {
             get => _dueDate;
@@ -90,6 +108,12 @@ namespace StudentTask.Model
         /// The due time.
         /// </value>
         private TimeSpan _dueTime;
+        /// <summary>
+        /// Gets or sets the due time.
+        /// </summary>
+        /// <value>
+        /// The due time.
+        /// </value>
         public TimeSpan DueTime
         {
             get => _dueTime;
@@ -103,6 +127,12 @@ namespace StudentTask.Model
         /// The task status.
         /// </value>
         private Status _taskStatus;
+        /// <summary>
+        /// Gets or sets the task status.
+        /// </summary>
+        /// <value>
+        /// The task status.
+        /// </value>
         public Status TaskStatus
         {
             get => _taskStatus;
@@ -138,14 +168,29 @@ namespace StudentTask.Model
         /// </value>
         public List<User> Users { get; set; }
 
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
         [NotifyPropertyChangedInvocator]
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Sets the field.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="field">The field.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns></returns>
         protected bool SetField<T>(ref T field, T value,
             [CallerMemberName] string propertyName = null)
         {
@@ -156,6 +201,12 @@ namespace StudentTask.Model
             return true;
         }
 
+        /// <summary>
+        /// Returns true if ... is valid.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is valid; otherwise, <c>false</c>.
+        /// </value>
         public bool IsValid => !string.IsNullOrEmpty(Title);
     }
 }

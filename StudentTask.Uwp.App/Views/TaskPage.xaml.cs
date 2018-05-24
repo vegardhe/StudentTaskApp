@@ -48,7 +48,7 @@ namespace StudentTask.Uwp.App.Views
                 changedTask.CompletedOn = DateTimeOffset.Now;
             try
             {
-                if (await DataSource.Tasks.Instance.UpdateTask(changedTask))
+                if (await Tasks.Instance.UpdateTask(changedTask))
                 {
                     EditSplitView.IsPaneOpen = false;
                 }

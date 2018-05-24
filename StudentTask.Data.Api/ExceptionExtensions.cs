@@ -22,9 +22,9 @@ namespace StudentTask.Data.Api
             {
                 await db.SaveChangesAsync();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                // TODO: Write to file or event log.
+                // ignored
             }
             return ex;
         }
