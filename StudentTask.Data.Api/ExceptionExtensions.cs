@@ -14,7 +14,7 @@ namespace StudentTask.Data.Api
         /// <summary>
         /// Logs the specified database.
         /// </summary>
-        /// <param name="ex">The ex.</param>
+        /// <param name="ex">The exception.</param>
         /// <param name="db">The database.</param>
         /// <returns></returns>
         public static async Task<Exception> Log(this Exception ex, StudentTaskContext db)
