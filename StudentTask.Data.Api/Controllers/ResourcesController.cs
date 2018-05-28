@@ -7,6 +7,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.ExceptionHandling;
 
 namespace StudentTask.Data.Api.Controllers
 {
@@ -37,7 +38,7 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Resource))]
         public async Task<IHttpActionResult> GetResource(int id)
         {
-            Resource resource = await db.Resources.FindAsync(id);
+            var resource = await db.Resources.FindAsync(id);
             if (resource == null)
             {
                 return NotFound();
@@ -72,7 +73,7 @@ namespace StudentTask.Data.Api.Controllers
             {
                 await db.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!ResourceExists(id))
                 {
@@ -80,7 +81,7 @@ namespace StudentTask.Data.Api.Controllers
                 }
                 else
                 {
-                    throw;
+                    await ex.Log(db);
                 }
             }
 
@@ -116,7 +117,7 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Resource))]
         public async Task<IHttpActionResult> DeleteResource(int id)
         {
-            Resource resource = await db.Resources.FindAsync(id);
+            var resource = await db.Resources.FindAsync(id);
             if (resource == null)
             {
                 return NotFound();

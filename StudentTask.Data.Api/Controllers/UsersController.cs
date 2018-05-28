@@ -98,16 +98,14 @@ namespace StudentTask.Data.Api.Controllers
             {
                 await db.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!UserExists(id))
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                await ex.Log(db);
             }
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -127,7 +125,7 @@ namespace StudentTask.Data.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            user.Password = Encrypt(user.Password);
+            user.Password = PasswordEncryption.Encrypt(user.Password);
 
             db.Users.Add(user);
 
@@ -141,10 +139,8 @@ namespace StudentTask.Data.Api.Controllers
                 {
                     return Conflict();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             user.Password = null;
@@ -166,7 +162,7 @@ namespace StudentTask.Data.Api.Controllers
             if (dbUser == null)
                 return NotFound();
 
-            if (!Verify(user.Password, dbUser.Password))
+            if (!PasswordEncryption.Verify(user.Password, dbUser.Password))
                 return BadRequest();
 
             dbUser.Password = null;
@@ -183,7 +179,7 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> DeleteUser(string id)
         {
-            User user = await db.Users.FindAsync(id);
+            var user = await db.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -217,47 +213,6 @@ namespace StudentTask.Data.Api.Controllers
         private bool UserExists(string id)
         {
             return db.Users.Count(e => e.Username == id) > 0;
-        }
-
-        // TODO: Add these to new class?
-        /// <summary>
-        /// Encrypts the specified password.
-        /// </summary>
-        /// <param name="password">The password.</param>
-        /// <returns></returns>
-        private static string Encrypt(string password)
-        {
-            byte[] salt;
-            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-            var hash = pbkdf2.GetBytes(20);
-
-            var hashBytes = new byte[36];
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(hash, 0, hashBytes, 16, 20);
-
-            return Convert.ToBase64String(hashBytes);
-        }
-
-        /// <summary>
-        /// Verifies the specified password.
-        /// </summary>
-        /// <param name="password">The password.</param>
-        /// <param name="savedPasswordHash">The saved password hash.</param>
-        /// <returns></returns>
-        private static bool Verify(string password, string savedPasswordHash)
-        {
-            var hashBytes = Convert.FromBase64String(savedPasswordHash);
-
-            var salt = new byte[16];
-            Array.Copy(hashBytes, 0, salt, 0, 16);
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-            var hash = pbkdf2.GetBytes(20);
-            for (var i=0; i < 20; i++)
-                if (hashBytes[i + 16] != hash[i])
-                    return false;
-            return true;
         }
     }
 }

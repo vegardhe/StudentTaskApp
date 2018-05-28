@@ -112,16 +112,13 @@ namespace StudentTask.Data.Api.Controllers
             {
                 await db.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!CourseExists(id))
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                await ex.Log(db);
             }
 
             return StatusCode(HttpStatusCode.NoContent);

@@ -39,7 +39,7 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Task))]
         public async Task<IHttpActionResult> GetTask(int id)
         {
-            Task task = await db.Tasks.FindAsync(id);
+            var task = await db.Tasks.FindAsync(id);
             if (task == null)
             {
                 return NotFound();
@@ -74,16 +74,14 @@ namespace StudentTask.Data.Api.Controllers
             {
                 await db.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!TaskExists(id))
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                await ex.Log(db);
             }
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -117,8 +115,9 @@ namespace StudentTask.Data.Api.Controllers
                     await cmd.ExecuteNonQueryAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await ex.Log(db);
                 return InternalServerError();
             }
             return CreatedAtRoute("DefaultApi", new { id = task.TaskId }, task);
@@ -133,7 +132,7 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Task))]
         public async Task<IHttpActionResult> DeleteTask(int id)
         {
-            Task task = await db.Tasks.FindAsync(id);
+            var task = await db.Tasks.FindAsync(id);
             if (task == null)
             {
                 return NotFound();

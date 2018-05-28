@@ -12,7 +12,7 @@ namespace StudentTask.Data.Api
     {
 
         /// <summary>
-        /// Logs the specified database.
+        /// Logs the specified error to database.
         /// </summary>
         /// <param name="ex">The exception.</param>
         /// <param name="db">The database.</param>
