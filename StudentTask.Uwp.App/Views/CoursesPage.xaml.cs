@@ -1,4 +1,6 @@
-﻿using System;
+﻿using StudentTask.Model;
+using StudentTask.Uwp.App.DataSource;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,8 +10,6 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using StudentTask.Model;
-using StudentTask.Uwp.App.DataSource;
 using Exception = System.Exception;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -19,7 +19,7 @@ namespace StudentTask.Uwp.App.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    /// <seealso cref="Windows.UI.Xaml.Controls.Page" />
+    /// <seealso cref="Page" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class CoursesPage
@@ -42,7 +42,7 @@ namespace StudentTask.Uwp.App.Views
         public ObservableCollection<Exercise> CourseExercises { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CoursesPage"/> class.
+        /// Initializes a new instance of the <see cref="CoursesPage" /> class.
         /// </summary>
         public CoursesPage()
         {
@@ -265,70 +265,92 @@ namespace StudentTask.Uwp.App.Views
             }
             else
             {
-                // TODO: Make this prettier.
                 if (selectedCourse == null) return;
                 foreach (var selectedCourseResource in selectedCourse.Resources.ToArray())
                 {
-                    if (CourseResources.Contains(selectedCourseResource)) continue;
-                    try
-                    {
-                        if (!await DataSource.Resources.Instance.DeleteResource(selectedCourseResource))
-                        {
-                            await new MessageDialog("Failed to remove resource", "Error").ShowAsync();
-                            return;
-                        }
-                        selectedCourse.Resources.Remove(selectedCourseResource);
-                    }
-                    catch (Exception e)
-                    {
-                        await e.Display("Failed to remove resource.");
-                        await e.Log();
-                        return;
-                    }
+                    if (!CourseResources.Contains(selectedCourseResource))
+                        await DeleteCourseResource(selectedCourseResource, selectedCourse);
                 }
 
                 foreach (var courseResource in CourseResources)
                 {
                     if (courseResource.ResourceId == 0)
-                    {
-                        try
-                        {
-                            selectedCourse.Resources.Add(
-                                await DataSource.Resources.Instance.AddResource(courseResource, selectedCourse));
-                        }
-                        catch (WebException ex)
-                        {
-                            await ex.Log();
-                            await ex.Display("Failed to establish internet connection.");
-                            return;
-                        }
-                        catch (Exception ex)
-                        {
-                            await ex.Log();
-                            await ex.Display("Failed to add resource.");
-                            return;
-                        }
-                    }   
+                        await AddCourseResource(courseResource, selectedCourse);
                     else
                     {
-                        var originalResource =
-                            selectedCourse.Resources.Find(r => r.ResourceId == courseResource.ResourceId);
-                        if (originalResource.Name == courseResource.Name && originalResource.Link == courseResource.Link) continue;
-
-                        try
-                        {
-                            if (await DataSource.Resources.Instance.UpdateResource(courseResource)) continue;
-                            await new MessageDialog("Failed to update resource.", "Error").ShowAsync();
-                            return;
-                        }
-                        catch (Exception e)
-                        {
-                            await e.Log();
-                            await e.Display("Failed to update resource.");
-                            return;
-                        }
+                        var originalResource = selectedCourse.Resources.Find(r => r.ResourceId == courseResource.ResourceId);
+                        if (originalResource.Name != courseResource.Name || originalResource.Link != courseResource.Link)
+                            await UpdateCourseResource(courseResource);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Updates the course resource.
+        /// </summary>
+        /// <param name="courseResource">The course resource.</param>
+        /// <returns></returns>
+        private async System.Threading.Tasks.Task UpdateCourseResource(Resource courseResource)
+        {
+            try
+            {
+                if (!await DataSource.Resources.Instance.UpdateResource(courseResource))
+                    await new MessageDialog("Failed to update resource.", "Error").ShowAsync();
+            }
+            catch (Exception e)
+            {
+                await e.Log();
+                await e.Display("Failed to update resource.");
+            }
+        }
+
+        /// <summary>
+        /// Adds the course resource.
+        /// </summary>
+        /// <param name="resource">The resource.</param>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        private async System.Threading.Tasks.Task AddCourseResource(Resource resource, Course course)
+        {
+            try
+            {
+                course.Resources.Add(
+                    await DataSource.Resources.Instance.AddResource(resource, course));
+            }
+            catch (WebException ex)
+            {
+                await ex.Log();
+                await ex.Display("Failed to establish internet connection.");
+            }
+            catch (Exception ex)
+            {
+                await ex.Log();
+                await ex.Display("Failed to add resource.");
+            }
+        }
+
+        /// <summary>
+        /// Deletes the course resource.
+        /// </summary>
+        /// <param name="resource">The resource.</param>
+        /// <param name="course">The course.</param>
+        /// <returns></returns>
+        private async System.Threading.Tasks.Task DeleteCourseResource(Resource resource, Course course)
+        {
+            try
+            {
+                if (!await DataSource.Resources.Instance.DeleteResource(resource))
+                {
+                    await new MessageDialog("Failed to remove resource", "Error").ShowAsync();
+                    return;
+                }
+                course.Resources.Remove(resource);
+            }
+            catch (Exception e)
+            {
+                await e.Display("Failed to remove resource.");
+                await e.Log();
             }
         }
 
@@ -336,7 +358,7 @@ namespace StudentTask.Uwp.App.Views
         /// Handles the OnSelectionChanged event of the CoursesListView control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="SelectionChangedEventArgs" /> instance containing the event data.</param>
         private async void CoursesListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedCourse = (Course) CoursesListView.SelectedItem;
@@ -413,21 +435,21 @@ namespace StudentTask.Uwp.App.Views
         /// Adds the resource.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void AddResource(object sender, RoutedEventArgs e) => CourseResources.Add(new Resource { Name = "New Resource" });
 
         /// <summary>
         /// Removes the resource.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void RemoveResource(object sender, RoutedEventArgs e) => CourseResources.Remove((Resource)ManageResourcesListView.SelectedItem);
 
         /// <summary>
         /// Handles the OnSelectionChanged event of the ManageResourcesListView control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="SelectionChangedEventArgs" /> instance containing the event data.</param>
         private void ManageResourcesListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EditResourcePanel.Visibility = ManageResourcesListView.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -437,7 +459,7 @@ namespace StudentTask.Uwp.App.Views
         /// Handles the OnItemClick event of the ExercisesListView control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="ItemClickEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="ItemClickEventArgs" /> instance containing the event data.</param>
         private async void ExercisesListView_OnItemClick(object sender, ItemClickEventArgs e)
         {
             var result = await ViewExerciseContentDialog.ShowAsync();
@@ -477,7 +499,7 @@ namespace StudentTask.Uwp.App.Views
         /// Users the automatic suggest box on suggestion chosen.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="AutoSuggestBoxSuggestionChosenEventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="AutoSuggestBoxSuggestionChosenEventArgs" /> instance containing the event data.</param>
         private void UserAutoSuggestBox_OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
             if (args.SelectedItem is User user)
@@ -490,7 +512,7 @@ namespace StudentTask.Uwp.App.Views
         /// Users the automatic suggest box on text changed.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="AutoSuggestBoxTextChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="AutoSuggestBoxTextChangedEventArgs" /> instance containing the event data.</param>
         private async void UserAutoSuggestBox_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (Users.Instance.UserList == null)
@@ -522,7 +544,7 @@ namespace StudentTask.Uwp.App.Views
         /// Users the automatic suggest box on query submitted.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="AutoSuggestBoxQuerySubmittedEventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="AutoSuggestBoxQuerySubmittedEventArgs" /> instance containing the event data.</param>
         private void UserAutoSuggestBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             if (args.ChosenSuggestion is User user)

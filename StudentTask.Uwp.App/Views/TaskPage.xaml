@@ -17,6 +17,7 @@
     <Page.Resources>
         <CollectionViewSource x:Name="TaskViewSource" Source="{x:Bind ViewModel.ActiveTasks}" />
         <converters:TaskColorConverter x:Key="TaskColorConverter" />
+        <converters:DateToTextConverter x:Key="DateToTextConverter" />
     </Page.Resources>
 
     <RelativePanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
@@ -56,14 +57,9 @@
                 <TextBlock Text="{Binding SelectedItem.Title, ElementName=TasksListView}" FontSize="24" />
                 <TextBlock Text="{Binding SelectedItem.Description, ElementName=TasksListView}" TextWrapping="WrapWholeWords" />
                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                    <!-- TODO: Make Printing date nicer -->
                     <TextBlock Name="DueDateText" VerticalAlignment="Center" Text="Due Date: &#160;" Margin="0,0,5,0" />
-                    <TextBlock Text="{Binding SelectedItem.DueDate.Day, ElementName=TasksListView}" />
-                    <TextBlock Text="-" />
-                    <TextBlock Text="{Binding SelectedItem.DueDate.Month, ElementName=TasksListView}" />
-                    <TextBlock Text="-" />
-                    <TextBlock Text="{Binding SelectedItem.DueDate.Year, ElementName=TasksListView}" />
-                    <TextBlock Text=":" />
+                    <TextBlock Margin="0,0,5,0" 
+                               Text="{Binding SelectedItem.DueDate, ElementName=TasksListView, Converter={StaticResource DateToTextConverter}}" />
                     <TextBlock Text="{Binding SelectedItem.DueTime, ElementName=TasksListView}" />
                 </StackPanel>
                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">

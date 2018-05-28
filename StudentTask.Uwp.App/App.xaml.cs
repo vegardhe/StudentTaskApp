@@ -40,10 +40,6 @@ namespace StudentTask.Uwp.App
             };
         }
 
-        public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
-        {
-            // TODO: add your long-running task here
-            await NavigationService.NavigateAsync(typeof(Views.LogOnPage));
-        }
+        public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args) => await NavigationService.NavigateAsync(typeof(Views.LogOnPage));
     }
 }

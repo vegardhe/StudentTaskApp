@@ -33,12 +33,12 @@ namespace StudentTask.Uwp.App.ViewModels
         {
             _viewModel = viewModel;
         }
-#pragma warning disable 0067
+        #pragma warning disable 0067
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command should execute.
         /// </summary>
         public event EventHandler CanExecuteChanged;
-#pragma warning restore 0067
+        #pragma warning restore 0067
         /// <summary>
         /// Defines the method that determines whether the command can execute in its current state.
         /// </summary>

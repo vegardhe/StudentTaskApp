@@ -4,6 +4,7 @@ using StudentTask.Model;
 using System.Text.RegularExpressions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
+using Task = System.Threading.Tasks.Task;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -66,7 +67,6 @@ namespace StudentTask.Uwp.App.Views
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
-        // TODO: Cleanup
         private async void CreateAccountButton_OnClick(object sender, RoutedEventArgs e)
         {
             var match = EmailRegex.Match(NewUser.Email);
@@ -88,10 +88,19 @@ namespace StudentTask.Uwp.App.Views
                 if (UsergroupComboBox.SelectedValue != null)
                     NewUser.GroupUserGroup = (User.UserGroup) UsergroupComboBox.SelectedValue;
             }
+            await AddUser(NewUser);
+        }
 
+        /// <summary>
+        /// Adds the user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns></returns>
+        private async Task AddUser(User user)
+        {
             try
             {
-                await DataSource.Users.Instance.PostUser(NewUser);
+                await DataSource.Users.Instance.PostUser(user);
             }
             catch (WebException ex)
             {

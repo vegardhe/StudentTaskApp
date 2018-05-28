@@ -40,9 +40,7 @@ namespace StudentTask.Uwp.App.Converters
         /// <param name="language">The language.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
-        {
+        public object ConvertBack(object value, Type targetType, object parameter, string language) =>
             throw new NotImplementedException();
-        }
     }
 }

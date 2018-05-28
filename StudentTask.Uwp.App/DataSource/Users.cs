@@ -34,7 +34,6 @@ namespace StudentTask.Uwp.App.DataSource
         /// </value>
         public User SessionUser { get; set; }
 
-        // TODO: Better solution for this.
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="Users" /> is changed.
         /// </summary>
