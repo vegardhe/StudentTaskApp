@@ -1,11 +1,9 @@
-﻿using System;
-using StudentTask.Data.Access;
+﻿using StudentTask.Data.Access;
 using StudentTask.Model;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
