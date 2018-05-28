@@ -61,16 +61,19 @@ namespace StudentTask.Uwp.App.Views
         /// </param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (Users.Instance.SessionUser != null && Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin)
-            {
-                UsergroupTextBlock.Visibility = Visibility.Visible;
-                UsergroupComboBox.Visibility = Visibility.Visible;
-                UsergroupComboBox.ItemsSource = Enum.GetValues(typeof(User.UserGroup));
-            }
+            CheckUser(Users.Instance.SessionUser);
 
             Shell.HamburgerMenu.IsFullScreen = true;
             NewUser = new User();
             NewAccountGrid.DataContext = NewUser;
+        }
+
+        private void CheckUser(User user)
+        {
+            if (user == null || user.GroupUserGroup != User.UserGroup.Admin) return;
+            UsergroupTextBlock.Visibility = Visibility.Visible;
+            UsergroupComboBox.Visibility = Visibility.Visible;
+            UsergroupComboBox.ItemsSource = Enum.GetValues(typeof(User.UserGroup));
         }
 
         /// <summary>

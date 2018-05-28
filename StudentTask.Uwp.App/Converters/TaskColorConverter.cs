@@ -25,9 +25,7 @@ namespace StudentTask.Uwp.App.Converters
         {
             var task = Users.Instance.SessionUser.Tasks.Find(t => t.TaskId == (int) value);
 
-            if (task.DueDate != null && task.DueDate.Value.Date < DateTimeOffset.Now.Date &&
-                task.TaskStatus != Task.Status.Finished) return new SolidColorBrush(Colors.Red);
-            return new SolidColorBrush(Colors.Black);
+            return IsExpired(task) ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Black);
         }
 
         /// <summary>
@@ -43,5 +41,15 @@ namespace StudentTask.Uwp.App.Converters
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        ///     Determines whether the specified task is expired.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified task is expired; otherwise, <c>false</c>.
+        /// </returns>
+        private static bool IsExpired(Task task) => task.DueDate != null && task.DueDate.Value.Date < DateTimeOffset.Now.Date
+                                        && task.TaskStatus != Task.Status.Finished;
     }
 }
