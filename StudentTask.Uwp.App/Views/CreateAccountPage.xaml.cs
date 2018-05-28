@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Net;
-using StudentTask.Model;
 using System.Text.RegularExpressions;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
+using StudentTask.Model;
+using StudentTask.Uwp.App.DataSource;
 using Task = System.Threading.Tasks.Task;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -11,7 +12,7 @@ using Task = System.Threading.Tasks.Task;
 namespace StudentTask.Uwp.App.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    ///     An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     /// <seealso cref="Windows.UI.Xaml.Controls.Page" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
@@ -19,20 +20,12 @@ namespace StudentTask.Uwp.App.Views
     public sealed partial class CreateAccountPage
     {
         /// <summary>
-        /// Gets or sets the new user.
-        /// </summary>
-        /// <value>
-        /// The new user.
-        /// </value>
-        private User NewUser { get; set; }
-
-        /// <summary>
-        /// The email regex
+        ///     The email regex
         /// </summary>
         private static readonly Regex EmailRegex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateAccountPage" /> class.
+        ///     Initializes a new instance of the <see cref="CreateAccountPage" /> class.
         /// </summary>
         public CreateAccountPage()
         {
@@ -40,30 +33,48 @@ namespace StudentTask.Uwp.App.Views
         }
 
         /// <summary>
-        /// Invoked immediately before the Page is unloaded and is no longer the current source of a parent Frame.
+        ///     Gets or sets the new user.
         /// </summary>
-        /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the navigation that will unload the current Page unless canceled. The navigation can potentially be canceled by setting Cancel.</param>
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) => Shell.HamburgerMenu.IsFullScreen = false;
+        /// <value>
+        ///     The new user.
+        /// </value>
+        private User NewUser { get; set; }
 
         /// <summary>
-        /// Invoked when the Page is loaded and becomes the current source of a parent Frame.
+        ///     Invoked immediately before the Page is unloaded and is no longer the current source of a parent Frame.
         /// </summary>
-        /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the pending navigation that will load the current Page. Usually the most relevant property to examine is Parameter.</param>
+        /// <param name="e">
+        ///     Event data that can be examined by overriding code. The event data is representative of the navigation
+        ///     that will unload the current Page unless canceled. The navigation can potentially be canceled by setting Cancel.
+        /// </param>
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            Shell.HamburgerMenu.IsFullScreen = false;
+        }
+
+        /// <summary>
+        ///     Invoked when the Page is loaded and becomes the current source of a parent Frame.
+        /// </summary>
+        /// <param name="e">
+        ///     Event data that can be examined by overriding code. The event data is representative of the pending
+        ///     navigation that will load the current Page. Usually the most relevant property to examine is Parameter.
+        /// </param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (DataSource.Users.Instance.SessionUser != null && DataSource.Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin)
+            if (Users.Instance.SessionUser != null && Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin)
             {
                 UsergroupTextBlock.Visibility = Visibility.Visible;
                 UsergroupComboBox.Visibility = Visibility.Visible;
                 UsergroupComboBox.ItemsSource = Enum.GetValues(typeof(User.UserGroup));
             }
+
             Shell.HamburgerMenu.IsFullScreen = true;
             NewUser = new User();
             NewAccountGrid.DataContext = NewUser;
         }
 
         /// <summary>
-        /// Handles the OnClick event of the CreateAccountButton control.
+        ///     Handles the OnClick event of the CreateAccountButton control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
@@ -82,17 +93,15 @@ namespace StudentTask.Uwp.App.Views
                 return;
             }
 
-            if (DataSource.Users.Instance.SessionUser != null &&
-                DataSource.Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin)
-            {
+            if (Users.Instance.SessionUser != null &&
+                Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin)
                 if (UsergroupComboBox.SelectedValue != null)
                     NewUser.GroupUserGroup = (User.UserGroup) UsergroupComboBox.SelectedValue;
-            }
             await AddUser(NewUser);
         }
 
         /// <summary>
-        /// Adds the user.
+        ///     Adds the user.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns></returns>
@@ -100,7 +109,7 @@ namespace StudentTask.Uwp.App.Views
         {
             try
             {
-                await DataSource.Users.Instance.PostUser(user);
+                await Users.Instance.PostUser(user);
             }
             catch (WebException ex)
             {
@@ -112,7 +121,8 @@ namespace StudentTask.Uwp.App.Views
                 await ex.Log();
                 await ex.Display("Failed to create user.");
             }
-            Frame.Navigate(DataSource.Users.Instance.SessionUser != null ? typeof(ProfilePage) : typeof(LogOnPage));
+
+            Frame.Navigate(Users.Instance.SessionUser != null ? typeof(ProfilePage) : typeof(LogOnPage));
         }
     }
 }

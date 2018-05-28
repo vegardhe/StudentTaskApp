@@ -1,11 +1,18 @@
-﻿using Template10.Common;
+﻿using Windows.UI.Xaml;
+using Template10.Common;
 using Template10.Controls;
-using Windows.UI.Xaml;
 
 namespace StudentTask.Uwp.App.Views
 {
     public sealed partial class Busy
     {
+        public static readonly DependencyProperty BusyTextProperty =
+            DependencyProperty.Register(nameof(BusyText), typeof(string), typeof(Busy),
+                new PropertyMetadata("Please wait..."));
+
+        public static readonly DependencyProperty IsBusyProperty =
+            DependencyProperty.Register(nameof(IsBusy), typeof(bool), typeof(Busy), new PropertyMetadata(false));
+
         public Busy()
         {
             InitializeComponent();
@@ -13,19 +20,15 @@ namespace StudentTask.Uwp.App.Views
 
         public string BusyText
         {
-            get { return (string)GetValue(BusyTextProperty); }
-            set { SetValue(BusyTextProperty, value); }
+            get => (string) GetValue(BusyTextProperty);
+            set => SetValue(BusyTextProperty, value);
         }
-        public static readonly DependencyProperty BusyTextProperty =
-            DependencyProperty.Register(nameof(BusyText), typeof(string), typeof(Busy), new PropertyMetadata("Please wait..."));
 
         public bool IsBusy
         {
-            get { return (bool)GetValue(IsBusyProperty); }
-            set { SetValue(IsBusyProperty, value); }
+            get => (bool) GetValue(IsBusyProperty);
+            set => SetValue(IsBusyProperty, value);
         }
-        public static readonly DependencyProperty IsBusyProperty =
-            DependencyProperty.Register(nameof(IsBusy), typeof(bool), typeof(Busy), new PropertyMetadata(false));
 
         // hide and show busy dialog
         public static void SetBusy(bool busy, string text = null)

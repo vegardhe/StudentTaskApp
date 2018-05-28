@@ -1,20 +1,21 @@
-﻿using Newtonsoft.Json;
-using StudentTask.Model;
-using System;
+﻿using System;
 using System.IO;
 using Windows.ApplicationModel;
 using Windows.Storage;
+using Newtonsoft.Json;
+using StudentTask.Model;
+using StudentTask.Uwp.App.DataSource;
 using Task = System.Threading.Tasks.Task;
 
 namespace StudentTask.Uwp.App
 {
     /// <summary>
-    /// Class for logging errors to database or files.
+    ///     Class for logging errors to database or files.
     /// </summary>
     public static class ErrorLogging
     {
         /// <summary>
-        /// Logs to database.
+        ///     Logs to database.
         /// </summary>
         /// <param name="ex">The ex.</param>
         /// <returns></returns>
@@ -28,7 +29,7 @@ namespace StudentTask.Uwp.App
             };
             try
             {
-                if(!await DataSource.LogElements.Instance.AddLogElement(logElement))
+                if (!await LogElements.Instance.AddLogElement(logElement))
                     LogToFile(logElement);
             }
             catch (Exception e)
@@ -41,11 +42,10 @@ namespace StudentTask.Uwp.App
                 });
                 LogToFile(logElement);
             }
-            
         }
 
         /// <summary>
-        /// Logs to file.
+        ///     Logs to file.
         /// </summary>
         /// <param name="logElement">The log element.</param>
         private static async void LogToFile(LogElement logElement)
@@ -57,10 +57,14 @@ namespace StudentTask.Uwp.App
             {
                 if (!File.Exists(path))
                     using (var sw = File.CreateText(path))
+                    {
                         await sw.WriteLineAsync(Package.Current.DisplayName + " - Error log:");
+                    }
 
                 using (var sw = File.AppendText(path))
+                {
                     await sw.WriteLineAsync(json);
+                }
             }
             catch (UnauthorizedAccessException ex)
             {

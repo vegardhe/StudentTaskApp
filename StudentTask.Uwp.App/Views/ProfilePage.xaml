@@ -7,7 +7,7 @@
     xmlns:controls="using:Template10.Controls"
     xmlns:viewModels="using:StudentTask.Uwp.App.ViewModels"
     mc:Ignorable="d">
-    
+
     <Page.DataContext>
         <viewModels:ProfilePageViewModel x:Name="ViewModel" />
     </Page.DataContext>
@@ -17,19 +17,20 @@
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True"
-                             Text="Profile" >
+                             Text="Profile">
             <controls:PageHeader.PrimaryCommands>
-                <AppBarButton Name="AddNewUserButton" Icon="AddFriend" Label="Add New User" Visibility="Collapsed" Click="AddNewUser" />
+                <AppBarButton Name="AddNewUserButton" Icon="AddFriend" Label="Add New User" Visibility="Collapsed"
+                              Click="AddNewUser" />
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
-        <StackPanel Orientation="Horizontal" Margin="10,10,0,0" 
+        <StackPanel Orientation="Horizontal" Margin="10,10,0,0"
                     RelativePanel.Below="PageHeader"
                     x:Name="NamePanel">
             <TextBlock Text="{x:Bind ViewModel.SessionUser.FirstName}"
-                       FontSize="28"/>
+                       FontSize="28" />
             <TextBlock Text="{x:Bind ViewModel.SessionUser.LastName}"
                        Margin="5,0,0,0"
-                       FontSize="28"/>
+                       FontSize="28" />
         </StackPanel>
 
         <ListView x:Name="CoursesListView"
@@ -47,7 +48,7 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <StackPanel RelativePanel.RightOf="CoursesListView" 
+        <StackPanel RelativePanel.RightOf="CoursesListView"
                     RelativePanel.AlignTopWith="CoursesListView"
                     Margin="50,10,10,10">
             <TextBlock Text="Statistics" FontSize="24" />
@@ -72,6 +73,6 @@
                 <TextBlock Text="{x:Bind ViewModel.TasksDueToday}" Margin="2,0,0,0" />
             </StackPanel>
         </StackPanel>
-        
+
     </RelativePanel>
 </Page>

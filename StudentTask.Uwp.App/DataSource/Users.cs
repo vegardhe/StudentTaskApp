@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using StudentTask.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,58 +8,28 @@ using System.Net.NetworkInformation;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using StudentTask.Model;
 
 namespace StudentTask.Uwp.App.DataSource
 {
     /// <summary>
-    /// Database interaction for users.
+    ///     Database interaction for users.
     /// </summary>
     public class Users
     {
         /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        /// <value>
-        /// The instance.
-        /// </value>
-        public static Users Instance { get; } = new Users();
-
-        /// <summary>
-        /// Gets or sets the session user.
-        /// </summary>
-        /// <value>
-        /// The session user.
-        /// </value>
-        public User SessionUser { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="Users" /> is changed.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if changed; otherwise, <c>false</c>.
-        /// </value>
-        public bool Changed { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user list.
-        /// </summary>
-        /// <value>
-        /// The user list.
-        /// </value>
-        public List<User> UserList { get; private set; }
-
-        /// <summary>
-        /// The base URI
+        ///     The base URI
         /// </summary>
         private const string BaseUri = "http://localhost:52988/api/";
 
         /// <summary>
-        /// The client
+        ///     The client
         /// </summary>
-        private HttpClient _client;
+        private readonly HttpClient _client;
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="Users" /> class from being created.
+        ///     Prevents a default instance of the <see cref="Users" /> class from being created.
         /// </summary>
         private Users()
         {
@@ -72,7 +40,39 @@ namespace StudentTask.Uwp.App.DataSource
         }
 
         /// <summary>
-        /// Logs the on.
+        ///     Gets the instance.
+        /// </summary>
+        /// <value>
+        ///     The instance.
+        /// </value>
+        public static Users Instance { get; } = new Users();
+
+        /// <summary>
+        ///     Gets or sets the session user.
+        /// </summary>
+        /// <value>
+        ///     The session user.
+        /// </value>
+        public User SessionUser { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether this <see cref="Users" /> is changed.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if changed; otherwise, <c>false</c>.
+        /// </value>
+        public bool Changed { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the user list.
+        /// </summary>
+        /// <value>
+        ///     The user list.
+        /// </value>
+        public List<User> UserList { get; private set; }
+
+        /// <summary>
+        ///     Logs the on.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns></returns>
@@ -89,7 +89,7 @@ namespace StudentTask.Uwp.App.DataSource
             var sessionUser = JsonConvert.DeserializeObject<User>(responseBody);
             if (!response.IsSuccessStatusCode)
             {
-                if(!NetworkInterface.GetIsNetworkAvailable())
+                if (!NetworkInterface.GetIsNetworkAvailable())
                     throw new WebException();
 
                 if (sessionUser is null)
@@ -98,12 +98,13 @@ namespace StudentTask.Uwp.App.DataSource
                 if (!sessionUser.IsValid)
                     throw new CommunicationException();
             }
+
             SessionUser = sessionUser;
             return sessionUser;
         }
 
         /// <summary>
-        /// Posts the user.
+        ///     Posts the user.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns></returns>
@@ -122,7 +123,7 @@ namespace StudentTask.Uwp.App.DataSource
         }
 
         /// <summary>
-        /// Gets the users.
+        ///     Gets the users.
         /// </summary>
         /// <returns></returns>
         /// <exception cref="HttpRequestException">Failed to get users.</exception>
@@ -137,6 +138,7 @@ namespace StudentTask.Uwp.App.DataSource
             {
                 throw new HttpRequestException("Failed to get users.", ex);
             }
+
             var users = JsonConvert.DeserializeObject<User[]>(json);
             Instance.UserList = users.ToList();
             return users;

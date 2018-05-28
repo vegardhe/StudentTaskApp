@@ -6,14 +6,14 @@ using StudentTask.Model;
 namespace StudentTask.Data.Access
 {
     /// <summary>
-    /// Reseeds the database if the model is changed.
+    ///     Reseeds the database if the model is changed.
     /// </summary>
     /// <seealso cref="System.Data.Entity.DropCreateDatabaseIfModelChanges{StudentTaskContext}" />
     public class StudentTaskDbInitializer : DropCreateDatabaseIfModelChanges<StudentTaskContext>
     {
         /// <summary>
-        /// A method that should be overridden to actually add data to the context for seeding.
-        /// The default implementation does nothing.
+        ///     A method that should be overridden to actually add data to the context for seeding.
+        ///     The default implementation does nothing.
         /// </summary>
         /// <param name="context">The context to seed.</param>
         protected override void Seed(StudentTaskContext context)
@@ -30,7 +30,7 @@ namespace StudentTask.Data.Access
                         "I den første obligatoriske oppgaven skal det lages et Java-program som simulerer et køsystem. Det skal brukes tidsdrevet simulering, dvs. at programmet skal 'gå i små tidssteg' og simulere hva som skjer innenfor hver tidsperiode.",
                     DueDate = new DateTimeOffset(2018, 2, 9, 23, 0, 0, new TimeSpan()),
                     DueTime = new TimeSpan(0, 1, 0, 0),
-                    TaskStatus = Task.Status.Added,
+                    TaskStatus = Task.Status.Added
                 });
 
                 var sampleCourse = context.Courses.Add(new Course
@@ -39,8 +39,8 @@ namespace StudentTask.Data.Access
                     Name = "Algoritmer og Datastrukturer",
                     Information =
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget nulla ut ipsum tempor tristique. Sed consequat lorem felis, vel fringilla enim posuere fermentum. Curabitur efficitur tortor id mi iaculis luctus. Aliquam dictum leo risus, vel lacinia sem dignissim a. Aenean tortor dui, condimentum a pretium sit amet, iaculis id massa. Donec nec iaculis lectus, eget vulputate nisl. Cras ullamcorper urna id rhoncus accumsan. Vestibulum gravida eros at erat laoreet elementum. Praesent rhoncus lectus ipsum, at sagittis mi vestibulum ac. Suspendisse tincidunt egestas cursus. Donec varius eros in arcu finibus sodales. Integer cursus cursus massa, et suscipit metus suscipit ac. Cras ut vehicula nisl. Donec at lorem a sem mattis tincidunt id quis dolor. Sed condimentum egestas justo. Sed quis volutpat dui, vitae maximus lorem.",
-                    Exercises = new List<Exercise> { sampleExcercise },
-                    Resources = new List<Resource> { sampleResource }
+                    Exercises = new List<Exercise> {sampleExcercise},
+                    Resources = new List<Resource> {sampleResource}
                 });
 
                 var sampleCourseTwo = context.Courses.Add(new Course
@@ -68,12 +68,13 @@ namespace StudentTask.Data.Access
                     LastName = "Hermansen",
                     Username = "vegardhe",
                     GroupUserGroup = User.UserGroup.Admin,
-                    Courses = new List<Course> { sampleCourse, sampleCourseTwo },
+                    Courses = new List<Course> {sampleCourse, sampleCourseTwo},
                     Email = "vegardhe@hiof.no",
                     Password = "E3NSHDEdrqU5iziilh5Zb+G0W2cFPpIRHf+ypo7UZzIsi0GF",
-                    Tasks = new List<Task> { sampleTask, sampleExcercise }
+                    Tasks = new List<Task> {sampleTask, sampleExcercise}
                 });
             }
+
             base.Seed(context);
         }
     }

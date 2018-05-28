@@ -1,56 +1,91 @@
-﻿using StudentTask.Model.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using StudentTask.Model.Properties;
 
 namespace StudentTask.Model
 {
     /// <summary>
-    /// Represents a taks.
+    ///     Represents a taks.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class Task : INotifyPropertyChanged
     {
         /// <summary>
-        /// enum used for task status.
+        ///     enum used for task status.
         /// </summary>
         public enum Status
         {
             /// <summary>
-            /// added task
+            ///     added task
             /// </summary>
             Added,
+
             /// <summary>
-            /// started task
+            ///     started task
             /// </summary>
             Started,
+
             /// <summary>
-            /// finished task
+            ///     finished task
             /// </summary>
             Finished
         };
 
         /// <summary>
-        /// Gets or sets the task identifier.
+        ///     Gets or sets the description.
         /// </summary>
         /// <value>
-        /// The task identifier.
+        ///     The description.
+        /// </value>
+        private string _description;
+
+        /// <summary>
+        ///     Gets or sets the due date.
+        /// </summary>
+        /// <value>
+        ///     The due date.
+        /// </value>
+        private DateTimeOffset? _dueDate;
+
+        /// <summary>
+        ///     Gets or sets the due time.
+        /// </summary>
+        /// <value>
+        ///     The due time.
+        /// </value>
+        private TimeSpan _dueTime;
+
+        /// <summary>
+        ///     Gets or sets the task status.
+        /// </summary>
+        /// <value>
+        ///     The task status.
+        /// </value>
+        private Status _taskStatus;
+
+        /// <summary>
+        ///     Gets or sets the title.
+        /// </summary>
+        /// <value>
+        ///     The title.
+        /// </value>
+        private string _title;
+
+        /// <summary>
+        ///     Gets or sets the task identifier.
+        /// </summary>
+        /// <value>
+        ///     The task identifier.
         /// </value>
         public int TaskId { get; set; }
 
         /// <summary>
-        /// Gets or sets the title.
+        ///     Gets or sets the title.
         /// </summary>
         /// <value>
-        /// The title.
-        /// </value>
-        private string _title;
-        /// <summary>
-        /// Gets or sets the title.
-        /// </summary>
-        /// <value>
-        /// The title.
+        ///     The title.
         /// </value>
         public string Title
         {
@@ -63,17 +98,10 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets or sets the description.
+        ///     Gets or sets the description.
         /// </summary>
         /// <value>
-        /// The description.
-        /// </value>
-        private string _description;
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
+        ///     The description.
         /// </value>
         public string Description
         {
@@ -82,18 +110,10 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets or sets the due date.
+        ///     Gets or sets the due date.
         /// </summary>
         /// <value>
-        /// The due date.
-        /// </value>
-        private DateTimeOffset? _dueDate;
-
-        /// <summary>
-        /// Gets or sets the due date.
-        /// </summary>
-        /// <value>
-        /// The due date.
+        ///     The due date.
         /// </value>
         public DateTimeOffset? DueDate
         {
@@ -102,17 +122,10 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets or sets the due time.
+        ///     Gets or sets the due time.
         /// </summary>
         /// <value>
-        /// The due time.
-        /// </value>
-        private TimeSpan _dueTime;
-        /// <summary>
-        /// Gets or sets the due time.
-        /// </summary>
-        /// <value>
-        /// The due time.
+        ///     The due time.
         /// </value>
         public TimeSpan DueTime
         {
@@ -121,17 +134,10 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets or sets the task status.
+        ///     Gets or sets the task status.
         /// </summary>
         /// <value>
-        /// The task status.
-        /// </value>
-        private Status _taskStatus;
-        /// <summary>
-        /// Gets or sets the task status.
-        /// </summary>
-        /// <value>
-        /// The task status.
+        ///     The task status.
         /// </value>
         public Status TaskStatus
         {
@@ -145,36 +151,44 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets or sets the notes.
+        ///     Gets or sets the notes.
         /// </summary>
         /// <value>
-        /// The notes.
+        ///     The notes.
         /// </value>
         public string Notes { get; set; }
 
         /// <summary>
-        /// Gets or sets the completed on.
+        ///     Gets or sets the completed on.
         /// </summary>
         /// <value>
-        /// The completed on.
+        ///     The completed on.
         /// </value>
         public DateTimeOffset? CompletedOn { get; set; }
 
         /// <summary>
-        /// Gets or sets the users.
+        ///     Gets or sets the users.
         /// </summary>
         /// <value>
-        /// The users.
+        ///     The users.
         /// </value>
         public List<User> Users { get; set; }
 
         /// <summary>
-        /// Occurs when a property value changes.
+        ///     Returns true if ... is valid.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is valid; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsValid => !string.IsNullOrEmpty(Title);
+
+        /// <summary>
+        ///     Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Called when [property changed].
+        ///     Called when [property changed].
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         [NotifyPropertyChangedInvocator]
@@ -184,7 +198,7 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Sets the field.
+        ///     Sets the field.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="field">The field.</param>
@@ -200,13 +214,5 @@ namespace StudentTask.Model
             OnPropertyChanged(propertyName);
             return true;
         }
-
-        /// <summary>
-        /// Returns true if ... is valid.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is valid; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsValid => !string.IsNullOrEmpty(Title);
     }
 }

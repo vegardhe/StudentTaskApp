@@ -26,11 +26,9 @@ namespace StudentTask.Uwp.App.Views
                 SplashImage.Visibility = Visibility.Collapsed;
                 return;
             }
-            else
-            {
-                RootCanvas.Background = null;
-                SplashImage.Visibility = Visibility.Visible;
-            }
+
+            RootCanvas.Background = null;
+            SplashImage.Visibility = Visibility.Visible;
             SplashImage.Height = splashScreen.ImageLocation.Height;
             SplashImage.Width = splashScreen.ImageLocation.Width;
             SplashImage.SetValue(Canvas.TopProperty, splashScreen.ImageLocation.Top);

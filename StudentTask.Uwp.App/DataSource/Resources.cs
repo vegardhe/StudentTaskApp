@@ -1,40 +1,32 @@
-﻿using Newtonsoft.Json;
-using StudentTask.Model;
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using StudentTask.Model;
 
 namespace StudentTask.Uwp.App.DataSource
 {
     /// <summary>
-    /// Database interaction for course resources.
+    ///     Database interaction for course resources.
     /// </summary>
     public class Resources
     {
         /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        /// <value>
-        /// The instance.
-        /// </value>
-        public static Resources Instance { get; } = new Resources();
-
-        /// <summary>
-        /// The base URI
+        ///     The base URI
         /// </summary>
         private const string BaseUri = "http://localhost:52988/api/";
 
         /// <summary>
-        /// The client
+        ///     The client
         /// </summary>
-        private HttpClient _client;
+        private readonly HttpClient _client;
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="Resources"/> class from being created.
+        ///     Prevents a default instance of the <see cref="Resources" /> class from being created.
         /// </summary>
         private Resources()
         {
@@ -45,7 +37,15 @@ namespace StudentTask.Uwp.App.DataSource
         }
 
         /// <summary>
-        /// Adds the resource.
+        ///     Gets the instance.
+        /// </summary>
+        /// <value>
+        ///     The instance.
+        /// </value>
+        public static Resources Instance { get; } = new Resources();
+
+        /// <summary>
+        ///     Adds the resource.
         /// </summary>
         /// <param name="newResource">The new resource.</param>
         /// <param name="course">The course.</param>
@@ -63,12 +63,13 @@ namespace StudentTask.Uwp.App.DataSource
                     throw new WebException();
                 throw new InvalidDataException();
             }
+
             var responseBody = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Resource>(responseBody);
         }
 
         /// <summary>
-        /// Updates the resource.
+        ///     Updates the resource.
         /// </summary>
         /// <param name="resource">The resource.</param>
         /// <returns></returns>
@@ -81,7 +82,7 @@ namespace StudentTask.Uwp.App.DataSource
         }
 
         /// <summary>
-        /// Deletes the resource.
+        ///     Deletes the resource.
         /// </summary>
         /// <param name="resource">The resource.</param>
         /// <returns></returns>

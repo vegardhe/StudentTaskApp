@@ -12,9 +12,10 @@
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True"
-                             Text="Login"></controls:PageHeader>
-        
-        <Grid RelativePanel.Below="PageHeader" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                             Text="Login" />
+
+        <Grid RelativePanel.Below="PageHeader" RelativePanel.AlignLeftWithPanel="True"
+              RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -33,16 +34,20 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <!-- TODO: Remove default uid/pwd -->
-            <TextBox Grid.Row="3" Grid.Column="1" Height="35" PlaceholderText="Username" Name="UsernameBox" Text="vegardhe"></TextBox>
-            <PasswordBox Grid.Row="4" Grid.Column="1" Height="35" PlaceholderText="Password" Name="PasswordBox" Password="Password123"></PasswordBox>
-            <TextBlock Grid.Row="5" Grid.Column="1" Name="ErrorBlock" Foreground="Red"></TextBlock>
-            <Button Name="LoginButton" 
-                    Grid.Row="6" 
-                    Grid.Column="1" 
-                    VerticalAlignment="Stretch" 
-                    HorizontalAlignment="Stretch" 
+            <TextBox Grid.Row="3" Grid.Column="1" Height="35" PlaceholderText="Username" Name="UsernameBox"
+                     Text="vegardhe" />
+            <PasswordBox Grid.Row="4" Grid.Column="1" Height="35" PlaceholderText="Password" Name="PasswordBox"
+                         Password="Password123" />
+            <TextBlock Grid.Row="5" Grid.Column="1" Name="ErrorBlock" Foreground="Red" />
+            <Button Name="LoginButton"
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Stretch"
                     Foreground="AliceBlue"
-                    Click="Login">Log in</Button>
+                    Click="Login">
+                Log in
+            </Button>
             <ProgressRing Name="ProgressRing" Grid.Row="7" Grid.Column="1" IsActive="False" Foreground="AliceBlue" />
             <TextBlock Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Hyperlink Foreground="Black" Click="Hyperlink_OnClick">Create Account</Hyperlink>

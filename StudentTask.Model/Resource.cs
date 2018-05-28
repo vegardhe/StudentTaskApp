@@ -6,32 +6,40 @@ using StudentTask.Model.Properties;
 namespace StudentTask.Model
 {
     /// <summary>
-    /// Represents a resource.
+    ///     Represents a resource.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class Resource : INotifyPropertyChanged
     {
         /// <summary>
-        /// Gets or sets the resource identifier.
+        ///     Gets or sets the link.
         /// </summary>
         /// <value>
-        /// The resource identifier.
+        ///     The link.
         /// </value>
-        public int ResourceId { get; set; }
+        private string _link;
 
         /// <summary>
-        /// Gets or sets the name.
+        ///     Gets or sets the name.
         /// </summary>
         /// <value>
-        /// The name.
+        ///     The name.
         /// </value>
         private string _name;
 
         /// <summary>
-        /// Gets or sets the name.
+        ///     Gets or sets the resource identifier.
         /// </summary>
         /// <value>
-        /// The name.
+        ///     The resource identifier.
+        /// </value>
+        public int ResourceId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the name.
+        /// </summary>
+        /// <value>
+        ///     The name.
         /// </value>
         public string Name
         {
@@ -40,18 +48,10 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets or sets the link.
+        ///     Gets or sets the link.
         /// </summary>
         /// <value>
-        /// The link.
-        /// </value>
-        private string _link;
-
-        /// <summary>
-        /// Gets or sets the link.
-        /// </summary>
-        /// <value>
-        /// The link.
+        ///     The link.
         /// </value>
         public string Link
         {
@@ -61,12 +61,12 @@ namespace StudentTask.Model
 
 
         /// <summary>
-        /// Occurs when a property value changes.
+        ///     Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Called when [property changed].
+        ///     Called when [property changed].
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         [NotifyPropertyChangedInvocator]
@@ -76,7 +76,7 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Sets the field.
+        ///     Sets the field.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="field">The field.</param>

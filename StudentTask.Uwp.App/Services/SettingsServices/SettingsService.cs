@@ -1,22 +1,26 @@
 ﻿using System;
-using Template10.Common;
-using Template10.Utils;
 using Windows.UI.Xaml;
+using StudentTask.Uwp.App.Views;
+using Template10.Common;
+using Template10.Services.SettingsService;
+using Template10.Utils;
 
 namespace StudentTask.Uwp.App.Services.SettingsServices
 {
     public class SettingsService
     {
-        public static SettingsService Instance { get; } = new SettingsService();
-        Template10.Services.SettingsService.ISettingsHelper _helper;
+        private readonly ISettingsHelper _helper;
+
         private SettingsService()
         {
-            _helper = new Template10.Services.SettingsService.SettingsHelper();
+            _helper = new SettingsHelper();
         }
+
+        public static SettingsService Instance { get; } = new SettingsService();
 
         public bool UseShellBackButton
         {
-            get { return _helper.Read(nameof(UseShellBackButton), true); }
+            get => _helper.Read(nameof(UseShellBackButton), true);
             set
             {
                 _helper.Write(nameof(UseShellBackButton), value);
@@ -40,13 +44,13 @@ namespace StudentTask.Uwp.App.Services.SettingsServices
             {
                 _helper.Write(nameof(AppTheme), value.ToString());
                 ((FrameworkElement) Window.Current.Content).RequestedTheme = value.ToElementTheme();
-                Views.Shell.HamburgerMenu.RefreshStyles(value, true);
+                Shell.HamburgerMenu.RefreshStyles(value, true);
             }
         }
 
         public TimeSpan CacheMaxDuration
         {
-            get { return _helper.Read(nameof(CacheMaxDuration), TimeSpan.FromDays(2)); }
+            get => _helper.Read(nameof(CacheMaxDuration), TimeSpan.FromDays(2));
             set
             {
                 _helper.Write(nameof(CacheMaxDuration), value);
@@ -56,21 +60,21 @@ namespace StudentTask.Uwp.App.Services.SettingsServices
 
         public bool ShowHamburgerButton
         {
-            get { return _helper.Read(nameof(ShowHamburgerButton), true); }
+            get => _helper.Read(nameof(ShowHamburgerButton), true);
             set
             {
                 _helper.Write(nameof(ShowHamburgerButton), value);
-                Views.Shell.HamburgerMenu.HamburgerButtonVisibility = value ? Visibility.Visible : Visibility.Collapsed;
+                Shell.HamburgerMenu.HamburgerButtonVisibility = value ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
         public bool IsFullScreen
         {
-            get { return _helper.Read(nameof(IsFullScreen), false); }
+            get => _helper.Read(nameof(IsFullScreen), false);
             set
             {
                 _helper.Write(nameof(IsFullScreen), value);
-                Views.Shell.HamburgerMenu.IsFullScreen = value;
+                Shell.HamburgerMenu.IsFullScreen = value;
             }
         }
     }

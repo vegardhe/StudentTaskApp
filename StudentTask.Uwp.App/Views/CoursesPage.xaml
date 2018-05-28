@@ -26,17 +26,23 @@
                              RelativePanel.AlignTopWithPanel="True"
                              Text="Courses">
             <controls:PageHeader.PrimaryCommands>
-                <AppBarButton Click="{x:Bind AddCourse}" Name="NewCourseButton" Icon="Add" Label="Add Course" Visibility="Collapsed" />
-                <AppBarButton Click="{x:Bind EditCourse}" Name="EditCourseButton" Icon="Edit" Label="Edit Course" Visibility="Collapsed" />
-                <AppBarButton Click="{x:Bind ManageResources}" Name="ManageResourcesButton" Icon="Link" Label="Manage Resources" Visibility="Collapsed" />
-                <AppBarButton Click="{x:Bind AddExercise}"  Name="NewExerciseButton" Icon="Bullets" Label="Add Exercise" Visibility="Collapsed" />
-                <AppBarButton Click="{x:Bind DeleteCourse}" Name="DeleteCourseButton" Icon="Delete" Label="Delete Course" Visibility="Collapsed"/>
-                <AppBarButton Click="{x:Bind AddUserToCourse}" Name="AddUserToCourseButton" Icon="AddFriend" Label="Add User" Visibility="Collapsed" />
+                <AppBarButton Click="{x:Bind AddCourse}" Name="NewCourseButton" Icon="Add" Label="Add Course"
+                              Visibility="Collapsed" />
+                <AppBarButton Click="{x:Bind EditCourse}" Name="EditCourseButton" Icon="Edit" Label="Edit Course"
+                              Visibility="Collapsed" />
+                <AppBarButton Click="{x:Bind ManageResources}" Name="ManageResourcesButton" Icon="Link"
+                              Label="Manage Resources" Visibility="Collapsed" />
+                <AppBarButton Click="{x:Bind AddExercise}" Name="NewExerciseButton" Icon="Bullets" Label="Add Exercise"
+                              Visibility="Collapsed" />
+                <AppBarButton Click="{x:Bind DeleteCourse}" Name="DeleteCourseButton" Icon="Delete"
+                              Label="Delete Course" Visibility="Collapsed" />
+                <AppBarButton Click="{x:Bind AddUserToCourse}" Name="AddUserToCourseButton" Icon="AddFriend"
+                              Label="Add User" Visibility="Collapsed" />
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
-        <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+        <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                  ScrollViewer.HorizontalScrollMode="Enabled"                  
+                  ScrollViewer.HorizontalScrollMode="Enabled"
                   ScrollViewer.VerticalScrollMode="Disabled"
                   ItemsSource="{Binding Source={StaticResource CourseViewSource}}"
                   RelativePanel.Below="PageHeader"
@@ -67,28 +73,28 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <StackPanel Margin="20">
-                <TextBlock Text="{Binding SelectedItem.Name, ElementName=CoursesListView}" 
-                           FontSize="28" 
+                <TextBlock Text="{Binding SelectedItem.Name, ElementName=CoursesListView}"
+                           FontSize="28"
                            TextTrimming="CharacterEllipsis" />
-                <TextBlock Margin="0,10,0,0" FontSize="18" 
+                <TextBlock Margin="0,10,0,0" FontSize="18"
                            Text="{Binding SelectedItem.Information, ElementName=CoursesListView}"
-                           TextWrapping="WrapWholeWords"/>
+                           TextWrapping="WrapWholeWords" />
             </StackPanel>
         </Grid>
         <Rectangle Name="SeparatorLine"
-              RelativePanel.RightOf="DetailsGrid"
-              RelativePanel.Below="CoursesListView"
-              RelativePanel.Above="ResourcesListView"
-              Width="2"
-              Fill="DarkGray"
-                   Visibility="Collapsed"/>
+                   RelativePanel.RightOf="DetailsGrid"
+                   RelativePanel.Below="CoursesListView"
+                   RelativePanel.Above="ResourcesListView"
+                   Width="2"
+                   Fill="DarkGray"
+                   Visibility="Collapsed" />
         <ListView RelativePanel.RightOf="SeparatorLine"
                   RelativePanel.Below="CoursesListView"
                   RelativePanel.AlignRightWithPanel="True"
                   RelativePanel.Above="ResourcesListView"
                   ItemsSource="{x:Bind CourseExercises}"
-                  Header=" Exercises" 
-                  FontSize="24" 
+                  Header=" Exercises"
+                  FontSize="24"
                   Padding="0,20,0,0"
                   Name="ExercisesListView"
                   IsItemClickEnabled="True"
@@ -101,9 +107,9 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+        <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                  ScrollViewer.HorizontalScrollMode="Enabled"                  
+                  ScrollViewer.HorizontalScrollMode="Enabled"
                   ScrollViewer.VerticalScrollMode="Disabled"
                   ItemsSource="{x:Bind CourseResources}"
                   RelativePanel.AlignLeftWithPanel="True"
@@ -143,16 +149,18 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                
-                <TextBlock Text="Name: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
-                <TextBox Text="{Binding Name, Mode=TwoWay}" PlaceholderText="Enter course name" Grid.Column="1" Grid.Row="0" />
+
+                <TextBlock Text="Name: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" />
+                <TextBox Text="{Binding Name, Mode=TwoWay}" PlaceholderText="Enter course name" Grid.Column="1"
+                         Grid.Row="0" />
                 <TextBlock Text="CourseCode: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" />
-                <TextBox Text="{Binding CourseCode, Mode=TwoWay}" PlaceholderText="Enter course code" Grid.Column="1" Grid.Row="1" />
+                <TextBox Text="{Binding CourseCode, Mode=TwoWay}" PlaceholderText="Enter course code" Grid.Column="1"
+                         Grid.Row="1" />
                 <TextBlock Text="Information: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
                 <TextBox Text="{Binding Information, Mode=TwoWay}"
                          PlaceholderText="Enter course information"
@@ -160,7 +168,7 @@
                          Grid.Row="2"
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         MaxHeight="300"/>
+                         MaxHeight="300" />
             </Grid>
         </ContentDialog>
 
@@ -191,10 +199,12 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Name: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
-                <TextBox Text="{Binding SelectedItem.Name, ElementName=CoursesListView, Mode=TwoWay}" Grid.Column="1" Grid.Row="0" />
+                <TextBlock Text="Name: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" />
+                <TextBox Text="{Binding SelectedItem.Name, ElementName=CoursesListView, Mode=TwoWay}" Grid.Column="1"
+                         Grid.Row="0" />
                 <TextBlock Text="CourseCode: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" />
-                <TextBox Text="{Binding SelectedItem.CourseCode, ElementName=CoursesListView, Mode=TwoWay}" Grid.Column="1" Grid.Row="1" />
+                <TextBox Text="{Binding SelectedItem.CourseCode, ElementName=CoursesListView, Mode=TwoWay}"
+                         Grid.Column="1" Grid.Row="1" />
                 <TextBlock Text="Information: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
                 <TextBox Text="{Binding SelectedItem.Information, ElementName=CoursesListView, Mode=TwoWay}"
                          PlaceholderText="Enter course information"
@@ -202,7 +212,7 @@
                          Grid.Row="2"
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         MaxHeight="300"/>
+                         MaxHeight="300" />
             </Grid>
         </ContentDialog>
 
@@ -236,8 +246,10 @@
                     </ListView.ItemTemplate>
                 </ListView>
                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="10" Visibility="Collapsed" Name="EditResourcePanel">
-                    <TextBox Text="{Binding SelectedItem.Name, ElementName=ManageResourcesListView, Mode=TwoWay}" Header="Resource Name:" />
-                    <TextBox Text="{Binding SelectedItem.Link, ElementName=ManageResourcesListView, Mode=TwoWay}" Header="Resource Link:" />
+                    <TextBox Text="{Binding SelectedItem.Name, ElementName=ManageResourcesListView, Mode=TwoWay}"
+                             Header="Resource Name:" />
+                    <TextBox Text="{Binding SelectedItem.Link, ElementName=ManageResourcesListView, Mode=TwoWay}"
+                             Header="Resource Link:" />
                 </StackPanel>
             </Grid>
         </ContentDialog>
@@ -265,9 +277,9 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <TextBox Text="{Binding Title, Mode=TwoWay}" 
-                         PlaceholderText="Enter exercise title" 
-                         Grid.Row="0" 
+                <TextBox Text="{Binding Title, Mode=TwoWay}"
+                         PlaceholderText="Enter exercise title"
+                         Grid.Row="0"
                          Header="Title: " />
                 <TextBox Text="{Binding Description, Mode=TwoWay}"
                          PlaceholderText="Enter exercise information"
@@ -275,9 +287,10 @@
                          Grid.Row="1"
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         MaxHeight="300"/>
+                         MaxHeight="300" />
                 <TextBlock Grid.Row="2" Text="Due:" />
-                <CalendarDatePicker Date="{Binding DueDate, Mode=TwoWay}" Grid.Row="3" Header="" Name="NewExerciseDatePicker"/>
+                <CalendarDatePicker Date="{Binding DueDate, Mode=TwoWay}" Grid.Row="3" Header=""
+                                    Name="NewExerciseDatePicker" />
                 <TimePicker Grid.Row="4" Time="{Binding DueTime, Mode=TwoWay}" Header="Time:" />
             </Grid>
         </ContentDialog>
@@ -295,17 +308,19 @@
                 <TextBlock Text="{Binding SelectedItem.Description, ElementName=ExercisesListView}" TextWrapping="Wrap" />
                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Text="Due Date:" />
-                    <TextBlock Margin="10,0,0,0" 
+                    <TextBlock Margin="10,0,0,0"
                                Text="{Binding SelectedItem.DueDate, ElementName=ExercisesListView, Converter={StaticResource DateToTextConverter}}" />
                     <TextBlock Margin="10,0,0,0" Text="{Binding SelectedItem.DueTime, ElementName=ExercisesListView}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Button Name="EditExerciseButton" Visibility="Collapsed" Content="Edit" Width="233" Margin="0,10,0,0" Click="{x:Bind EditExercise}" />
-                    <Button Name="DeleteExerciseButton" Visibility="Collapsed" Content="Delete" Width="237" Margin="4,10,0,0" Click="{x:Bind DeleteExercise}" />
+                    <Button Name="EditExerciseButton" Visibility="Collapsed" Content="Edit" Width="233"
+                            Margin="0,10,0,0" Click="{x:Bind EditExercise}" />
+                    <Button Name="DeleteExerciseButton" Visibility="Collapsed" Content="Delete" Width="237"
+                            Margin="4,10,0,0" Click="{x:Bind DeleteExercise}" />
                 </StackPanel>
             </StackPanel>
         </ContentDialog>
-        
+
         <ContentDialog x:Name="DeleteCourseContentDialog"
                        PrimaryButtonText="Delete"
                        IsPrimaryButtonEnabled="True"
@@ -314,7 +329,7 @@
             <ContentDialog.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Delete Course"/>
+                        <TextBlock Text="Delete Course" />
                     </StackPanel>
                 </DataTemplate>
             </ContentDialog.TitleTemplate>
@@ -340,9 +355,9 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <TextBox Text="{Binding Title, Mode=TwoWay}" 
-                         PlaceholderText="Enter exercise title" 
-                         Grid.Row="0" 
+                <TextBox Text="{Binding Title, Mode=TwoWay}"
+                         PlaceholderText="Enter exercise title"
+                         Grid.Row="0"
                          Header="Title: " />
                 <TextBox Text="{Binding Description, Mode=TwoWay}"
                          PlaceholderText="Enter exercise information"
@@ -350,9 +365,9 @@
                          Grid.Row="1"
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         MaxHeight="300"/>
+                         MaxHeight="300" />
                 <TextBlock Grid.Row="2" Text="Due:" />
-                <CalendarDatePicker Date="{Binding DueDate, Mode=TwoWay}" Grid.Row="3"/>
+                <CalendarDatePicker Date="{Binding DueDate, Mode=TwoWay}" Grid.Row="3" />
                 <TimePicker Grid.Row="4" Time="{Binding DueTime, Mode=TwoWay}" Header="Time:" />
             </Grid>
         </ContentDialog>
@@ -365,7 +380,7 @@
             <ContentDialog.TitleTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Delete Course"/>
+                        <TextBlock Text="Delete Course" />
                     </StackPanel>
                 </DataTemplate>
             </ContentDialog.TitleTemplate>
@@ -382,31 +397,31 @@
                        SecondaryButtonText="Cancel"
                        IsSecondaryButtonEnabled="True"
                        Title="Add User">
-        <StackPanel>
-            <AutoSuggestBox PlaceholderText="Search for user"
-                            QueryIcon="Find"
-                            Width="200"
-                            Margin="0,20,0,0"
-                            Name="UserAutoSuggestBox"
-                            SuggestionChosen="UserAutoSuggestBox_OnSuggestionChosen"
-                            TextChanged="UserAutoSuggestBox_OnTextChanged"
-                            QuerySubmitted="UserAutoSuggestBox_OnQuerySubmitted"
-                            DisplayMemberPath="FullName"
-                            Header="User:" />
+            <StackPanel>
+                <AutoSuggestBox PlaceholderText="Search for user"
+                                QueryIcon="Find"
+                                Width="200"
+                                Margin="0,20,0,0"
+                                Name="UserAutoSuggestBox"
+                                SuggestionChosen="UserAutoSuggestBox_OnSuggestionChosen"
+                                TextChanged="UserAutoSuggestBox_OnTextChanged"
+                                QuerySubmitted="UserAutoSuggestBox_OnQuerySubmitted"
+                                DisplayMemberPath="FullName"
+                                Header="User:" />
                 <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
-                    <TextBlock Text="Username: "/>
+                    <TextBlock Text="Username: " />
                     <TextBlock Margin="5,0,0,0" Text="{Binding Username}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Name: "/>
+                    <TextBlock Text="Name: " />
                     <TextBlock Margin="5,0,0,0" Text="{Binding FullName}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Email: "/>
+                    <TextBlock Text="Email: " />
                     <TextBlock Margin="5,0,0,0" Text="{Binding Email}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Usergroup: "/>
+                    <TextBlock Text="Usergroup: " />
                     <TextBlock Margin="5,0,0,0" Text="{Binding GroupUserGroup}" />
                 </StackPanel>
             </StackPanel>

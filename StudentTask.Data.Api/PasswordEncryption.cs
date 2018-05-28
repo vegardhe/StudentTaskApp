@@ -4,12 +4,12 @@ using System.Security.Cryptography;
 namespace StudentTask.Data.Api
 {
     /// <summary>
-    /// Encryption and verification of password hashes.
+    ///     Encryption and verification of password hashes.
     /// </summary>
     public static class PasswordEncryption
     {
         /// <summary>
-        /// Encrypts the specified password.
+        ///     Encrypts the specified password.
         /// </summary>
         /// <param name="password">The password.</param>
         /// <returns></returns>
@@ -29,7 +29,7 @@ namespace StudentTask.Data.Api
         }
 
         /// <summary>
-        /// Verifies the specified password.
+        ///     Verifies the specified password.
         /// </summary>
         /// <param name="password">The password.</param>
         /// <param name="savedPasswordHash">The saved password hash.</param>

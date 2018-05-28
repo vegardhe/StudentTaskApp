@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using StudentTask.Model;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -8,36 +6,30 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using StudentTask.Model;
 
 [assembly: CLSCompliant(false)]
 
 namespace StudentTask.Uwp.App.DataSource
 {
     /// <summary>
-    /// Database interaction for courses.
+    ///     Database interaction for courses.
     /// </summary>
     public class Courses
     {
         /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        /// <value>
-        /// The instance.
-        /// </value>
-        public static Courses Instance { get; } = new Courses();
-
-        /// <summary>
-        /// The base URI
+        ///     The base URI
         /// </summary>
         private const string BaseUri = "http://localhost:52988/api/";
 
         /// <summary>
-        /// The client
+        ///     The client
         /// </summary>
-        private HttpClient _client;
+        private readonly HttpClient _client;
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="Courses"/> class from being created.
+        ///     Prevents a default instance of the <see cref="Courses" /> class from being created.
         /// </summary>
         private Courses()
         {
@@ -46,8 +38,17 @@ namespace StudentTask.Uwp.App.DataSource
                 BaseAddress = new Uri(BaseUri)
             };
         }
+
         /// <summary>
-        /// Gets the user courses.
+        ///     Gets the instance.
+        /// </summary>
+        /// <value>
+        ///     The instance.
+        /// </value>
+        public static Courses Instance { get; } = new Courses();
+
+        /// <summary>
+        ///     Gets the user courses.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns></returns>
@@ -63,13 +64,14 @@ namespace StudentTask.Uwp.App.DataSource
             {
                 throw new HttpRequestException("Request failed", e);
             }
+
             var courses = JsonConvert.DeserializeObject<Course[]>(json);
             Users.Instance.SessionUser.Courses = courses.ToList();
             return courses;
         }
 
         /// <summary>
-        /// Gets the course resources.
+        ///     Gets the course resources.
         /// </summary>
         /// <param name="course">The course.</param>
         /// <returns></returns>
@@ -86,6 +88,7 @@ namespace StudentTask.Uwp.App.DataSource
             {
                 throw new HttpRequestException("Request failed", e);
             }
+
             var resources = JsonConvert.DeserializeObject<Resource[]>(json);
             var resourceList = resources.ToList();
             course.Resources = resourceList;
@@ -93,7 +96,7 @@ namespace StudentTask.Uwp.App.DataSource
         }
 
         /// <summary>
-        /// Gets the course exercises.
+        ///     Gets the course exercises.
         /// </summary>
         /// <param name="course">The selected course.</param>
         /// <returns></returns>
@@ -118,7 +121,7 @@ namespace StudentTask.Uwp.App.DataSource
         }
 
         /// <summary>
-        /// Adds the course.
+        ///     Adds the course.
         /// </summary>
         /// <param name="course">The new course.</param>
         /// <returns></returns>
@@ -136,13 +139,13 @@ namespace StudentTask.Uwp.App.DataSource
                     throw new WebException();
                 throw new InvalidDataException();
             }
-                
+
             var responseBody = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Course>(responseBody);
         }
 
         /// <summary>
-        /// Updates the course.
+        ///     Updates the course.
         /// </summary>
         /// <param name="selectedCourse">The selected course.</param>
         /// <returns></returns>
@@ -155,7 +158,7 @@ namespace StudentTask.Uwp.App.DataSource
         }
 
         /// <summary>
-        /// Deletes the course.
+        ///     Deletes the course.
         /// </summary>
         /// <param name="course">The course.</param>
         /// <returns></returns>
@@ -166,7 +169,7 @@ namespace StudentTask.Uwp.App.DataSource
         }
 
         /// <summary>
-        /// Adds the exercise.
+        ///     Adds the exercise.
         /// </summary>
         /// <param name="exercise">The exercise.</param>
         /// <param name="course">The course.</param>
@@ -186,12 +189,13 @@ namespace StudentTask.Uwp.App.DataSource
                     throw new WebException();
                 throw new InvalidDataException();
             }
+
             var responseBody = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<Exercise>(responseBody);
         }
 
         /// <summary>
-        /// Adds the user to course.
+        ///     Adds the user to course.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <param name="course">The course.</param>

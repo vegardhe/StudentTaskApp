@@ -3,47 +3,47 @@
 namespace StudentTask.Model
 {
     /// <summary>
-    /// Represents a log element.
+    ///     Represents a log element.
     /// </summary>
     public class LogElement
     {
         /// <summary>
-        /// Gets or sets the log element identifier.
+        ///     Gets or sets the log element identifier.
         /// </summary>
         /// <value>
-        /// The log element identifier.
+        ///     The log element identifier.
         /// </value>
         public int LogElementId { get; set; }
 
         /// <summary>
-        /// Gets or sets the message.
+        ///     Gets or sets the message.
         /// </summary>
         /// <value>
-        /// The message.
+        ///     The message.
         /// </value>
         public string Message { get; set; }
 
         /// <summary>
-        /// Gets or sets the type.
+        ///     Gets or sets the type.
         /// </summary>
         /// <value>
-        /// The type.
+        ///     The type.
         /// </value>
         public string ElementType { get; set; }
 
         /// <summary>
-        /// Gets or sets the source.
+        ///     Gets or sets the source.
         /// </summary>
         /// <value>
-        /// The source.
+        ///     The source.
         /// </value>
         public string Source { get; set; }
 
         /// <summary>
-        /// Gets or sets the timestamp.
+        ///     Gets or sets the timestamp.
         /// </summary>
         /// <value>
-        /// The timestamp.
+        ///     The timestamp.
         /// </value>
         public DateTime Timestamp { get; set; } = DateTime.Now;
     }

@@ -5,12 +5,12 @@ using Windows.UI.Popups;
 namespace StudentTask.Uwp.App
 {
     /// <summary>
-    /// Extension methods for exception class.
+    ///     Extension methods for exception class.
     /// </summary>
     public static class ExceptionExtensions
     {
         /// <summary>
-        /// Displays the specified MSG.
+        ///     Displays the specified MSG.
         /// </summary>
         /// <param name="ex">The ex.</param>
         /// <param name="message">The MSG.</param>
@@ -23,7 +23,7 @@ namespace StudentTask.Uwp.App
         }
 
         /// <summary>
-        /// Logs the specified ex.
+        ///     Logs the specified ex.
         /// </summary>
         /// <param name="ex">The ex.</param>
         /// <returns></returns>

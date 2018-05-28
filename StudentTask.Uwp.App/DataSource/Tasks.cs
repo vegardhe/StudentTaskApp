@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using StudentTask.Model;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -8,32 +6,34 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using StudentTask.Model;
 using Task = StudentTask.Model.Task;
 
 namespace StudentTask.Uwp.App.DataSource
 {
     /// <summary>
-    /// Database interaction for tasks.
+    ///     Database interaction for tasks.
     /// </summary>
     public class Tasks
     {
         /// <summary>
-        /// The instance
-        /// </summary>
-        public static Tasks Instance = new Tasks();
-
-        /// <summary>
-        /// The base URI
+        ///     The base URI
         /// </summary>
         private const string BaseUri = "http://localhost:52988/api/";
 
         /// <summary>
-        /// The client
+        ///     The instance
         /// </summary>
-        private HttpClient _client;
+        public static Tasks Instance = new Tasks();
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="Tasks"/> class from being created.
+        ///     The client
+        /// </summary>
+        private readonly HttpClient _client;
+
+        /// <summary>
+        ///     Prevents a default instance of the <see cref="Tasks" /> class from being created.
         /// </summary>
         private Tasks()
         {
@@ -44,7 +44,7 @@ namespace StudentTask.Uwp.App.DataSource
         }
 
         /// <summary>
-        /// Gets the tasks.
+        ///     Gets the tasks.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns></returns>
@@ -60,13 +60,14 @@ namespace StudentTask.Uwp.App.DataSource
             {
                 throw new HttpRequestException("Getting tasks failed.", e);
             }
+
             var tasks = JsonConvert.DeserializeObject<Task[]>(json);
             Users.Instance.SessionUser.Tasks = tasks.ToList();
             return tasks;
         }
 
         /// <summary>
-        /// Deletes the task.
+        ///     Deletes the task.
         /// </summary>
         /// <param name="task">The task.</param>
         /// <returns></returns>
@@ -77,7 +78,7 @@ namespace StudentTask.Uwp.App.DataSource
         }
 
         /// <summary>
-        /// Updates the task.
+        ///     Updates the task.
         /// </summary>
         /// <param name="changedTask">The changed task.</param>
         /// <returns></returns>
@@ -90,7 +91,7 @@ namespace StudentTask.Uwp.App.DataSource
         }
 
         /// <summary>
-        /// Adds the task.
+        ///     Adds the task.
         /// </summary>
         /// <param name="newTask">The new task.</param>
         /// <returns></returns>
@@ -108,6 +109,7 @@ namespace StudentTask.Uwp.App.DataSource
                     throw new WebException();
                 throw new InvalidDataException();
             }
+
             var responseBody = await response.Content.ReadAsStringAsync();
             var createdTask = JsonConvert.DeserializeObject<Task>(responseBody);
             Users.Instance.SessionUser.Tasks.Add(createdTask);

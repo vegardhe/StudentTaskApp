@@ -5,39 +5,47 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using StudentTask.Model.Properties;
 
-[assembly:CLSCompliant(false)]
-[assembly:ComVisible(false)]
+[assembly: CLSCompliant(false)]
+[assembly: ComVisible(false)]
 
 namespace StudentTask.Model
 
 {
     /// <summary>
-    /// Represents a course.
+    ///     Represents a course.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class Course : INotifyPropertyChanged
     {
         /// <summary>
-        /// Gets or sets the course identifier.
+        ///     Gets or sets the information.
         /// </summary>
         /// <value>
-        /// The course identifier.
+        ///     The information.
         /// </value>
-        public int CourseId { get; set; }
+        private string _information;
 
         /// <summary>
-        /// Gets or sets the name.
+        ///     Gets or sets the name.
         /// </summary>
         /// <value>
-        /// The name.
+        ///     The name.
         /// </value>
         private string _name;
 
         /// <summary>
-        /// Gets or sets the name.
+        ///     Gets or sets the course identifier.
         /// </summary>
         /// <value>
-        /// The name.
+        ///     The course identifier.
+        /// </value>
+        public int CourseId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the name.
+        /// </summary>
+        /// <value>
+        ///     The name.
         /// </value>
         public string Name
         {
@@ -46,25 +54,18 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets or sets the course code.
+        ///     Gets or sets the course code.
         /// </summary>
         /// <value>
-        /// The course code.
+        ///     The course code.
         /// </value>
         public string CourseCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the information.
+        ///     Gets or sets the information.
         /// </summary>
         /// <value>
-        /// The information.
-        /// </value>
-        private string _information;
-        /// <summary>
-        /// Gets or sets the information.
-        /// </summary>
-        /// <value>
-        /// The information.
+        ///     The information.
         /// </value>
         public string Information
         {
@@ -73,36 +74,36 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets or sets the exercises.
+        ///     Gets or sets the exercises.
         /// </summary>
         /// <value>
-        /// The exercises.
+        ///     The exercises.
         /// </value>
         public List<Exercise> Exercises { get; set; }
 
         /// <summary>
-        /// Gets or sets the resources.
+        ///     Gets or sets the resources.
         /// </summary>
         /// <value>
-        /// The resources.
+        ///     The resources.
         /// </value>
         public List<Resource> Resources { get; set; }
 
         /// <summary>
-        /// Gets or sets the users.
+        ///     Gets or sets the users.
         /// </summary>
         /// <value>
-        /// The users.
+        ///     The users.
         /// </value>
         public List<User> Users { get; set; }
 
         /// <summary>
-        /// Occurs when a property value changes.
+        ///     Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Called when [property changed].
+        ///     Called when [property changed].
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         [NotifyPropertyChangedInvocator]
@@ -112,7 +113,7 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Sets the field.
+        ///     Sets the field.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="field">The field.</param>

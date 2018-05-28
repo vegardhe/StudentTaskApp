@@ -28,14 +28,14 @@
                              Text="Tasks">
             <controls:PageHeader.PrimaryCommands>
                 <AppBarButton Click="{x:Bind AddTask}" Icon="Add" Label="Add Task" />
-                <AppBarButton Command="{x:Bind ViewModel.DeleteTaskCommand}" 
-                              CommandParameter="{Binding SelectedItem, ElementName=TasksListView}" 
+                <AppBarButton Command="{x:Bind ViewModel.DeleteTaskCommand}"
+                              CommandParameter="{Binding SelectedItem, ElementName=TasksListView}"
                               Icon="Delete"
-                              Label="Delete Task"/>
+                              Label="Delete Task" />
                 <AppBarButton Click="ToggleFinishedTasks" Icon="Accept" Label="Toggle Completed Tasks" />
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
-        
+
         <ListView x:Name="TasksListView"
                   ItemsSource="{Binding Source={StaticResource TaskViewSource}}"
                   RelativePanel.Below="PageHeader"
@@ -44,7 +44,8 @@
                   SelectionChanged="TasksListView_OnSelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Task">
-                    <TextBlock Text="{Binding Title, Mode=OneWay}" Foreground="{Binding TaskId, Converter={StaticResource TaskColorConverter}}" />
+                    <TextBlock Text="{Binding Title, Mode=OneWay}"
+                               Foreground="{Binding TaskId, Converter={StaticResource TaskColorConverter}}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -55,18 +56,20 @@
             </Grid.ColumnDefinitions>
             <StackPanel Name="DetailsPanel" Grid.Column="0" Visibility="Collapsed">
                 <TextBlock Text="{Binding SelectedItem.Title, ElementName=TasksListView}" FontSize="24" />
-                <TextBlock Text="{Binding SelectedItem.Description, ElementName=TasksListView}" TextWrapping="WrapWholeWords" />
+                <TextBlock Text="{Binding SelectedItem.Description, ElementName=TasksListView}"
+                           TextWrapping="WrapWholeWords" />
                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
                     <TextBlock Name="DueDateText" VerticalAlignment="Center" Text="Due Date: &#160;" Margin="0,0,5,0" />
-                    <TextBlock Margin="0,0,5,0" 
+                    <TextBlock Margin="0,0,5,0"
                                Text="{Binding SelectedItem.DueDate, ElementName=TasksListView, Converter={StaticResource DateToTextConverter}}" />
                     <TextBlock Text="{Binding SelectedItem.DueTime, ElementName=TasksListView}" />
                 </StackPanel>
                 <StackPanel Margin="0,10,0,0" Orientation="Horizontal">
-                    <TextBlock Text="Task status: "/>
+                    <TextBlock Text="Task status: " />
                     <TextBlock Text="{Binding SelectedItem.TaskStatus, ElementName=TasksListView}" Margin="5,0,0,0" />
                 </StackPanel>
-                <Button Name="EditButton" HorizontalAlignment="Right" Width="100" Height="50" Click="EditButton_OnClick" Margin="0,10,0,0" Content="Edit" />
+                <Button Name="EditButton" HorizontalAlignment="Right" Width="100" Height="50"
+                        Click="EditButton_OnClick" Margin="0,10,0,0" Content="Edit" />
             </StackPanel>
         </Grid>
 
@@ -79,26 +82,31 @@
                    PanePlacement="Right">
             <SplitView.Pane>
                 <StackPanel Margin="10" ScrollViewer.VerticalScrollBarVisibility="Auto">
-                    <TextBlock Text="{Binding SelectedItem.Title, ElementName=TasksListView, Mode=TwoWay}" FontSize="24" />
-                    <TextBox Text="{Binding SelectedItem.Title, ElementName=TasksListView, Mode=TwoWay}" Header="Title:" Margin="0,10,0,0" />
-                    <TextBox Text="{Binding SelectedItem.Description, ElementName=TasksListView, Mode=TwoWay}" 
-                             Header="Description:" 
-                             Margin="0,10,0,0" 
+                    <TextBlock Text="{Binding SelectedItem.Title, ElementName=TasksListView, Mode=TwoWay}"
+                               FontSize="24" />
+                    <TextBox Text="{Binding SelectedItem.Title, ElementName=TasksListView, Mode=TwoWay}"
+                             Header="Title:" Margin="0,10,0,0" />
+                    <TextBox Text="{Binding SelectedItem.Description, ElementName=TasksListView, Mode=TwoWay}"
+                             Header="Description:"
+                             Margin="0,10,0,0"
                              TextWrapping="Wrap"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                             MaxHeight="300"/>
-                    <CalendarDatePicker Date="{Binding SelectedItem.DueDate, ElementName=TasksListView, Mode=TwoWay}" Header="Due Date:" Margin="0,10,0,0" />
-                    <TimePicker Time="{Binding SelectedItem.DueTime,ElementName=TasksListView, Mode=TwoWay}" Header="Due Time:" Margin="0,10,0,0" />
-                    <ComboBox Header="Status:" 
+                             MaxHeight="300" />
+                    <CalendarDatePicker Date="{Binding SelectedItem.DueDate, ElementName=TasksListView, Mode=TwoWay}"
+                                        Header="Due Date:" Margin="0,10,0,0" />
+                    <TimePicker Time="{Binding SelectedItem.DueTime,ElementName=TasksListView, Mode=TwoWay}"
+                                Header="Due Time:" Margin="0,10,0,0" />
+                    <ComboBox Header="Status:"
                               Margin="0,10,0,0"
                               ItemsSource="{Binding Path=Enumval}"
                               SelectedItem="{Binding SelectedItem.TaskStatus, ElementName=TasksListView, Mode=TwoWay}" />
-                    <Button Width="100" Height="50" Click="{x:Bind SaveTask}" Content="Save" Margin="0,50,0,0" HorizontalAlignment="Right" />
-                        <TextBlock/>
+                    <Button Width="100" Height="50" Click="{x:Bind SaveTask}" Content="Save" Margin="0,50,0,0"
+                            HorizontalAlignment="Right" />
+                    <TextBlock />
                 </StackPanel>
             </SplitView.Pane>
         </SplitView>
-        
+
         <ContentDialog x:Name="AddTaskContentDialog"
                        PrimaryButtonText="Add"
                        IsPrimaryButtonEnabled="{Binding IsValid}"
@@ -120,29 +128,31 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Text="Title: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" />
-                <TextBox Text="{Binding Title, Mode=TwoWay}" PlaceholderText="Enter task title" Grid.Column="1" Grid.Row="0" />
+                <TextBox Text="{Binding Title, Mode=TwoWay}" PlaceholderText="Enter task title" Grid.Column="1"
+                         Grid.Row="0" />
                 <TextBlock Text="Description: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" />
-                <TextBox Text="{Binding Description, Mode=TwoWay}" 
-                         PlaceholderText="Enter task description" 
-                         Grid.Column="1" 
-                         Grid.Row="1" 
+                <TextBox Text="{Binding Description, Mode=TwoWay}"
+                         PlaceholderText="Enter task description"
+                         Grid.Column="1"
+                         Grid.Row="1"
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                          MaxHeight="300" />
                 <TextBlock Text="Due Date: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
-                <CalendarDatePicker Grid.Column="1" Grid.Row="2" Date="{Binding DueDate, Mode=TwoWay}" Name="NewTaskDatePicker" />
+                <CalendarDatePicker Grid.Column="1" Grid.Row="2" Date="{Binding DueDate, Mode=TwoWay}"
+                                    Name="NewTaskDatePicker" />
                 <TextBlock Text="Due Time: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
                 <TimePicker Grid.Column="1" Grid.Row="3" Time="{Binding DueTime, Mode=TwoWay}" />
             </Grid>
         </ContentDialog>
     </RelativePanel>
-    
+
 
 </Page>

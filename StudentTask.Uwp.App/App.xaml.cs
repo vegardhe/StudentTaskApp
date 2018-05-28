@@ -1,22 +1,22 @@
-﻿using StudentTask.Uwp.App.Services.SettingsServices;
-using System.Threading.Tasks;
-using Template10.Controls;
+﻿using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
+using StudentTask.Uwp.App.Services.SettingsServices;
+using StudentTask.Uwp.App.Views;
+using Template10.Controls;
 
 namespace StudentTask.Uwp.App
 {
     /// Documentation on APIs used in this page:
     /// https://github.com/Windows-XAML/Template10/wiki
-
     [Bindable]
     sealed partial class App
     {
         public App()
         {
             InitializeComponent();
-            SplashFactory = (e) => new Views.Splash(e);
+            SplashFactory = e => new Splash(e);
 
             #region app settings
 
@@ -35,11 +35,14 @@ namespace StudentTask.Uwp.App
             return new ModalDialog
             {
                 DisableBackButtonWhenModal = true,
-                Content = new Views.Shell(service),
-                ModalContent = new Views.Busy(),
+                Content = new Shell(service),
+                ModalContent = new Busy()
             };
         }
 
-        public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args) => await NavigationService.NavigateAsync(typeof(Views.LogOnPage));
+        public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
+        {
+            await NavigationService.NavigateAsync(typeof(LogOnPage));
+        }
     }
 }

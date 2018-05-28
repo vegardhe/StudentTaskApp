@@ -1,71 +1,71 @@
-﻿using StudentTask.Model;
-using StudentTask.Uwp.App.DataSource;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using Template10.Mvvm;
 using Windows.UI.Xaml.Navigation;
+using StudentTask.Model;
+using StudentTask.Uwp.App.DataSource;
+using Template10.Mvvm;
 using Task = System.Threading.Tasks.Task;
 
 namespace StudentTask.Uwp.App.ViewModels
 {
     /// <summary>
-    /// ViewModel for profile page.
+    ///     ViewModel for profile page.
     /// </summary>
     /// <seealso cref="Template10.Mvvm.ViewModelBase" />
     public class ProfilePageViewModel : ViewModelBase
     {
         /// <summary>
-        /// Gets or sets the session user.
+        ///     Gets or sets the session user.
         /// </summary>
         /// <value>
-        /// The session user.
+        ///     The session user.
         /// </value>
         public User SessionUser { get; set; }
 
         /// <summary>
-        /// Gets or sets the completed tasks.
+        ///     Gets or sets the completed tasks.
         /// </summary>
         /// <value>
-        /// The completed tasks.
+        ///     The completed tasks.
         /// </value>
         public int CompletedTasks { get; set; }
 
         /// <summary>
-        /// Gets or sets the completed tasks this week.
+        ///     Gets or sets the completed tasks this week.
         /// </summary>
         /// <value>
-        /// The completed tasks this week.
+        ///     The completed tasks this week.
         /// </value>
         public int CompletedTasksThisWeek { get; set; }
 
         /// <summary>
-        /// Gets or sets the tasks due this week.
+        ///     Gets or sets the tasks due this week.
         /// </summary>
         /// <value>
-        /// The tasks due this week.
+        ///     The tasks due this week.
         /// </value>
         public int TasksDueThisWeek { get; set; }
 
         /// <summary>
-        /// Gets or sets the tasks due today.
+        ///     Gets or sets the tasks due today.
         /// </summary>
         /// <value>
-        /// The tasks due today.
+        ///     The tasks due today.
         /// </value>
         public int TasksDueToday { get; set; }
 
         /// <summary>
-        /// Called when [navigated to asynchronous].
+        ///     Called when [navigated to asynchronous].
         /// </summary>
         /// <param name="parameter">The parameter.</param>
         /// <param name="mode">The mode.</param>
         /// <param name="state">The state.</param>
         /// <returns></returns>
-        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> state)
+        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode,
+            IDictionary<string, object> state)
         {
             if (Users.Instance.SessionUser.Courses == null)
-            {
                 try
                 {
                     await Courses.Instance.GetUserCourses(Users.Instance.SessionUser);
@@ -75,10 +75,8 @@ namespace StudentTask.Uwp.App.ViewModels
                     await ex.Log();
                     await ex.Display("Requesting courses failed.");
                 }
-            }
 
             if (Users.Instance.SessionUser.Tasks == null)
-            {
                 try
                 {
                     await Tasks.Instance.GetTasks(Users.Instance.SessionUser);
@@ -88,17 +86,15 @@ namespace StudentTask.Uwp.App.ViewModels
                     await ex.Display("Unable to establish database connection.");
                     await ex.Log();
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
                     await ex.Log();
                     await ex.Display("Unable to get tasks.");
                 }
-            }
 
             SessionUser = Users.Instance.SessionUser;
 
             foreach (var task in SessionUser.Tasks)
-            {
                 if (task.TaskStatus == Model.Task.Status.Finished)
                 {
                     CompletedTasks++;
@@ -114,9 +110,10 @@ namespace StudentTask.Uwp.App.ViewModels
                         TasksDueThisWeek++;
                     }
                     else if (task.DueDate.Value <= DateTimeOffset.Now.AddDays(7))
+                    {
                         TasksDueThisWeek++;
+                    }
                 }
-            }
         }
     }
 }

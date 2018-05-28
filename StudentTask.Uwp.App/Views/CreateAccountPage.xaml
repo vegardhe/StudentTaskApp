@@ -56,35 +56,45 @@
             <TextBlock Text="Create Account" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" FontSize="32" />
 
             <TextBlock Text="First name: " Grid.Row="2" Grid.Column="1" Style="{StaticResource FormTextBlockStyle}" />
-            <TextBox Grid.Row="2" Grid.Column="2" Style="{StaticResource FormTextBoxStyle}" Text="{Binding FirstName, Mode=TwoWay}" />
+            <TextBox Grid.Row="2" Grid.Column="2" Style="{StaticResource FormTextBoxStyle}"
+                     Text="{Binding FirstName, Mode=TwoWay}" />
 
             <TextBlock Text="Last name: " Grid.Row="3" Grid.Column="1" Style="{StaticResource FormTextBlockStyle}" />
-            <TextBox Grid.Row="3" Grid.Column="2" Style="{StaticResource FormTextBoxStyle}" Text="{Binding LastName, Mode=TwoWay}" />
+            <TextBox Grid.Row="3" Grid.Column="2" Style="{StaticResource FormTextBoxStyle}"
+                     Text="{Binding LastName, Mode=TwoWay}" />
 
             <TextBlock Text="Email: " Grid.Row="4" Grid.Column="1" Style="{StaticResource FormTextBlockStyle}" />
-            <TextBox Grid.Row="4" Grid.Column="2" Style="{StaticResource FormTextBoxStyle}" Text="{Binding Email, Mode=TwoWay}" />
+            <TextBox Grid.Row="4" Grid.Column="2" Style="{StaticResource FormTextBoxStyle}"
+                     Text="{Binding Email, Mode=TwoWay}" />
 
             <TextBlock Text="Username: " Grid.Row="5" Grid.Column="1" Style="{StaticResource FormTextBlockStyle}" />
-            <TextBox Grid.Row="5" Grid.Column="2" Style="{StaticResource FormTextBoxStyle}" Text="{Binding Username, Mode=TwoWay}" />
+            <TextBox Grid.Row="5" Grid.Column="2" Style="{StaticResource FormTextBoxStyle}"
+                     Text="{Binding Username, Mode=TwoWay}" />
 
             <TextBlock Text="Password: " Grid.Row="6" Grid.Column="1" Style="{StaticResource FormTextBlockStyle}" />
-            <PasswordBox Grid.Row="6" Grid.Column="2" Style="{StaticResource FormPasswordBoxStyle}" Name="PasswordBox" Password="{Binding Password, Mode=TwoWay}" />
+            <PasswordBox Grid.Row="6" Grid.Column="2" Style="{StaticResource FormPasswordBoxStyle}" Name="PasswordBox"
+                         Password="{Binding Password, Mode=TwoWay}" />
 
-            <TextBlock Text="Repeat Password: " Grid.Row="7" Grid.Column="1" Style="{StaticResource FormTextBlockStyle}" />
-            <PasswordBox Grid.Row="7" Grid.Column="2" Style="{StaticResource FormPasswordBoxStyle}" Name="RepeatPasswordBox" />
+            <TextBlock Text="Repeat Password: " Grid.Row="7" Grid.Column="1"
+                       Style="{StaticResource FormTextBlockStyle}" />
+            <PasswordBox Grid.Row="7" Grid.Column="2" Style="{StaticResource FormPasswordBoxStyle}"
+                         Name="RepeatPasswordBox" />
 
-            <TextBlock Text="Usergroup:" Style="{StaticResource FormTextBlockStyle}" Grid.Row="8" Grid.Column="1" Visibility="Collapsed" Name="UsergroupTextBlock" />
-            <ComboBox Grid.Row="8" Grid.Column="2" VerticalAlignment="Center" Margin="5,0,0,0" Visibility="Collapsed" Name="UsergroupComboBox" />
+            <TextBlock Text="Usergroup:" Style="{StaticResource FormTextBlockStyle}" Grid.Row="8" Grid.Column="1"
+                       Visibility="Collapsed" Name="UsergroupTextBlock" />
+            <ComboBox Grid.Row="8" Grid.Column="2" VerticalAlignment="Center" Margin="5,0,0,0" Visibility="Collapsed"
+                      Name="UsergroupComboBox" />
 
             <Button Content="Create" Grid.Row="9" Grid.Column="1"
                     IsEnabled="{Binding IsValid}"
                     Name="CreateAccountButton"
                     Grid.ColumnSpan="2"
-                    VerticalAlignment="Stretch" 
+                    VerticalAlignment="Stretch"
                     HorizontalAlignment="Stretch"
                     Foreground="Gainsboro"
-                    Click="CreateAccountButton_OnClick"/>
-            <TextBlock Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" Name="ErrorTextBlock" Foreground="Red" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    Click="CreateAccountButton_OnClick" />
+            <TextBlock Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" Name="ErrorTextBlock" Foreground="Red"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Grid>
     </RelativePanel>
 </Page>

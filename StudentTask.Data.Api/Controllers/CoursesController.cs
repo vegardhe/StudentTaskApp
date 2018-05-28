@@ -1,6 +1,4 @@
-﻿using StudentTask.Data.Access;
-using StudentTask.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -10,49 +8,51 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using StudentTask.Data.Access;
+using StudentTask.Model;
 
 [assembly: CLSCompliant(false)]
 
 namespace StudentTask.Data.Api.Controllers
 {
     /// <summary>
-    /// CRUD operations for courses.
+    ///     CRUD operations for courses.
     /// </summary>
     /// <seealso cref="System.Web.Http.ApiController" />
     public class CoursesController : ApiController
     {
         /// <summary>
-        /// The database
+        ///     The database
         /// </summary>
-        private StudentTaskContext db = new StudentTaskContext();
+        private readonly StudentTaskContext _db = new StudentTaskContext();
 
         // GET: api/Courses
         /// <summary>
-        /// Gets the courses.
+        ///     Gets the courses.
         /// </summary>
         /// <returns></returns>
-        public IQueryable<Course> GetCourses() => db.Courses;
+        public IQueryable<Course> GetCourses()
+        {
+            return _db.Courses;
+        }
 
         // GET: api/Courses/5
         /// <summary>
-        /// Gets the course.
+        ///     Gets the course.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [ResponseType(typeof(Course))]
         public async Task<IHttpActionResult> GetCourse(int id)
         {
-            var course = await db.Courses.FindAsync(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
+            var course = await _db.Courses.FindAsync(id);
+            if (course == null) return NotFound();
             return Ok(course);
         }
 
         // GET: api/Courses/5/Resources
         /// <summary>
-        /// Gets the resources.
+        ///     Gets the resources.
         /// </summary>
         /// <param name="courseId">The course identifier.</param>
         /// <returns></returns>
@@ -61,7 +61,7 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Resource))]
         public async Task<IHttpActionResult> GetResources(int courseId)
         {
-            var result = await db.Courses
+            var result = await _db.Courses
                 .Where(c => c.CourseId == courseId)
                 .SelectMany(c => c.Resources)
                 .ToListAsync();
@@ -70,7 +70,7 @@ namespace StudentTask.Data.Api.Controllers
 
         // GET: api/Courses/5/Exercises
         /// <summary>
-        /// Gets the exercises.
+        ///     Gets the exercises.
         /// </summary>
         /// <param name="courseId">The course identifier.</param>
         /// <returns></returns>
@@ -79,7 +79,7 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Exercise))]
         public async Task<IHttpActionResult> GetExercises(int courseId)
         {
-            var result = await db.Courses
+            var result = await _db.Courses
                 .Where(c => c.CourseId == courseId)
                 .SelectMany(c => c.Exercises)
                 .ToListAsync();
@@ -88,7 +88,7 @@ namespace StudentTask.Data.Api.Controllers
 
         // PUT: api/Courses/5
         /// <summary>
-        /// Puts the course.
+        ///     Puts the course.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="course">The course.</param>
@@ -96,29 +96,20 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutCourse(int id, Course course)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (id != course.CourseId)
-            {
-                return BadRequest();
-            }
+            if (id != course.CourseId) return BadRequest();
 
-            db.Entry(course).State = EntityState.Modified;
+            _db.Entry(course).State = EntityState.Modified;
 
             try
             {
-                await db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!CourseExists(id))
-                {
-                    return NotFound();
-                }
-                await ex.Log(db);
+                if (!CourseExists(id)) return NotFound();
+                await ex.Log(_db);
             }
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -126,7 +117,7 @@ namespace StudentTask.Data.Api.Controllers
 
         // POST: api/Courses
         /// <summary>
-        /// Posts the course.
+        ///     Posts the course.
         /// </summary>
         /// <param name="course">The course.</param>
         /// <returns></returns>
@@ -135,12 +126,12 @@ namespace StudentTask.Data.Api.Controllers
         {
             var user = course.Users[0].Username;
             course.Users = null;
-            db.Courses.Add(course);
-            await db.SaveChangesAsync();
+            _db.Courses.Add(course);
+            await _db.SaveChangesAsync();
 
             try
             {
-                using (var conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                using (var conn = new SqlConnection(_db.Database.Connection.ConnectionString))
                 {
                     var cmd = new SqlCommand("INSERT INTO UserCourse VALUES (@Username, @CourseId);", conn);
                     cmd.Parameters.AddWithValue("@Username", user);
@@ -153,16 +144,16 @@ namespace StudentTask.Data.Api.Controllers
             }
             catch (Exception ex)
             {
-                await ex.Log(db);
+                await ex.Log(_db);
                 return InternalServerError();
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = course.CourseId }, course);
+            return CreatedAtRoute("DefaultApi", new {id = course.CourseId}, course);
         }
 
         // POST api/Courses/courseId/Resources
         /// <summary>
-        /// Posts the resource.
+        ///     Posts the resource.
         /// </summary>
         /// <param name="resource">The resource.</param>
         /// <param name="courseId">The course identifier.</param>
@@ -172,17 +163,17 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Resource))]
         public async Task<IHttpActionResult> PostResource(Resource resource, int courseId)
         {
-            db.Resources.Add(resource);
-            await db.SaveChangesAsync();
-            var course = await db.Courses.FindAsync(courseId);
+            _db.Resources.Add(resource);
+            await _db.SaveChangesAsync();
+            var course = await _db.Courses.FindAsync(courseId);
             if (course != null) course.Resources = new List<Resource> {resource};
-            await db.SaveChangesAsync();
-            return CreatedAtRoute("DefaultApi", new { controller = "resources", id = resource.ResourceId }, resource);
+            await _db.SaveChangesAsync();
+            return CreatedAtRoute("DefaultApi", new {controller = "resources", id = resource.ResourceId}, resource);
         }
 
         // POST: api/Courses/5/Exercises
         /// <summary>
-        /// Posts the exercise.
+        ///     Posts the exercise.
         /// </summary>
         /// <param name="courseId">The course identifier.</param>
         /// <param name="exercise">The exercise.</param>
@@ -192,17 +183,17 @@ namespace StudentTask.Data.Api.Controllers
         [ResponseType(typeof(Exercise))]
         public async Task<IHttpActionResult> PostExercise(int courseId, Exercise exercise)
         {
-            db.Exercises.Add(exercise);
-            await db.SaveChangesAsync();
-            var course = await db.Courses.FindAsync(courseId);
+            _db.Exercises.Add(exercise);
+            await _db.SaveChangesAsync();
+            var course = await _db.Courses.FindAsync(courseId);
             if (course != null) course.Exercises = new List<Exercise> {exercise};
-            await db.SaveChangesAsync();
-            return CreatedAtRoute("DefaultApi", new { controller = "exercise", id = exercise.TaskId }, exercise);
+            await _db.SaveChangesAsync();
+            return CreatedAtRoute("DefaultApi", new {controller = "exercise", id = exercise.TaskId}, exercise);
         }
 
         // POST: api/Courses/5/Users/username
         /// <summary>
-        /// Posts the user to course.
+        ///     Posts the user to course.
         /// </summary>
         /// <param name="courseId">The course identifier.</param>
         /// <param name="username">The username.</param>
@@ -214,7 +205,7 @@ namespace StudentTask.Data.Api.Controllers
         {
             try
             {
-                using (var conn = new SqlConnection(db.Database.Connection.ConnectionString))
+                using (var conn = new SqlConnection(_db.Database.Connection.ConnectionString))
                 {
                     var cmd = new SqlCommand("INSERT INTO UserCourse VALUES (@Username, @CourseId);", conn);
                     cmd.Parameters.AddWithValue("@Username", username);
@@ -227,7 +218,7 @@ namespace StudentTask.Data.Api.Controllers
             }
             catch (Exception ex)
             {
-                await ex.Log(db);
+                await ex.Log(_db);
                 return InternalServerError();
             }
 
@@ -236,46 +227,43 @@ namespace StudentTask.Data.Api.Controllers
 
         // DELETE: api/Courses/5
         /// <summary>
-        /// Deletes the course.
+        ///     Deletes the course.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         [ResponseType(typeof(Course))]
         public async Task<IHttpActionResult> DeleteCourse(int id)
         {
-            Course course = await db.Courses.FindAsync(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
+            var course = await _db.Courses.FindAsync(id);
+            if (course == null) return NotFound();
 
-            db.Courses.Remove(course);
-            await db.SaveChangesAsync();
+            _db.Courses.Remove(course);
+            await _db.SaveChangesAsync();
 
             return Ok(course);
         }
 
         /// <summary>
-        /// Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
+        ///     Releases the unmanaged resources that are used by the object and, optionally, releases the managed resources.
         /// </summary>
-        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        ///     true to release both managed and unmanaged resources; false to release only unmanaged
+        ///     resources.
+        /// </param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
+            if (disposing) _db.Dispose();
             base.Dispose(disposing);
         }
 
         /// <summary>
-        /// Courses the exists.
+        ///     Courses the exists.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         private bool CourseExists(int id)
         {
-            return db.Courses.Count(e => e.CourseId == id) > 0;
+            return _db.Courses.Count(e => e.CourseId == id) > 0;
         }
     }
 }

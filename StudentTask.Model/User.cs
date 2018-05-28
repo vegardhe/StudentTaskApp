@@ -7,42 +7,77 @@ using StudentTask.Model.Annotations;
 namespace StudentTask.Model
 {
     /// <summary>
-    /// Represents a student.
+    ///     Represents a student.
     /// </summary>
     /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
     public class User : INotifyPropertyChanged
     {
         /// <summary>
-        /// Enum that defines the usergroup.
+        ///     Enum that defines the usergroup.
         /// </summary>
         public enum UserGroup
         {
             /// <summary>
-            /// The student
+            ///     The student
             /// </summary>
             Student,
+
             /// <summary>
-            /// The admin
+            ///     The admin
             /// </summary>
             Admin,
+
             /// <summary>
-            /// The teacher
+            ///     The teacher
             /// </summary>
             Teacher
         }
 
         /// <summary>
-        /// Gets or sets the username.
+        ///     Gets or sets the email.
         /// </summary>
         /// <value>
-        /// The username.
+        ///     The email.
+        /// </value>
+        private string _email;
+
+        /// <summary>
+        ///     Gets or sets the first name.
+        /// </summary>
+        /// <value>
+        ///     The first name.
+        /// </value>
+        private string _firstName;
+
+        /// <summary>
+        ///     Gets or sets the last name.
+        /// </summary>
+        /// <value>
+        ///     The last name.
+        /// </value>
+        private string _lastName;
+
+        /// <summary>
+        ///     Gets or sets the password.
+        /// </summary>
+        /// <value>
+        ///     The password.
+        /// </value>
+        private string _password;
+
+        /// <summary>
+        ///     Gets or sets the username.
+        /// </summary>
+        /// <value>
+        ///     The username.
         /// </value>
         private string _username;
+
         /// <summary>
-        /// Gets or sets the username.
+        ///     Gets or sets the username.
         /// </summary>
         /// <value>
-        /// The username.
+        ///     The username.
         /// </value>
         [Key]
         public string Username
@@ -52,21 +87,14 @@ namespace StudentTask.Model
             {
                 if (SetField(ref _username, value))
                     OnPropertyChanged(nameof(IsValid));
-            } 
+            }
         }
 
         /// <summary>
-        /// Gets or sets the email.
+        ///     Gets or sets the email.
         /// </summary>
         /// <value>
-        /// The email.
-        /// </value>
-        private string _email;
-        /// <summary>
-        /// Gets or sets the email.
-        /// </summary>
-        /// <value>
-        /// The email.
+        ///     The email.
         /// </value>
         [Required]
         public string Email
@@ -80,17 +108,10 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets or sets the password.
+        ///     Gets or sets the password.
         /// </summary>
         /// <value>
-        /// The password.
-        /// </value>
-        private string _password;
-        /// <summary>
-        /// Gets or sets the password.
-        /// </summary>
-        /// <value>
-        /// The password.
+        ///     The password.
         /// </value>
         [Required]
         public string Password
@@ -106,17 +127,10 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets or sets the first name.
+        ///     Gets or sets the first name.
         /// </summary>
         /// <value>
-        /// The first name.
-        /// </value>
-        private string _firstName;
-        /// <summary>
-        /// Gets or sets the first name.
-        /// </summary>
-        /// <value>
-        /// The first name.
+        ///     The first name.
         /// </value>
         [Required]
         public string FirstName
@@ -135,17 +149,10 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets or sets the last name.
+        ///     Gets or sets the last name.
         /// </summary>
         /// <value>
-        /// The last name.
-        /// </value>
-        private string _lastName;
-        /// <summary>
-        /// Gets or sets the last name.
-        /// </summary>
-        /// <value>
-        /// The last name.
+        ///     The last name.
         /// </value>
         [Required]
         public string LastName
@@ -164,44 +171,54 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Gets the full name.
+        ///     Gets the full name.
         /// </summary>
         /// <value>
-        /// The full name.
+        ///     The full name.
         /// </value>
         public string FullName => $"{FirstName} {LastName}";
 
         /// <summary>
-        /// Gets or sets the tasks.
+        ///     Gets or sets the tasks.
         /// </summary>
         /// <value>
-        /// The tasks.
+        ///     The tasks.
         /// </value>
         public List<Task> Tasks { get; set; }
 
         /// <summary>
-        /// Gets or sets the courses.
+        ///     Gets or sets the courses.
         /// </summary>
         /// <value>
-        /// The courses.
+        ///     The courses.
         /// </value>
         public List<Course> Courses { get; set; }
 
         /// <summary>
-        /// Gets or sets the group usergroup.
+        ///     Gets or sets the group usergroup.
         /// </summary>
         /// <value>
-        /// The group usergroup.
+        ///     The group usergroup.
         /// </value>
         public UserGroup GroupUserGroup { get; set; }
 
         /// <summary>
-        /// Occurs when a property value changes.
+        ///     Returns true if ... is valid.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is valid; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsValid => !string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName) &&
+                               !string.IsNullOrEmpty(Username)
+                               && !string.IsNullOrEmpty(Email);
+
+        /// <summary>
+        ///     Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Called when [property changed].
+        ///     Called when [property changed].
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         [NotifyPropertyChangedInvocator]
@@ -211,7 +228,7 @@ namespace StudentTask.Model
         }
 
         /// <summary>
-        /// Sets the field.
+        ///     Sets the field.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="field">The field.</param>
@@ -227,15 +244,5 @@ namespace StudentTask.Model
             OnPropertyChanged(propertyName);
             return true;
         }
-
-        /// <summary>
-        /// Returns true if ... is valid.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance is valid; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsValid => !string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName) &&
-                   !string.IsNullOrEmpty(Username)
-                   && !string.IsNullOrEmpty(Email);
     }
 }

@@ -1,6 +1,4 @@
-﻿using StudentTask.Model;
-using StudentTask.Uwp.App.DataSource;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,39 +8,24 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Exception = System.Exception;
+using StudentTask.Model;
+using StudentTask.Uwp.App.DataSource;
+using Task = System.Threading.Tasks.Task;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace StudentTask.Uwp.App.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    ///     An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     /// <seealso cref="Page" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class CoursesPage
     {
-
         /// <summary>
-        /// Gets the course resources.
-        /// </summary>
-        /// <value>
-        /// The course resources.
-        /// </value>
-        public ObservableCollection<Resource> CourseResources { get; }
-
-        /// <summary>
-        /// Gets the course exercises.
-        /// </summary>
-        /// <value>
-        /// The course exercises.
-        /// </value>
-        public ObservableCollection<Exercise> CourseExercises { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CoursesPage" /> class.
+        ///     Initializes a new instance of the <see cref="CoursesPage" /> class.
         /// </summary>
         public CoursesPage()
         {
@@ -52,24 +35,41 @@ namespace StudentTask.Uwp.App.Views
         }
 
         /// <summary>
-        /// Invoked when the Page is loaded and becomes the current source of a parent Frame.
+        ///     Gets the course resources.
         /// </summary>
-        /// <param name="e">Event data that can be examined by overriding code. The event data is representative of the pending navigation that will load the current Page. Usually the most relevant property to examine is Parameter.</param>
+        /// <value>
+        ///     The course resources.
+        /// </value>
+        public ObservableCollection<Resource> CourseResources { get; }
+
+        /// <summary>
+        ///     Gets the course exercises.
+        /// </summary>
+        /// <value>
+        ///     The course exercises.
+        /// </value>
+        public ObservableCollection<Exercise> CourseExercises { get; }
+
+        /// <summary>
+        ///     Invoked when the Page is loaded and becomes the current source of a parent Frame.
+        /// </summary>
+        /// <param name="e">
+        ///     Event data that can be examined by overriding code. The event data is representative of the pending
+        ///     navigation that will load the current Page. Usually the most relevant property to examine is Parameter.
+        /// </param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (Users.Instance.SessionUser != null &&
                 (Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Admin ||
                  Users.Instance.SessionUser.GroupUserGroup == User.UserGroup.Teacher))
-            {
                 NewCourseButton.Visibility = EditCourseButton.Visibility = ManageResourcesButton.Visibility =
                     NewExerciseButton.Visibility = DeleteCourseButton.Visibility = DeleteCourseButton.Visibility =
                         EditExerciseButton.Visibility = DeleteExerciseButton.Visibility =
                             AddUserToCourseButton.Visibility = Visibility.Visible;
-            }
         }
 
         /// <summary>
-        /// Adds the course.
+        ///     Adds the course.
         /// </summary>
         private async void AddCourse()
         {
@@ -83,9 +83,7 @@ namespace StudentTask.Uwp.App.Views
                 newCourse.Users = new List<User> {Users.Instance.SessionUser};
                 Course addedCourse;
                 if ((addedCourse = await Courses.Instance.AddCourse(newCourse)) != null)
-                {
                     ViewModel.Courses.Add(addedCourse);
-                }
             }
             catch (WebException ex)
             {
@@ -100,7 +98,7 @@ namespace StudentTask.Uwp.App.Views
         }
 
         /// <summary>
-        /// Deletes the course.
+        ///     Deletes the course.
         /// </summary>
         private async void DeleteCourse()
         {
@@ -119,11 +117,12 @@ namespace StudentTask.Uwp.App.Views
                 await e.Log();
                 await e.Display("Failed to delete course.");
             }
+
             ViewModel.Courses.Remove(selectedCourse);
         }
 
         /// <summary>
-        /// Deletes the exercise.
+        ///     Deletes the exercise.
         /// </summary>
         private async void DeleteExercise()
         {
@@ -143,47 +142,44 @@ namespace StudentTask.Uwp.App.Views
                 await e.Display("Failed to delete exercise.");
                 await e.Log();
             }
+
             CourseExercises.Remove(selectedExercise);
         }
 
         /// <summary>
-        /// Adds the exercise.
+        ///     Adds the exercise.
         /// </summary>
         private async void AddExercise()
         {
             var newExercise = new Exercise();
-            NewExerciseDatePicker.MinDate=DateTimeOffset.Now;
+            NewExerciseDatePicker.MinDate = DateTimeOffset.Now;
             AddExerciseContentDialog.DataContext = newExercise;
 
             var result = await AddExerciseContentDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
-            {
                 try
                 {
-                    newExercise.TaskStatus = Task.Status.Added;
+                    newExercise.TaskStatus = Model.Task.Status.Added;
                     var selectedCourse = (Course) CoursesListView.SelectedItem;
                     Exercise addedExercise;
                     if ((addedExercise = await Courses.Instance.AddExercise(newExercise,
                             selectedCourse)) != null)
-                    {
                         CourseExercises.Add(addedExercise);
-                    }
                 }
                 catch (WebException ex)
                 {
                     await ex.Log();
                     await ex.Display("Failed to establish connection to internet.");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     await ex.Display("Failed to add exercise.");
                     await ex.Log();
                 }
-            }
         }
 
         /// <summary>
-        /// Adds the user to course.
+        ///     Adds the user to course.
         /// </summary>
         private async void AddUserToCourse()
         {
@@ -191,8 +187,8 @@ namespace StudentTask.Uwp.App.Views
             if (result != ContentDialogResult.Primary) return;
             try
             {
-                var user = (User)AddUserContentDialog.DataContext;
-                var course = (Course)CoursesListView.SelectedItem;
+                var user = (User) AddUserContentDialog.DataContext;
+                var course = (Course) CoursesListView.SelectedItem;
 
                 if (!await Courses.Instance.AddUserToCourse(user, course))
                     await new MessageDialog("Failed to add user", "Error").ShowAsync();
@@ -205,7 +201,7 @@ namespace StudentTask.Uwp.App.Views
         }
 
         /// <summary>
-        /// Edits the exercise.
+        ///     Edits the exercise.
         /// </summary>
         private async void EditExercise()
         {
@@ -226,21 +222,18 @@ namespace StudentTask.Uwp.App.Views
         }
 
         /// <summary>
-        /// Edits the course.
+        ///     Edits the course.
         /// </summary>
         private async void EditCourse()
         {
-            var selectedCourse = (Course)CoursesListView.SelectedItem;
+            var selectedCourse = (Course) CoursesListView.SelectedItem;
             AddCourseContentDialog.DataContext = selectedCourse;
             var result = await EditCourseContentDialog.ShowAsync();
             if (result != ContentDialogResult.Primary) return;
             try
             {
                 if (!await Courses.Instance.UpdateCourse(selectedCourse))
-                {
                     await new MessageDialog("Failed to update course.", "Error").ShowAsync();
-                }
-
             }
             catch (Exception ex)
             {
@@ -250,14 +243,14 @@ namespace StudentTask.Uwp.App.Views
         }
 
         /// <summary>
-        /// Manages the resources.
+        ///     Manages the resources.
         /// </summary>
         private async void ManageResources()
         {
             ManageResourcesContentDialog.DataContext = CourseResources;
 
             var result = await ManageResourcesContentDialog.ShowAsync();
-            var selectedCourse = (Course)CoursesListView.SelectedItem;
+            var selectedCourse = (Course) CoursesListView.SelectedItem;
             if (result != ContentDialogResult.Primary)
             {
                 if (result == ContentDialogResult.Secondary)
@@ -267,31 +260,31 @@ namespace StudentTask.Uwp.App.Views
             {
                 if (selectedCourse == null) return;
                 foreach (var selectedCourseResource in selectedCourse.Resources.ToArray())
-                {
                     if (!CourseResources.Contains(selectedCourseResource))
                         await DeleteCourseResource(selectedCourseResource, selectedCourse);
-                }
 
                 foreach (var courseResource in CourseResources)
-                {
                     if (courseResource.ResourceId == 0)
+                    {
                         await AddCourseResource(courseResource, selectedCourse);
+                    }
                     else
                     {
-                        var originalResource = selectedCourse.Resources.Find(r => r.ResourceId == courseResource.ResourceId);
-                        if (originalResource.Name != courseResource.Name || originalResource.Link != courseResource.Link)
+                        var originalResource =
+                            selectedCourse.Resources.Find(r => r.ResourceId == courseResource.ResourceId);
+                        if (originalResource.Name != courseResource.Name ||
+                            originalResource.Link != courseResource.Link)
                             await UpdateCourseResource(courseResource);
                     }
-                }
             }
         }
 
         /// <summary>
-        /// Updates the course resource.
+        ///     Updates the course resource.
         /// </summary>
         /// <param name="courseResource">The course resource.</param>
         /// <returns></returns>
-        private async System.Threading.Tasks.Task UpdateCourseResource(Resource courseResource)
+        private async Task UpdateCourseResource(Resource courseResource)
         {
             try
             {
@@ -306,12 +299,12 @@ namespace StudentTask.Uwp.App.Views
         }
 
         /// <summary>
-        /// Adds the course resource.
+        ///     Adds the course resource.
         /// </summary>
         /// <param name="resource">The resource.</param>
         /// <param name="course">The course.</param>
         /// <returns></returns>
-        private async System.Threading.Tasks.Task AddCourseResource(Resource resource, Course course)
+        private async Task AddCourseResource(Resource resource, Course course)
         {
             try
             {
@@ -331,12 +324,12 @@ namespace StudentTask.Uwp.App.Views
         }
 
         /// <summary>
-        /// Deletes the course resource.
+        ///     Deletes the course resource.
         /// </summary>
         /// <param name="resource">The resource.</param>
         /// <param name="course">The course.</param>
         /// <returns></returns>
-        private async System.Threading.Tasks.Task DeleteCourseResource(Resource resource, Course course)
+        private async Task DeleteCourseResource(Resource resource, Course course)
         {
             try
             {
@@ -345,6 +338,7 @@ namespace StudentTask.Uwp.App.Views
                     await new MessageDialog("Failed to remove resource", "Error").ShowAsync();
                     return;
                 }
+
                 course.Resources.Remove(resource);
             }
             catch (Exception e)
@@ -355,7 +349,7 @@ namespace StudentTask.Uwp.App.Views
         }
 
         /// <summary>
-        /// Handles the OnSelectionChanged event of the CoursesListView control.
+        ///     Handles the OnSelectionChanged event of the CoursesListView control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SelectionChangedEventArgs" /> instance containing the event data.</param>
@@ -368,7 +362,6 @@ namespace StudentTask.Uwp.App.Views
                 SeparatorLine.Visibility = Visibility.Visible;
 
                 if (selectedCourse.Resources == null)
-                {
                     try
                     {
                         await Courses.Instance.GetCourseResources(selectedCourse);
@@ -378,10 +371,8 @@ namespace StudentTask.Uwp.App.Views
                         await ex.Log();
                         await ex.Display("Failed to get course resources.");
                     }
-                }
 
                 if (selectedCourse.Exercises == null)
-                {
                     try
                     {
                         await Courses.Instance.GetCourseExercises(selectedCourse);
@@ -391,72 +382,73 @@ namespace StudentTask.Uwp.App.Views
                         await ex.Log();
                         await ex.Display("Failed to get course exercises.");
                     }
-                }
-                    
             }
             else
             {
                 ExercisesListView.Visibility = Visibility.Collapsed;
                 SeparatorLine.Visibility = Visibility.Collapsed;
             }
+
             UpdateCourseResources(selectedCourse);
             UpdateCourseExercises(selectedCourse);
         }
 
         /// <summary>
-        /// Updates the course resources.
+        ///     Updates the course resources.
         /// </summary>
         /// <param name="course">The course.</param>
         private void UpdateCourseResources(Course course)
         {
             if (course == null) return;
             CourseResources.Clear();
-            foreach (var r in course.Resources)
-            {
-                CourseResources.Add(r);
-            }
+            foreach (var r in course.Resources) CourseResources.Add(r);
         }
 
         /// <summary>
-        /// Updates the course exercises.
+        ///     Updates the course exercises.
         /// </summary>
         /// <param name="course">The course.</param>
         private void UpdateCourseExercises(Course course)
         {
             if (course == null) return;
             CourseExercises.Clear();
-            foreach (var e in course.Exercises)
-            {
-                CourseExercises.Add(e);
-            }
+            foreach (var e in course.Exercises) CourseExercises.Add(e);
         }
 
         /// <summary>
-        /// Adds the resource.
+        ///     Adds the resource.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
-        private void AddResource(object sender, RoutedEventArgs e) => CourseResources.Add(new Resource { Name = "New Resource" });
+        private void AddResource(object sender, RoutedEventArgs e)
+        {
+            CourseResources.Add(new Resource {Name = "New Resource"});
+        }
 
         /// <summary>
-        /// Removes the resource.
+        ///     Removes the resource.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
-        private void RemoveResource(object sender, RoutedEventArgs e) => CourseResources.Remove((Resource)ManageResourcesListView.SelectedItem);
+        private void RemoveResource(object sender, RoutedEventArgs e)
+        {
+            CourseResources.Remove((Resource) ManageResourcesListView.SelectedItem);
+        }
 
         /// <summary>
-        /// Handles the OnSelectionChanged event of the ManageResourcesListView control.
+        ///     Handles the OnSelectionChanged event of the ManageResourcesListView control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SelectionChangedEventArgs" /> instance containing the event data.</param>
         private void ManageResourcesListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            EditResourcePanel.Visibility = ManageResourcesListView.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            EditResourcePanel.Visibility = ManageResourcesListView.SelectedItems.Count > 0
+                ? Visibility.Visible
+                : Visibility.Collapsed;
         }
 
         /// <summary>
-        /// Handles the OnItemClick event of the ExercisesListView control.
+        ///     Handles the OnItemClick event of the ExercisesListView control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="ItemClickEventArgs" /> instance containing the event data.</param>
@@ -468,14 +460,14 @@ namespace StudentTask.Uwp.App.Views
             var selectedExercise = (Exercise) ExercisesListView.SelectedItem;
 
             if (selectedExercise == null) return;
-            var copyExercise = new Task
+            var copyExercise = new Model.Task
             {
                 Title = selectedExercise.Title,
                 Description = selectedExercise.Description,
                 DueDate = selectedExercise.DueDate,
                 DueTime = selectedExercise.DueTime,
                 Users = new List<User> {Users.Instance.SessionUser},
-                TaskStatus = Task.Status.Added
+                TaskStatus = Model.Task.Status.Added
             };
 
             try
@@ -492,31 +484,30 @@ namespace StudentTask.Uwp.App.Views
                 await ex.Display("Failed to add task.");
                 await ex.Log();
             }
+
             Users.Instance.Changed = true;
         }
 
         /// <summary>
-        /// Users the automatic suggest box on suggestion chosen.
+        ///     Users the automatic suggest box on suggestion chosen.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="AutoSuggestBoxSuggestionChosenEventArgs" /> instance containing the event data.</param>
-        private void UserAutoSuggestBox_OnSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        private void UserAutoSuggestBox_OnSuggestionChosen(AutoSuggestBox sender,
+            AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            if (args.SelectedItem is User user)
-            {
-                sender.Text = user.FullName;
-            }
+            if (args.SelectedItem is User user) sender.Text = user.FullName;
         }
 
         /// <summary>
-        /// Users the automatic suggest box on text changed.
+        ///     Users the automatic suggest box on text changed.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="AutoSuggestBoxTextChangedEventArgs" /> instance containing the event data.</param>
-        private async void UserAutoSuggestBox_OnTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        private async void UserAutoSuggestBox_OnTextChanged(AutoSuggestBox sender,
+            AutoSuggestBoxTextChangedEventArgs args)
         {
             if (Users.Instance.UserList == null)
-            {
                 try
                 {
                     await Users.Instance.GetUsers();
@@ -527,30 +518,25 @@ namespace StudentTask.Uwp.App.Views
                     await ex.Log();
                     return;
                 }
-            }
 
             var suggestions = Users.Instance.UserList
                 .Where(p => p.FullName.ToLower().Contains(sender.Text.ToLower())).ToArray();
-            
-            if(suggestions.Length > 0)
+
+            if (suggestions.Length > 0)
                 sender.ItemsSource = suggestions;
             else
-            {
                 sender.ItemsSource = new[] {"No results found"};
-            }
         }
 
         /// <summary>
-        /// Users the automatic suggest box on query submitted.
+        ///     Users the automatic suggest box on query submitted.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="args">The <see cref="AutoSuggestBoxQuerySubmittedEventArgs" /> instance containing the event data.</param>
-        private void UserAutoSuggestBox_OnQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private void UserAutoSuggestBox_OnQuerySubmitted(AutoSuggestBox sender,
+            AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (args.ChosenSuggestion is User user)
-            {
-                AddUserContentDialog.DataContext = user;
-            }
+            if (args.ChosenSuggestion is User user) AddUserContentDialog.DataContext = user;
         }
     }
 }

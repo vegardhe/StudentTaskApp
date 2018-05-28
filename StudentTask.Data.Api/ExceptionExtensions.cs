@@ -1,18 +1,17 @@
-﻿using StudentTask.Data.Access;
-using StudentTask.Model;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using StudentTask.Data.Access;
+using StudentTask.Model;
 
 namespace StudentTask.Data.Api
 {
     /// <summary>
-    /// Extension methods for Exceptions.
+    ///     Extension methods for Exceptions.
     /// </summary>
     public static class ExceptionExtensions
     {
-
         /// <summary>
-        /// Logs the specified error to database.
+        ///     Logs the specified error to database.
         /// </summary>
         /// <param name="ex">The exception.</param>
         /// <param name="db">The database.</param>
@@ -35,6 +34,7 @@ namespace StudentTask.Data.Api
             {
                 // ignored
             }
+
             return ex;
         }
     }
