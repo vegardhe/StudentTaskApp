@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace StudentTask.Uwp.App.DataSource
 {
     /// <summary>
-    /// Database interaction for exceptions.
+    /// Database interaction for LogElements.
     /// </summary>
-    public class Exception
+    public class LogElements
     {
         /// <summary>
         /// Gets the instance.
@@ -18,7 +18,7 @@ namespace StudentTask.Uwp.App.DataSource
         /// <value>
         /// The instance.
         /// </value>
-        public static Exception Instance { get; } = new Exception();
+        public static LogElements Instance { get; } = new LogElements();
 
         /// <summary>
         /// The base URI
@@ -31,9 +31,9 @@ namespace StudentTask.Uwp.App.DataSource
         private HttpClient _client;
 
         /// <summary>
-        /// Prevents a default instance of the <see cref="Exception"/> class from being created.
+        /// Prevents a default instance of the <see cref="LogElements"/> class from being created.
         /// </summary>
-        private Exception()
+        private LogElements()
         {
             _client = new HttpClient
             {

@@ -23,12 +23,12 @@ namespace StudentTask.Uwp.App
             var logElement = new LogElement
             {
                 Message = ex.Message,
-                Type = ex.GetType().Name,
+                ElementType = ex.GetType().Name,
                 Source = ex.StackTrace
             };
             try
             {
-                if(!await DataSource.Exception.Instance.AddLogElement(logElement))
+                if(!await DataSource.LogElements.Instance.AddLogElement(logElement))
                     LogToFile(logElement);
             }
             catch (Exception e)
@@ -36,7 +36,7 @@ namespace StudentTask.Uwp.App
                 LogToFile(new LogElement
                 {
                     Message = e.Message,
-                    Type = e.GetType().Name,
+                    ElementType = e.GetType().Name,
                     Source = e.StackTrace
                 });
                 LogToFile(logElement);

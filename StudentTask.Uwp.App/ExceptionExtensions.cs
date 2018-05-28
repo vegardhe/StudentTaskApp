@@ -13,12 +13,12 @@ namespace StudentTask.Uwp.App
         /// Displays the specified MSG.
         /// </summary>
         /// <param name="ex">The ex.</param>
-        /// <param name="msg">The MSG.</param>
+        /// <param name="message">The MSG.</param>
         /// <returns></returns>
-        public static async Task<Exception> Display(this Exception ex, string msg = "")
+        public static async Task<Exception> Display(this Exception ex, string message)
         {
-            var message = new MessageDialog(msg, "Error");
-            await message.ShowAsync();
+            var messageDialog = new MessageDialog(message, "Error");
+            await messageDialog.ShowAsync();
             return ex;
         }
 

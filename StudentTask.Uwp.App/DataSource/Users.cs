@@ -48,7 +48,7 @@ namespace StudentTask.Uwp.App.DataSource
         /// <value>
         /// The user list.
         /// </value>
-        public List<User> UserList { get; set; }
+        public List<User> UserList { get; private set; }
 
         /// <summary>
         /// The base URI

@@ -29,7 +29,7 @@ namespace StudentTask.Model
         /// <value>
         /// The type.
         /// </value>
-        public string Type { get; set; }
+        public string ElementType { get; set; }
 
         /// <summary>
         /// Gets or sets the source.

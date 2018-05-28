@@ -22,7 +22,7 @@ namespace StudentTask.Data.Api
             var logElement = new LogElement
             {
                 Message = ex.Message,
-                Type = ex.GetType().Name,
+                ElementType = ex.GetType().Name,
                 Source = ex.StackTrace
             };
             db.LogElements.Add(logElement);

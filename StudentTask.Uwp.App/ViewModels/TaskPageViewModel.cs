@@ -107,7 +107,7 @@ namespace StudentTask.Uwp.App.ViewModels
         /// <value>
         /// The active tasks.
         /// </value>
-        public ObservableCollection<Model.Task> ActiveTasks { get; set; }
+        public ObservableCollection<Model.Task> ActiveTasks { get; private set; }
 
         /// <summary>
         /// Gets the enumval.
