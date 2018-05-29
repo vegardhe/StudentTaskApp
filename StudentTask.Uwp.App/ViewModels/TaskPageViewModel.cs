@@ -65,7 +65,11 @@ namespace StudentTask.Uwp.App.ViewModels
             try
             {
                 if (await Tasks.Instance.DeleteTask((Task) parameter))
-                    _viewModel.Tasks.Remove((Task) parameter);
+                {
+                    _viewModel.Tasks.Remove((Task)parameter);
+                    _viewModel.ActiveTasks.Remove((Task)parameter);
+                }
+                    
                 else
                     await new MessageDialog("Failed to delete task", "Error").ShowAsync();
             }
@@ -104,7 +108,7 @@ namespace StudentTask.Uwp.App.ViewModels
         /// <value>
         ///     The tasks.
         /// </value>
-        public ObservableCollection<Task> Tasks { get; private set; }
+        public ObservableCollection<Task> Tasks { get; set; }
 
         /// <summary>
         ///     Gets or sets the active tasks.
@@ -112,7 +116,7 @@ namespace StudentTask.Uwp.App.ViewModels
         /// <value>
         ///     The active tasks.
         /// </value>
-        public ObservableCollection<Task> ActiveTasks { get; private set; }
+        public ObservableCollection<Task> ActiveTasks { get; set; }
 
         /// <summary>
         ///     Gets the enumval.

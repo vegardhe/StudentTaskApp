@@ -18,12 +18,27 @@ namespace StudentTask.Uwp.App.Views
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class TaskPage
     {
+        private List<ToastComboBoxItem> ToastTimeList { get; set; }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="TaskPage" /> class.
         /// </summary>
         public TaskPage()
         {
             InitializeComponent();
+
+            ToastTimeList = new List<ToastComboBoxItem>
+            {
+                new ToastComboBoxItem("Disabled", -1),
+                new ToastComboBoxItem("3 Minutes", 3),
+                new ToastComboBoxItem("15 Minutes", 15),
+                new ToastComboBoxItem("30 Minutes", 30),
+                new ToastComboBoxItem("1 Hour", 60),
+                new ToastComboBoxItem("3 Hours", 180),
+                new ToastComboBoxItem("6 Hours", 360),
+                new ToastComboBoxItem("12 Hours", 720),
+                new ToastComboBoxItem("1 Day", 1440)
+            };
         }
 
         /// <summary>
@@ -60,18 +75,21 @@ namespace StudentTask.Uwp.App.Views
         /// </summary>
         private async void AddTask()
         {
-            var newTask = new Task();
-            newTask.DueDate = DateTimeOffset.Now;
+            var newTask = new Task {DueDate = DateTimeOffset.Now};
             NewTaskDatePicker.MinDate = DateTimeOffset.Now;
             AddTaskContentDialog.DataContext = newTask;
+            ToastTimeComboBox.SelectedIndex = 0;
 
             var result = await AddTaskContentDialog.ShowAsync();
             if (result != ContentDialogResult.Primary) return;
             try
             {
                 newTask.TaskStatus = Task.Status.Added;
-                newTask.Users = new List<User> {ViewModel.SessionUser};
-                ViewModel.Tasks.Add(await Tasks.Instance.AddTask(newTask));
+                newTask.Users = new List<User> { ViewModel.SessionUser };
+                var createdTask = await Tasks.Instance.AddTask(newTask);
+                ViewModel.Tasks.Add(createdTask);
+                ViewModel.ActiveTasks.Add(createdTask);
+                AddToast(createdTask);
             }
             catch (WebException ex)
             {
@@ -82,6 +100,19 @@ namespace StudentTask.Uwp.App.Views
             {
                 await ex.Display("Failed to add task.");
                 await ex.Log();
+            }
+        }
+
+        /// <summary>
+        ///     Adds the toast.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        private void AddToast(Task task)
+        {
+            var selectedToastTime = (ToastComboBoxItem)ToastTimeComboBox.SelectedItem;
+            if (selectedToastTime != null && selectedToastTime.Value != -1)
+            {
+                TaskToast.CreateTaskToast(task, selectedToastTime.Value);
             }
         }
 

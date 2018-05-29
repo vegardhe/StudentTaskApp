@@ -109,7 +109,9 @@ namespace StudentTask.Uwp.App.Views
             if (selectedCourse == null) return;
             try
             {
-                if (!await Courses.Instance.DeleteCourse(selectedCourse))
+                if (await Courses.Instance.DeleteCourse(selectedCourse))
+                    ViewModel.Courses.Remove(selectedCourse);
+                else
                     await new MessageDialog("Failed to delete course.", "Error").ShowAsync();
             }
             catch (Exception e)
@@ -117,8 +119,6 @@ namespace StudentTask.Uwp.App.Views
                 await e.Log();
                 await e.Display("Failed to delete course.");
             }
-
-            ViewModel.Courses.Remove(selectedCourse);
         }
 
         /// <summary>

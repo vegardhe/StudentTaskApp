@@ -100,6 +100,7 @@
                               Margin="0,10,0,0"
                               ItemsSource="{Binding Path=Enumval}"
                               SelectedItem="{Binding SelectedItem.TaskStatus, ElementName=TasksListView, Mode=TwoWay}" />
+
                     <Button Width="100" Height="50" Click="{x:Bind SaveTask}" Content="Save" Margin="0,50,0,0"
                             HorizontalAlignment="Right" />
                     <TextBlock />
@@ -127,6 +128,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -150,6 +152,11 @@
                                     Name="NewTaskDatePicker" />
                 <TextBlock Text="Due Time: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" />
                 <TimePicker Grid.Column="1" Grid.Row="3" Time="{Binding DueTime, Mode=TwoWay}" />
+                <TextBlock Text="Toast Notification (prior):" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" />
+                <ComboBox Name="ToastTimeComboBox"
+                          Margin="0,10,0,0" 
+                          ItemsSource="{x:Bind ToastTimeList}"
+                          Grid.Column="1" Grid.Row="4" />
             </Grid>
         </ContentDialog>
     </RelativePanel>
