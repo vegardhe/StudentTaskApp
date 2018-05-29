@@ -64,10 +64,12 @@ namespace StudentTask.Uwp.App.ViewModels
             if (!CanExecute(parameter)) return;
             try
             {
-                if (await Tasks.Instance.DeleteTask((Task) parameter))
+                var task = (Task) parameter;
+                if (await Tasks.Instance.DeleteTask(task))
                 {
-                    _viewModel.Tasks.Remove((Task)parameter);
-                    _viewModel.ActiveTasks.Remove((Task)parameter);
+                    _viewModel.Tasks.Remove(task);
+                    _viewModel.ActiveTasks.Remove(task);
+                    TaskToast.RemoveTaskToast(task.TaskId);
                 }
                     
                 else

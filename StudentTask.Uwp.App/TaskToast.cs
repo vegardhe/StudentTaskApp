@@ -65,9 +65,24 @@ namespace StudentTask.Uwp.App
             var toastXml = new XmlDocument();
             toastXml.LoadXml(toastXmlString);
 
-            var toastNotification = new ScheduledToastNotification(toastXml, displayTime) {Tag = $"{task.TaskId}"};
+            var toastNotification = new ScheduledToastNotification(toastXml, displayTime) {Id = $"{task.TaskId}"};
 
             ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+        }
+
+        /// <summary>
+        /// Removes the task toast.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        public static void RemoveTaskToast(int id)
+        {
+            var scheduled = ToastNotificationManager.CreateToastNotifier().GetScheduledToastNotifications();
+
+            foreach (var notification in scheduled)
+            {
+                if(notification.Id == id.ToString())
+                    ToastNotificationManager.CreateToastNotifier().RemoveFromSchedule(notification);
+            }
         }
     }
 }

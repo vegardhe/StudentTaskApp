@@ -238,14 +238,7 @@ namespace StudentTask.Data.Api.Controllers
             if (course == null) return NotFound();
 
             _db.Courses.Remove(course);
-            try
-            {
-                await _db.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-
-            }
+            await _db.SaveChangesAsync();
 
             return Ok(course);
         }
