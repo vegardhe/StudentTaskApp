@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.ServiceModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Documents;
@@ -78,6 +79,11 @@ namespace StudentTask.Uwp.App.Views
             catch (InvalidDataException ex)
             {
                 ErrorBlock.Text = "Invalid username or password.";
+                await ex.Log();
+            }
+            catch (HttpRequestException ex)
+            {
+                await ex.Display("Failed to contact API.");
                 await ex.Log();
             }
             catch (Exception ex)
