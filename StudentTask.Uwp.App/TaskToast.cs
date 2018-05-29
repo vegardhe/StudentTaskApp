@@ -1,6 +1,5 @@
 ﻿using System;
 using Windows.UI.Notifications;
-using StudentTask.Uwp.App.Converters;
 using XmlDocument = Windows.Data.Xml.Dom.XmlDocument;
 
 namespace StudentTask.Uwp.App
