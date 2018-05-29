@@ -22,10 +22,10 @@
       </uap:VisualElements>
       <Extensions>
         <uap:Extension Category="windows.fileTypeAssociation">
-          <uap:FileTypeAssociation Name=".txt">
-            <uap:DisplayName>Text</uap:DisplayName>
+          <uap:FileTypeAssociation Name=".json">
+            <uap:DisplayName>JSON</uap:DisplayName>
             <uap:SupportedFileTypes>
-              <uap:FileType>.txt</uap:FileType>
+              <uap:FileType>.json</uap:FileType>
             </uap:SupportedFileTypes>
           </uap:FileTypeAssociation>
         </uap:Extension>

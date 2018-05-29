@@ -31,7 +31,7 @@ namespace StudentTask.Model
             ///     finished task
             /// </summary>
             Finished
-        };
+        }
 
         /// <summary>
         ///     Gets or sets the description.

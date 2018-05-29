@@ -47,9 +47,12 @@ namespace StudentTask.Uwp.App.Converters
         /// </summary>
         /// <param name="task">The task.</param>
         /// <returns>
-        ///   <c>true</c> if the specified task is expired; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified task is expired; otherwise, <c>false</c>.
         /// </returns>
-        private static bool IsExpired(Task task) => task.DueDate != null && task.DueDate.Value.Date < DateTimeOffset.Now.Date
+        private static bool IsExpired(Task task)
+        {
+            return task.DueDate != null && task.DueDate.Value.Date < DateTimeOffset.Now.Date
                                         && task.TaskStatus != Task.Status.Finished;
+        }
     }
 }

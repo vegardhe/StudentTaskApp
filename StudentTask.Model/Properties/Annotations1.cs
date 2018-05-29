@@ -125,7 +125,7 @@ namespace StudentTask.Model.Annotations
             FormatParameterName = formatParameterName;
         }
 
-        [NotNull] public string FormatParameterName { get; private set; }
+        [NotNull] public string FormatParameterName { get; }
     }
 
     /// <summary>
@@ -142,7 +142,7 @@ namespace StudentTask.Model.Annotations
             Name = name;
         }
 
-        [NotNull] public string Name { get; private set; }
+        [NotNull] public string Name { get; }
     }
 
     /// <summary>
@@ -232,7 +232,7 @@ namespace StudentTask.Model.Annotations
             ParameterName = parameterName;
         }
 
-        [CanBeNull] public string ParameterName { get; private set; }
+        [CanBeNull] public string ParameterName { get; }
     }
 
     /// <summary>
@@ -305,9 +305,9 @@ namespace StudentTask.Model.Annotations
             ForceFullStates = forceFullStates;
         }
 
-        [NotNull] public string Contract { get; private set; }
+        [NotNull] public string Contract { get; }
 
-        public bool ForceFullStates { get; private set; }
+        public bool ForceFullStates { get; }
     }
 
     /// <summary>
@@ -333,7 +333,7 @@ namespace StudentTask.Model.Annotations
             Required = required;
         }
 
-        public bool Required { get; private set; }
+        public bool Required { get; }
     }
 
     /// <summary>
@@ -385,7 +385,7 @@ namespace StudentTask.Model.Annotations
             BaseType = baseType;
         }
 
-        [NotNull] public Type BaseType { get; private set; }
+        [NotNull] public Type BaseType { get; }
     }
 
     /// <summary>
@@ -416,9 +416,9 @@ namespace StudentTask.Model.Annotations
             TargetFlags = targetFlags;
         }
 
-        public ImplicitUseKindFlags UseKindFlags { get; private set; }
+        public ImplicitUseKindFlags UseKindFlags { get; }
 
-        public ImplicitUseTargetFlags TargetFlags { get; private set; }
+        public ImplicitUseTargetFlags TargetFlags { get; }
     }
 
     /// <summary>
@@ -472,7 +472,7 @@ namespace StudentTask.Model.Annotations
         InstantiatedWithFixedConstructorSignature = 4,
 
         /// <summary>Indicates implicit instantiation of a type.</summary>
-        InstantiatedNoFixedConstructorSignature = 8,
+        InstantiatedNoFixedConstructorSignature = 8
     }
 
     /// <summary>
@@ -508,7 +508,7 @@ namespace StudentTask.Model.Annotations
             Comment = comment;
         }
 
-        [CanBeNull] public string Comment { get; private set; }
+        [CanBeNull] public string Comment { get; }
     }
 
     /// <summary>
@@ -554,7 +554,7 @@ namespace StudentTask.Model.Annotations
             Justification = justification;
         }
 
-        [CanBeNull] public string Justification { get; private set; }
+        [CanBeNull] public string Justification { get; }
     }
 
     /// <summary>
@@ -593,12 +593,12 @@ namespace StudentTask.Model.Annotations
         {
         }
 
-        public PathReferenceAttribute([NotNull, PathReference] string basePath)
+        public PathReferenceAttribute([NotNull] [PathReference] string basePath)
         {
             BasePath = basePath;
         }
 
-        [CanBeNull] public string BasePath { get; private set; }
+        [CanBeNull] public string BasePath { get; }
     }
 
     /// <summary>
@@ -695,7 +695,7 @@ namespace StudentTask.Model.Annotations
             Format = format;
         }
 
-        [NotNull] public string Format { get; private set; }
+        [NotNull] public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple =
@@ -707,7 +707,7 @@ namespace StudentTask.Model.Annotations
             Format = format;
         }
 
-        [NotNull] public string Format { get; private set; }
+        [NotNull] public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple =
@@ -719,7 +719,7 @@ namespace StudentTask.Model.Annotations
             Format = format;
         }
 
-        [NotNull] public string Format { get; private set; }
+        [NotNull] public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple =
@@ -731,7 +731,7 @@ namespace StudentTask.Model.Annotations
             Format = format;
         }
 
-        [NotNull] public string Format { get; private set; }
+        [NotNull] public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple =
@@ -743,7 +743,7 @@ namespace StudentTask.Model.Annotations
             Format = format;
         }
 
-        [NotNull] public string Format { get; private set; }
+        [NotNull] public string Format { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple =
@@ -755,7 +755,7 @@ namespace StudentTask.Model.Annotations
             Format = format;
         }
 
-        [NotNull] public string Format { get; private set; }
+        [NotNull] public string Format { get; }
     }
 
     /// <summary>
@@ -776,7 +776,7 @@ namespace StudentTask.Model.Annotations
             AnonymousProperty = anonymousProperty;
         }
 
-        [CanBeNull] public string AnonymousProperty { get; private set; }
+        [CanBeNull] public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -796,7 +796,7 @@ namespace StudentTask.Model.Annotations
             AnonymousProperty = anonymousProperty;
         }
 
-        [CanBeNull] public string AnonymousProperty { get; private set; }
+        [CanBeNull] public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -817,7 +817,7 @@ namespace StudentTask.Model.Annotations
             AnonymousProperty = anonymousProperty;
         }
 
-        [CanBeNull] public string AnonymousProperty { get; private set; }
+        [CanBeNull] public string AnonymousProperty { get; }
     }
 
     /// <summary>
@@ -946,7 +946,7 @@ namespace StudentTask.Model.Annotations
             Name = name;
         }
 
-        [CanBeNull] public string Name { get; private set; }
+        [CanBeNull] public string Name { get; }
     }
 
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property)]
@@ -957,7 +957,7 @@ namespace StudentTask.Model.Annotations
             Name = name;
         }
 
-        [NotNull] public string Name { get; private set; }
+        [NotNull] public string Name { get; }
     }
 
     /// <summary>
@@ -982,7 +982,7 @@ namespace StudentTask.Model.Annotations
             CollectionAccessType = collectionAccessType;
         }
 
-        public CollectionAccessType CollectionAccessType { get; private set; }
+        public CollectionAccessType CollectionAccessType { get; }
     }
 
     [Flags]
@@ -1024,7 +1024,7 @@ namespace StudentTask.Model.Annotations
             ConditionType = conditionType;
         }
 
-        public AssertionConditionType ConditionType { get; private set; }
+        public AssertionConditionType ConditionType { get; }
     }
 
     /// <summary>
@@ -1043,7 +1043,7 @@ namespace StudentTask.Model.Annotations
         IS_NULL = 2,
 
         /// <summary>Marked parameter should be evaluated to not null value.</summary>
-        IS_NOT_NULL = 3,
+        IS_NOT_NULL = 3
     }
 
     /// <summary>
@@ -1126,9 +1126,9 @@ namespace StudentTask.Model.Annotations
             ControlType = controlType;
         }
 
-        [NotNull] public string TagName { get; private set; }
+        [NotNull] public string TagName { get; }
 
-        [NotNull] public Type ControlType { get; private set; }
+        [NotNull] public Type ControlType { get; }
     }
 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
@@ -1154,7 +1154,7 @@ namespace StudentTask.Model.Annotations
             Attribute = attribute;
         }
 
-        [NotNull] public string Attribute { get; private set; }
+        [NotNull] public string Attribute { get; }
     }
 
     [AttributeUsage(AttributeTargets.Property)]
@@ -1165,7 +1165,7 @@ namespace StudentTask.Model.Annotations
             CreateConstructorReferences = createConstructorReferences;
         }
 
-        public bool CreateConstructorReferences { get; private set; }
+        public bool CreateConstructorReferences { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1176,7 +1176,7 @@ namespace StudentTask.Model.Annotations
             Name = name;
         }
 
-        [NotNull] public string Name { get; private set; }
+        [NotNull] public string Name { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1188,9 +1188,9 @@ namespace StudentTask.Model.Annotations
             FieldName = fieldName;
         }
 
-        [NotNull] public string Type { get; private set; }
+        [NotNull] public string Type { get; }
 
-        [NotNull] public string FieldName { get; private set; }
+        [NotNull] public string FieldName { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1201,7 +1201,7 @@ namespace StudentTask.Model.Annotations
             Directive = directive;
         }
 
-        [NotNull] public string Directive { get; private set; }
+        [NotNull] public string Directive { get; }
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -1218,8 +1218,8 @@ namespace StudentTask.Model.Annotations
             PageName = pageName;
         }
 
-        [NotNull] public string BaseType { get; private set; }
-        [CanBeNull] public string PageName { get; private set; }
+        [NotNull] public string BaseType { get; }
+        [CanBeNull] public string PageName { get; }
     }
 
     [AttributeUsage(AttributeTargets.Method)]
