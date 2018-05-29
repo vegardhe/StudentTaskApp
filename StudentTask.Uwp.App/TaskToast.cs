@@ -17,15 +17,31 @@ namespace StudentTask.Uwp.App
         /// <param name="timePrior">The time prior.</param>
         public static void CreateTaskToast(Model.Task task, int timePrior)
         {
-            if (task.DueDate == null) return;
+            if (task?.DueDate == null) return;
             var date = task.DueDate.Value;
             var time = task.DueTime;
-            var dateText = date.Day + "." + date.Month + "." + date.Year;
 
             var displayTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, 0);
             displayTime = displayTime.AddMinutes(-timePrior);
+            var toastXml = CreateXmlDocument(task, date, time);
 
-            var toastVisual = 
+            var toastNotification = new ScheduledToastNotification(toastXml, displayTime) { Id = $"{task.TaskId}" };
+
+            ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+        }
+
+        /// <summary>
+        /// Creates the XML document.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <param name="date">The date.</param>
+        /// <param name="time">The time.</param>
+        /// <returns></returns>
+        private static XmlDocument CreateXmlDocument(Model.Task task, DateTimeOffset date, TimeSpan time)
+        {
+            var dateText = date.Day + "." + date.Month + "." + date.Year;
+
+            var toastVisual =
                 $@"<visual>
                 <binding template='ToastGeneric'>
                     <text>{task.Title}</text>
@@ -63,10 +79,7 @@ namespace StudentTask.Uwp.App
 
             var toastXml = new XmlDocument();
             toastXml.LoadXml(toastXmlString);
-
-            var toastNotification = new ScheduledToastNotification(toastXml, displayTime) {Id = $"{task.TaskId}"};
-
-            ToastNotificationManager.CreateToastNotifier().AddToSchedule(toastNotification);
+            return toastXml;
         }
 
         /// <summary>

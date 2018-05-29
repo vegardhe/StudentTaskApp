@@ -142,13 +142,14 @@ namespace StudentTask.Data.Api.Controllers
         public async Task<IHttpActionResult> UserLogOn(User user)
         {
             var dbUser = await _db.Users.FindAsync(user.Username);
-            if (dbUser == null)
+            if (dbUser is null)
                 return NotFound();
 
             if (!PasswordEncryption.Verify(user.Password, dbUser.Password))
                 return BadRequest();
 
             dbUser.Password = null;
+
             return Ok(dbUser);
         }
 

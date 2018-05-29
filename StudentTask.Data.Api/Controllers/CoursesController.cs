@@ -165,10 +165,21 @@ namespace StudentTask.Data.Api.Controllers
         {
             _db.Resources.Add(resource);
             await _db.SaveChangesAsync();
+            await AddResourceToCourse(resource, courseId);
+            return CreatedAtRoute("DefaultApi", new { controller = "resources", id = resource.ResourceId }, resource);
+        }
+
+        /// <summary>
+        /// Adds the resource to course.
+        /// </summary>
+        /// <param name="resource">The resource.</param>
+        /// <param name="courseId">The course identifier.</param>
+        /// <returns></returns>
+        private async System.Threading.Tasks.Task AddResourceToCourse(Resource resource, int courseId)
+        {
             var course = await _db.Courses.FindAsync(courseId);
-            if (course != null) course.Resources = new List<Resource> {resource};
+            if (course != null) course.Resources = new List<Resource> { resource };
             await _db.SaveChangesAsync();
-            return CreatedAtRoute("DefaultApi", new {controller = "resources", id = resource.ResourceId}, resource);
         }
 
         // POST: api/Courses/5/Exercises
@@ -185,10 +196,21 @@ namespace StudentTask.Data.Api.Controllers
         {
             _db.Exercises.Add(exercise);
             await _db.SaveChangesAsync();
+            await AddExerciseToCourse(courseId, exercise);
+            return CreatedAtRoute("DefaultApi", new { controller = "exercise", id = exercise.TaskId }, exercise);
+        }
+
+        /// <summary>
+        /// Adds the exercise to course.
+        /// </summary>
+        /// <param name="courseId">The course identifier.</param>
+        /// <param name="exercise">The exercise.</param>
+        /// <returns></returns>
+        private async System.Threading.Tasks.Task AddExerciseToCourse(int courseId, Exercise exercise)
+        {
             var course = await _db.Courses.FindAsync(courseId);
-            if (course != null) course.Exercises = new List<Exercise> {exercise};
+            if (course != null) course.Exercises = new List<Exercise> { exercise };
             await _db.SaveChangesAsync();
-            return CreatedAtRoute("DefaultApi", new {controller = "exercise", id = exercise.TaskId}, exercise);
         }
 
         // POST: api/Courses/5/Users/username

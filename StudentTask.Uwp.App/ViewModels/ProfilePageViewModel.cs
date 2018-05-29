@@ -81,25 +81,43 @@ namespace StudentTask.Uwp.App.ViewModels
         private void AddStatistics()
         {
             foreach (var task in SessionUser.Tasks)
-                if (task.TaskStatus == Model.Task.Status.Finished)
-                {
-                    CompletedTasks++;
-                    if (task.CompletedOn != null && task.CompletedOn.Value >= DateTimeOffset.Now.AddDays(-7))
-                        CompletedTasksThisWeek++;
-                }
-                else
-                {
-                    if (task.DueDate == null || task.DueDate.Value.Date < DateTimeOffset.Now.Date) continue;
-                    if (task.DueDate.Value.Date == DateTime.Now.Date)
-                    {
-                        TasksDueToday++;
-                        TasksDueThisWeek++;
-                    }
-                    else if (task.DueDate.Value <= DateTimeOffset.Now.AddDays(7))
-                    {
-                        TasksDueThisWeek++;
-                    }
-                }
+                if (!CheckCompletion(task))
+                    CheckDueDate(task);
+        }
+
+        /// <summary>
+        /// Checks the due date.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        private void CheckDueDate(Model.Task task)
+        {
+            if (task.DueDate == null || task.DueDate.Value.Date < DateTimeOffset.Now.Date) return;
+
+            if (task.DueDate.Value.Date == DateTime.Now.Date)
+            {
+                TasksDueToday++;
+                TasksDueThisWeek++;
+            }
+            else if (task.DueDate.Value <= DateTimeOffset.Now.AddDays(7))
+            {
+                TasksDueThisWeek++;
+            }
+        }
+
+        /// <summary>
+        /// Checks the completion of given task.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <returns></returns>
+        private bool CheckCompletion(Model.Task task)
+        {
+            if (task.TaskStatus != Model.Task.Status.Finished) return false;
+
+            CompletedTasks++;
+            if (task.CompletedOn != null && task.CompletedOn.Value >= DateTimeOffset.Now.AddDays(-7))
+                CompletedTasksThisWeek++;
+
+            return true;
         }
 
         /// <summary>
