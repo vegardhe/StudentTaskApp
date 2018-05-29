@@ -78,7 +78,9 @@
                     RelativePanel.AlignRightWithPanel="True"
                     Margin="20,10,0,0"
                     MaxWidth="400"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    Name="NotesPanel"
+                    Visibility="Collapsed">
             <TextBlock FontSize="20">Notes</TextBlock>
             <TextBox Text="{Binding SelectedItem.Notes, ElementName=TasksListView, Mode=TwoWay}"
                      Margin="20"

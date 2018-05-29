@@ -147,6 +147,7 @@ namespace StudentTask.Uwp.App.Views
         {
             var selectedTask = (Task) TasksListView.SelectedItem;
             DetailsPanel.Visibility = selectedTask == null ? Visibility.Collapsed : Visibility.Visible;
+            NotesPanel.Visibility = DetailsPanel.Visibility;
             DueDateText.Visibility = selectedTask != null && selectedTask.DueDate == null
                 ? Visibility.Collapsed
                 : Visibility.Visible;
