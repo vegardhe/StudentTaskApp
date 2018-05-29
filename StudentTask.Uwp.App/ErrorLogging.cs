@@ -25,7 +25,7 @@ namespace StudentTask.Uwp.App
             {
                 Message = ex.Message,
                 ElementType = ex.GetType().Name,
-                Source = ex.StackTrace
+                Source = ex.Source
             };
             try
             {
@@ -38,7 +38,7 @@ namespace StudentTask.Uwp.App
                 {
                     Message = e.Message,
                     ElementType = e.GetType().Name,
-                    Source = e.StackTrace
+                    Source = e.Source
                 });
                 LogToFile(logElement);
             }
