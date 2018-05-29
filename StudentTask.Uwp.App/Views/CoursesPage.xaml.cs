@@ -420,20 +420,14 @@ namespace StudentTask.Uwp.App.Views
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
-        private void AddResource(object sender, RoutedEventArgs e)
-        {
-            CourseResources.Add(new Resource {Name = "New Resource"});
-        }
+        private void AddResource(object sender, RoutedEventArgs e) => CourseResources.Add(new Resource { Name = "New Resource" });
 
         /// <summary>
         ///     Removes the resource.
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
-        private void RemoveResource(object sender, RoutedEventArgs e)
-        {
-            CourseResources.Remove((Resource) ManageResourcesListView.SelectedItem);
-        }
+        private void RemoveResource(object sender, RoutedEventArgs e) => CourseResources.Remove((Resource)ManageResourcesListView.SelectedItem);
 
         /// <summary>
         ///     Handles the OnSelectionChanged event of the ManageResourcesListView control.
@@ -475,7 +469,7 @@ namespace StudentTask.Uwp.App.Views
         }
 
         /// <summary>
-        /// Adds the task.
+        ///     Adds the task.
         /// </summary>
         /// <param name="task">The task.</param>
         /// <returns></returns>
@@ -483,7 +477,8 @@ namespace StudentTask.Uwp.App.Views
         {
             try
             {
-                await Tasks.Instance.AddTask(task);
+                var createdTask = await Tasks.Instance.AddTask(task);
+                TaskToast.CreateTaskToast(createdTask, 1440);
             }
             catch (WebException ex)
             {
