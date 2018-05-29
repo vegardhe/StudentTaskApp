@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using StudentTask.Model;
@@ -61,13 +63,34 @@ namespace StudentTask.Uwp.App.Views
                 changedTask.CompletedOn = DateTimeOffset.Now;
             try
             {
-                if (await Tasks.Instance.UpdateTask(changedTask)) EditSplitView.IsPaneOpen = false;
+                SavedProgressRing.IsActive = true;
+                if (await Tasks.Instance.UpdateTask(changedTask))
+                {
+                    EditSplitView.IsPaneOpen = false;
+                    await ShowSavedText();
+                }
+                else
+                {
+                    await new MessageDialog("Saving task failed.").ShowAsync();
+                }
             }
             catch (Exception ex)
             {
                 await ex.Display("Saving task failed.");
                 await ex.Log();
             }
+            finally
+            {
+                SavedProgressRing.IsActive = false;
+            }
+        }
+
+        private async System.Threading.Tasks.Task ShowSavedText()
+        {
+            SavedProgressRing.IsActive = false;
+            SavedTextBlock.Visibility = Visibility.Visible;
+            await System.Threading.Tasks.Task.Delay(3000);
+            SavedTextBlock.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>

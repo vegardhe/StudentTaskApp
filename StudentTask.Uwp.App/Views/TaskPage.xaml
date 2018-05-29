@@ -49,7 +49,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Grid RelativePanel.Below="PageHeader" RelativePanel.RightOf="TasksListView" Margin="10,10,0,0">
+        <Grid RelativePanel.Below="PageHeader" RelativePanel.RightOf="TasksListView" Margin="10,10,0,0" Name="DetailGrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -72,6 +72,29 @@
                         Click="EditButton_OnClick" Margin="0,10,0,0" Content="Edit" />
             </StackPanel>
         </Grid>
+        <StackPanel RelativePanel.RightOf="DetailGrid" 
+                    RelativePanel.Below="PageHeader"
+                    RelativePanel.AlignBottomWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True"
+                    Margin="20,10,0,0"
+                    MaxWidth="400"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <TextBlock FontSize="20">Notes</TextBlock>
+            <TextBox Text="{Binding SelectedItem.Notes, ElementName=TasksListView, Mode=TwoWay}"
+                     Margin="20"
+                     TextWrapping="Wrap"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     MinHeight="400"
+                     MaxHeight="200"/>
+            <Button Margin="20" 
+                    HorizontalAlignment="Right" 
+                    Width="100" Height="40" 
+                    Click="{x:Bind SaveTask}"
+                    Content="Save"/>
+            <TextBlock Name="SavedTextBlock" Text="Task saved." Visibility="Collapsed" />
+            <ProgressRing Name="SavedProgressRing" IsActive="False" />
+
+        </StackPanel>
 
         <SplitView DisplayMode="Overlay"
                    OpenPaneLength="320"
