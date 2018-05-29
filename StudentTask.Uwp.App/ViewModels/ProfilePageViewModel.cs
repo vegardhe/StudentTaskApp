@@ -66,34 +66,20 @@ namespace StudentTask.Uwp.App.ViewModels
             IDictionary<string, object> state)
         {
             if (Users.Instance.SessionUser.Courses == null)
-                try
-                {
-                    await Courses.Instance.GetUserCourses(Users.Instance.SessionUser);
-                }
-                catch (HttpRequestException ex)
-                {
-                    await ex.Log();
-                    await ex.Display("Requesting courses failed.");
-                }
+                await GetCourses();
 
             if (Users.Instance.SessionUser.Tasks == null)
-                try
-                {
-                    await Tasks.Instance.GetTasks(Users.Instance.SessionUser);
-                }
-                catch (HttpRequestException ex)
-                {
-                    await ex.Display("Unable to establish database connection.");
-                    await ex.Log();
-                }
-                catch (Exception ex)
-                {
-                    await ex.Log();
-                    await ex.Display("Unable to get tasks.");
-                }
+                await GetTasks();
 
             SessionUser = Users.Instance.SessionUser;
+            AddStatistics();
+        }
 
+        /// <summary>
+        /// Adds the statistics.
+        /// </summary>
+        private void AddStatistics()
+        {
             foreach (var task in SessionUser.Tasks)
                 if (task.TaskStatus == Model.Task.Status.Finished)
                 {
@@ -114,6 +100,45 @@ namespace StudentTask.Uwp.App.ViewModels
                         TasksDueThisWeek++;
                     }
                 }
+        }
+
+        /// <summary>
+        /// Gets the tasks.
+        /// </summary>
+        /// <returns></returns>
+        private static async Task GetTasks()
+        {
+            try
+            {
+                await Tasks.Instance.GetTasks(Users.Instance.SessionUser);
+            }
+            catch (HttpRequestException ex)
+            {
+                await ex.Display("Unable to establish database connection.");
+                await ex.Log();
+            }
+            catch (Exception ex)
+            {
+                await ex.Log();
+                await ex.Display("Unable to get tasks.");
+            }
+        }
+
+        /// <summary>
+        /// Gets the courses.
+        /// </summary>
+        /// <returns></returns>
+        private static async Task GetCourses()
+        {
+            try
+            {
+                await Courses.Instance.GetUserCourses(Users.Instance.SessionUser);
+            }
+            catch (HttpRequestException ex)
+            {
+                await ex.Log();
+                await ex.Display("Requesting courses failed.");
+            }
         }
     }
 }

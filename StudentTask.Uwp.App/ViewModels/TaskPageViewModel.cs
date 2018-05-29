@@ -146,20 +146,7 @@ namespace StudentTask.Uwp.App.ViewModels
 
             if (Tasks == null || Users.Instance.Changed)
             {
-                try
-                {
-                    Tasks = new ObservableCollection<Task>(await DataSource.Tasks.Instance.GetTasks(SessionUser));
-                }
-                catch (HttpRequestException ex)
-                {
-                    await ex.Display("Failed to establish database connection.");
-                    await ex.Log();
-                }
-                catch (Exception ex)
-                {
-                    await ex.Display("Failed to get tasks.");
-                    await ex.Log();
-                }
+                await GetTasks();
 
                 ActiveTasks = new ObservableCollection<Task>();
                 if (Tasks != null)
@@ -171,6 +158,28 @@ namespace StudentTask.Uwp.App.ViewModels
             }
 
             await System.Threading.Tasks.Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Gets the tasks.
+        /// </summary>
+        /// <returns></returns>
+        private async System.Threading.Tasks.Task GetTasks()
+        {
+            try
+            {
+                Tasks = new ObservableCollection<Task>(await DataSource.Tasks.Instance.GetTasks(SessionUser));
+            }
+            catch (HttpRequestException ex)
+            {
+                await ex.Display("Failed to establish database connection.");
+                await ex.Log();
+            }
+            catch (Exception ex)
+            {
+                await ex.Display("Failed to get tasks.");
+                await ex.Log();
+            }
         }
     }
 }

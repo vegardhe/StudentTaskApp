@@ -22,7 +22,7 @@ namespace StudentTask.Data.Api.Controllers
     public class CoursesController : ApiController
     {
         /// <summary>
-        ///     The database
+        ///     The database.
         /// </summary>
         private readonly StudentTaskContext _db = new StudentTaskContext();
 
@@ -52,7 +52,7 @@ namespace StudentTask.Data.Api.Controllers
 
         // GET: api/Courses/5/Resources
         /// <summary>
-        ///     Gets the resources.
+        ///     Gets the resources for the given course.
         /// </summary>
         /// <param name="courseId">The course identifier.</param>
         /// <returns></returns>
@@ -70,7 +70,7 @@ namespace StudentTask.Data.Api.Controllers
 
         // GET: api/Courses/5/Exercises
         /// <summary>
-        ///     Gets the exercises.
+        ///     Gets the exercises for the given course.
         /// </summary>
         /// <param name="courseId">The course identifier.</param>
         /// <returns></returns>
@@ -153,7 +153,7 @@ namespace StudentTask.Data.Api.Controllers
 
         // POST api/Courses/courseId/Resources
         /// <summary>
-        ///     Posts the resource.
+        ///     Posts the resource and adds it to the course.
         /// </summary>
         /// <param name="resource">The resource.</param>
         /// <param name="courseId">The course identifier.</param>
@@ -173,7 +173,7 @@ namespace StudentTask.Data.Api.Controllers
 
         // POST: api/Courses/5/Exercises
         /// <summary>
-        ///     Posts the exercise.
+        ///     Posts the exercise and adds it to the course.
         /// </summary>
         /// <param name="courseId">The course identifier.</param>
         /// <param name="exercise">The exercise.</param>

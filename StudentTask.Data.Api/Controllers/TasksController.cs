@@ -80,7 +80,7 @@ namespace StudentTask.Data.Api.Controllers
 
         // POST: api/Tasks
         /// <summary>
-        ///     Posts the task.
+        ///     Posts the task and adds it to the user.
         /// </summary>
         /// <param name="task">The task.</param>
         /// <returns></returns>

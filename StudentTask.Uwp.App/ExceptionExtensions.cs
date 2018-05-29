@@ -10,10 +10,10 @@ namespace StudentTask.Uwp.App
     public static class ExceptionExtensions
     {
         /// <summary>
-        ///     Displays the specified MSG.
+        ///     Displays the specified message in a message dialog.
         /// </summary>
-        /// <param name="ex">The ex.</param>
-        /// <param name="message">The MSG.</param>
+        /// <param name="ex">The exception.</param>
+        /// <param name="message">The message.</param>
         /// <returns></returns>
         public static async Task<Exception> Display(this Exception ex, string message)
         {
@@ -23,9 +23,9 @@ namespace StudentTask.Uwp.App
         }
 
         /// <summary>
-        ///     Logs the specified ex.
+        ///     Logs the specified exception.
         /// </summary>
-        /// <param name="ex">The ex.</param>
+        /// <param name="ex">The exception.</param>
         /// <returns></returns>
         public static async Task<Exception> Log(this Exception ex)
         {

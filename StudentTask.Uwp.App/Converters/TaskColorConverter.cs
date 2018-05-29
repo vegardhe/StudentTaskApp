@@ -29,7 +29,7 @@ namespace StudentTask.Uwp.App.Converters
         }
 
         /// <summary>
-        ///     Converts the back.
+        ///     Converts back.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="targetType">Type of the target.</param>

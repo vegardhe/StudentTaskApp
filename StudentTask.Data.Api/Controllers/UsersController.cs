@@ -38,7 +38,7 @@ namespace StudentTask.Data.Api.Controllers
 
         // GET: api/users/username/tasks
         /// <summary>
-        ///     Gets the tasks.
+        ///     Gets the tasks for the given user.
         /// </summary>
         /// <param name="username">The username.</param>
         /// <returns></returns>
@@ -55,7 +55,7 @@ namespace StudentTask.Data.Api.Controllers
 
         // GET: api/users/username/courses
         /// <summary>
-        ///     Gets the courses.
+        ///     Gets the courses for the given user.
         /// </summary>
         /// <param name="username">The username.</param>
         /// <returns></returns>
@@ -132,7 +132,7 @@ namespace StudentTask.Data.Api.Controllers
 
         // POST: api/Users/Login
         /// <summary>
-        ///     Users the log on.
+        ///     Checks username and password match.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns></returns>

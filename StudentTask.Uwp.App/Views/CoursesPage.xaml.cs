@@ -17,7 +17,7 @@ using Task = System.Threading.Tasks.Task;
 namespace StudentTask.Uwp.App.Views
 {
     /// <summary>
-    ///     An empty page that can be used on its own or navigated to within a Frame.
+    ///     A page displaying courses that can be used on its own or navigated to within a Frame.
     /// </summary>
     /// <seealso cref="Page" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
@@ -156,26 +156,26 @@ namespace StudentTask.Uwp.App.Views
             AddExerciseContentDialog.DataContext = newExercise;
 
             var result = await AddExerciseContentDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
-                try
-                {
-                    newExercise.TaskStatus = Model.Task.Status.Added;
-                    var selectedCourse = (Course) CoursesListView.SelectedItem;
-                    Exercise addedExercise;
-                    if ((addedExercise = await Courses.Instance.AddExercise(newExercise,
-                            selectedCourse)) != null)
-                        CourseExercises.Add(addedExercise);
-                }
-                catch (WebException ex)
-                {
-                    await ex.Log();
-                    await ex.Display("Failed to establish connection to internet.");
-                }
-                catch (Exception ex)
-                {
-                    await ex.Display("Failed to add exercise.");
-                    await ex.Log();
-                }
+            if (result != ContentDialogResult.Primary) return;
+            try
+            {
+                newExercise.TaskStatus = Model.Task.Status.Added;
+                var selectedCourse = (Course) CoursesListView.SelectedItem;
+                Exercise addedExercise;
+                if ((addedExercise = await Courses.Instance.AddExercise(newExercise,
+                        selectedCourse)) != null)
+                    CourseExercises.Add(addedExercise);
+            }
+            catch (WebException ex)
+            {
+                await ex.Log();
+                await ex.Display("Failed to establish connection to internet.");
+            }
+            catch (Exception ex)
+            {
+                await ex.Display("Failed to add exercise.");
+                await ex.Log();
+            }
         }
 
         /// <summary>
@@ -457,7 +457,7 @@ namespace StudentTask.Uwp.App.Views
             var result = await ViewExerciseContentDialog.ShowAsync();
 
             if (result != ContentDialogResult.Primary) return;
-            var selectedExercise = (Exercise) ExercisesListView.SelectedItem;
+            var selectedExercise = (Exercise)ExercisesListView.SelectedItem;
 
             if (selectedExercise == null) return;
             var copyExercise = new Model.Task
@@ -466,13 +466,24 @@ namespace StudentTask.Uwp.App.Views
                 Description = selectedExercise.Description,
                 DueDate = selectedExercise.DueDate,
                 DueTime = selectedExercise.DueTime,
-                Users = new List<User> {Users.Instance.SessionUser},
+                Users = new List<User> { Users.Instance.SessionUser },
                 TaskStatus = Model.Task.Status.Added
             };
+            await AddTask(copyExercise);
 
+            Users.Instance.Changed = true;
+        }
+
+        /// <summary>
+        /// Adds the task.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        /// <returns></returns>
+        private static async Task AddTask(Model.Task task)
+        {
             try
             {
-                await Tasks.Instance.AddTask(copyExercise);
+                await Tasks.Instance.AddTask(task);
             }
             catch (WebException ex)
             {
@@ -484,8 +495,6 @@ namespace StudentTask.Uwp.App.Views
                 await ex.Display("Failed to add task.");
                 await ex.Log();
             }
-
-            Users.Instance.Changed = true;
         }
 
         /// <summary>
