@@ -41,11 +41,13 @@
                   RelativePanel.Below="PageHeader"
                   RelativePanel.AlignLeftWithPanel="True"
                   RelativePanel.AlignBottomWithPanel="True"
-                  SelectionChanged="TasksListView_OnSelectionChanged">
+                  SelectionChanged="TasksListView_OnSelectionChanged"
+                  MaxWidth="200">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Task">
                     <TextBlock Text="{Binding Title, Mode=OneWay}"
-                               Foreground="{Binding TaskId, Converter={StaticResource TaskColorConverter}}" />
+                               Foreground="{Binding TaskId, Converter={StaticResource TaskColorConverter}}"
+                               TextTrimming="CharacterEllipsis"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

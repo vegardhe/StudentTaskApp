@@ -111,6 +111,16 @@ namespace StudentTask.Data.Access
                     m.MapLeftKey("Username");
                     m.MapRightKey("CourseId");
                 });
+
+            modelBuilder.Entity<Course>()
+                .HasMany(a => a.Resources)
+                .WithOptional()
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Course>()
+                .HasMany(a => a.Exercises)
+                .WithOptional()
+                .WillCascadeOnDelete(true);
         }
     }
 }
