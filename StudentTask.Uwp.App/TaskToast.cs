@@ -22,6 +22,7 @@ namespace StudentTask.Uwp.App
             var time = task.DueTime;
 
             var displayTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, 0);
+            if(displayTime < DateTime.Now) return;
             displayTime = displayTime.AddMinutes(-timePrior);
             var toastXml = CreateXmlDocument(task, date, time);
 

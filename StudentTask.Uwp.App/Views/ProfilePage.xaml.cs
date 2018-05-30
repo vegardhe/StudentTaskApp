@@ -46,5 +46,11 @@ namespace StudentTask.Uwp.App.Views
         {
             Frame.Navigate(typeof(CreateAccountPage));
         }
+
+        private void LogOutButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Users.Instance.SessionUser = null;
+            Frame.Navigate(typeof(LogOnPage));
+        }
     }
 }

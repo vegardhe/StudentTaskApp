@@ -144,6 +144,8 @@ namespace StudentTask.Uwp.App.Views
             }
 
             CourseExercises.Remove(selectedExercise);
+            var selectedCourse = (Course)CoursesListView.SelectedItem;
+            selectedCourse?.Exercises.Remove(selectedExercise);
         }
 
         /// <summary>
@@ -163,8 +165,10 @@ namespace StudentTask.Uwp.App.Views
                 var selectedCourse = (Course) CoursesListView.SelectedItem;
                 Exercise addedExercise;
                 if ((addedExercise = await Courses.Instance.AddExercise(newExercise,
-                        selectedCourse)) != null)
-                    CourseExercises.Add(addedExercise);
+                        selectedCourse)) == null) return;
+                CourseExercises.Add(addedExercise);
+                selectedCourse?.Exercises.Add(addedExercise);
+                ToggleExerciseVisibility(true);
             }
             catch (WebException ex)
             {
@@ -260,7 +264,7 @@ namespace StudentTask.Uwp.App.Views
             {
                 if (selectedCourse == null) return;
                 foreach (var selectedCourseResource in selectedCourse.Resources.ToArray())
-                    if (!CourseResources.Contains(selectedCourseResource))
+                    if (CourseResources.All(r => r.ResourceId != selectedCourseResource.ResourceId))
                         await DeleteCourseResource(selectedCourseResource, selectedCourse);
 
                 foreach (var courseResource in CourseResources)
@@ -272,9 +276,12 @@ namespace StudentTask.Uwp.App.Views
                     {
                         var originalResource =
                             selectedCourse.Resources.Find(r => r.ResourceId == courseResource.ResourceId);
-                        if (originalResource.Name != courseResource.Name ||
-                            originalResource.Link != courseResource.Link)
-                            await UpdateCourseResource(courseResource);
+                        if (originalResource.Name == courseResource.Name &&
+                            originalResource.Link == courseResource.Link) continue;
+
+                        await UpdateCourseResource(courseResource);
+                        originalResource.Name = courseResource.Name;
+                        originalResource.Link = courseResource.Link;
                     }
             }
         }
@@ -358,9 +365,6 @@ namespace StudentTask.Uwp.App.Views
             var selectedCourse = (Course) CoursesListView.SelectedItem;
             if (selectedCourse != null)
             {
-                ExercisesListView.Visibility = Visibility.Visible;
-                SeparatorLine.Visibility = Visibility.Visible;
-
                 if (selectedCourse.Resources == null)
                     try
                     {
@@ -375,22 +379,33 @@ namespace StudentTask.Uwp.App.Views
                 if (selectedCourse.Exercises == null)
                     try
                     {
-                        await Courses.Instance.GetCourseExercises(selectedCourse);
+                        var exercises = await Courses.Instance.GetCourseExercises(selectedCourse);
+                        ToggleExerciseVisibility(exercises.Length > 0);
                     }
                     catch (HttpRequestException ex)
                     {
                         await ex.Log();
                         await ex.Display("Failed to get course exercises.");
                     }
+                else
+                    ToggleExerciseVisibility(selectedCourse.Exercises.Count > 0);
             }
             else
-            {
-                ExercisesListView.Visibility = Visibility.Collapsed;
-                SeparatorLine.Visibility = Visibility.Collapsed;
-            }
+                ToggleExerciseVisibility(false);
 
             UpdateCourseResources(selectedCourse);
             UpdateCourseExercises(selectedCourse);
+        }
+
+        /// <summary>
+        /// Toggles the exercise visibility.
+        /// </summary>
+        /// <param name="visible">if set to <c>true</c> [visible].</param>
+        private void ToggleExerciseVisibility(bool visible)
+        {
+            ExercisesListView.Visibility = visible
+                ? (SeparatorLine.Visibility = Visibility.Visible)
+                : (SeparatorLine.Visibility = Visibility.Collapsed);
         }
 
         /// <summary>
@@ -401,7 +416,8 @@ namespace StudentTask.Uwp.App.Views
         {
             if (course == null) return;
             CourseResources.Clear();
-            foreach (var r in course.Resources) CourseResources.Add(r);
+            foreach (var r in course.Resources)
+                CourseResources.Add(new Resource{ResourceId = r.ResourceId, Name = r.Name, Link = r.Link});
         }
 
         /// <summary>
@@ -463,7 +479,7 @@ namespace StudentTask.Uwp.App.Views
                 Users = new List<User> { Users.Instance.SessionUser },
                 TaskStatus = Model.Task.Status.Added
             };
-            await AddTask(copyExercise);
+            await AddTask(copyExercise, NotificationCheckBox.IsChecked != null && NotificationCheckBox.IsChecked.Value);
 
             Users.Instance.Changed = true;
         }
@@ -472,13 +488,14 @@ namespace StudentTask.Uwp.App.Views
         ///     Adds the task.
         /// </summary>
         /// <param name="task">The task.</param>
+        /// <param name="createToast"></param>
         /// <returns></returns>
-        private static async Task AddTask(Model.Task task)
+        private static async Task AddTask(Model.Task task, bool createToast)
         {
             try
             {
                 var createdTask = await Tasks.Instance.AddTask(task);
-                TaskToast.CreateTaskToast(createdTask, 1440);
+                if(createToast) TaskToast.CreateTaskToast(createdTask, 1440);
             }
             catch (WebException ex)
             {

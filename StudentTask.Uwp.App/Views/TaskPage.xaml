@@ -89,7 +89,8 @@
                      TextWrapping="Wrap"
                      ScrollViewer.VerticalScrollBarVisibility="Auto"
                      MinHeight="400"
-                     MaxHeight="200"/>
+                     MaxHeight="200"
+                     AcceptsReturn="True"/>
             <Button Margin="20" 
                     HorizontalAlignment="Right" 
                     Width="100" Height="40" 
@@ -118,7 +119,8 @@
                              Margin="0,10,0,0"
                              TextWrapping="Wrap"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                             MaxHeight="300" />
+                             MaxHeight="300"
+                             AcceptsReturn="True"/>
                     <CalendarDatePicker Date="{Binding SelectedItem.DueDate, ElementName=TasksListView, Mode=TwoWay}"
                                         Header="Due Date:" Margin="0,10,0,0" />
                     <TimePicker Time="{Binding SelectedItem.DueTime,ElementName=TasksListView, Mode=TwoWay}"
@@ -173,7 +175,8 @@
                          Grid.Row="1"
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         MaxHeight="300" />
+                         MaxHeight="300"
+                         AcceptsReturn="True"/>
                 <TextBlock Text="Due Date: " VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" />
                 <CalendarDatePicker Grid.Column="1" Grid.Row="2" Date="{Binding DueDate, Mode=TwoWay}"
                                     Name="NewTaskDatePicker" />

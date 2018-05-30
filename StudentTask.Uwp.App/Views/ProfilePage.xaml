@@ -21,6 +21,7 @@
             <controls:PageHeader.PrimaryCommands>
                 <AppBarButton Name="AddNewUserButton" Icon="AddFriend" Label="Add New User" Visibility="Collapsed"
                               Click="AddNewUser" />
+                <AppBarButton Name="LogOutButton" Icon="Switch" Label="Switch User" Click="LogOutButton_OnClick"  />
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
         <StackPanel Orientation="Horizontal" Margin="10,10,0,0"

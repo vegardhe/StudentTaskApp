@@ -62,40 +62,35 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Grid RelativePanel.AlignLeftWithPanel="True"
-              RelativePanel.Below="CoursesListView"
-              RelativePanel.AlignBottomWith="ResourcesListView"
-              ScrollViewer.VerticalScrollBarVisibility="Auto"
-              Name="DetailsGrid">
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <ScrollViewer RelativePanel.AlignLeftWithPanel="True"
+                      RelativePanel.Below="CoursesListView"
+                      RelativePanel.AlignBottomWith="ResourcesListView"
+                      Name="DetailsViewer"
+                      VerticalScrollBarVisibility="Auto"
+                      RelativePanel.LeftOf="SeparatorLine">
             <StackPanel Margin="20">
                 <TextBlock Text="{Binding SelectedItem.Name, ElementName=CoursesListView}"
                            FontSize="28"
                            TextTrimming="CharacterEllipsis" />
-                <TextBlock Margin="0,10,0,0" FontSize="18"
+                <TextBlock Margin="0,10,0,60" FontSize="16"
                            Text="{Binding SelectedItem.Information, ElementName=CoursesListView}"
                            TextWrapping="WrapWholeWords" />
             </StackPanel>
-        </Grid>
+        </ScrollViewer>
         <Rectangle Name="SeparatorLine"
-                   RelativePanel.RightOf="DetailsGrid"
+                   RelativePanel.LeftOf="ExercisesListView"
                    RelativePanel.Below="CoursesListView"
                    RelativePanel.Above="ResourcesListView"
                    Width="2"
                    Fill="DarkGray"
                    Visibility="Collapsed" />
-        <ListView RelativePanel.RightOf="SeparatorLine"
-                  RelativePanel.Below="CoursesListView"
+        <ListView RelativePanel.Below="CoursesListView"
                   RelativePanel.AlignRightWithPanel="True"
                   RelativePanel.Above="ResourcesListView"
                   ItemsSource="{x:Bind CourseExercises}"
                   Header=" Exercises"
                   FontSize="24"
-                  Padding="0,20,0,0"
+                  Padding="0,20,10,0"
                   Name="ExercisesListView"
                   IsItemClickEnabled="True"
                   ItemClick="ExercisesListView_OnItemClick"
@@ -168,7 +163,8 @@
                          Grid.Row="2"
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         MaxHeight="300" />
+                         MaxHeight="300"
+                         AcceptsReturn="True"/>
             </Grid>
         </ContentDialog>
 
@@ -212,7 +208,8 @@
                          Grid.Row="2"
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         MaxHeight="300" />
+                         MaxHeight="300"
+                         AcceptsReturn="True"/>
             </Grid>
         </ContentDialog>
 
@@ -287,7 +284,8 @@
                          Grid.Row="1"
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         MaxHeight="300" />
+                         MaxHeight="300"
+                         AcceptsReturn="True"/>
                 <TextBlock Grid.Row="2" Text="Due:" />
                 <CalendarDatePicker Date="{Binding DueDate, Mode=TwoWay}" Grid.Row="3" Header=""
                                     Name="NewExerciseDatePicker" />
@@ -312,12 +310,17 @@
                                Text="{Binding SelectedItem.DueDate, ElementName=ExercisesListView, Converter={StaticResource DateToTextConverter}}" />
                     <TextBlock Margin="10,0,0,0" Text="{Binding SelectedItem.DueTime, ElementName=ExercisesListView}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Button Name="EditExerciseButton" Visibility="Collapsed" Content="Edit" Width="233"
-                            Margin="0,10,0,0" Click="{x:Bind EditExercise}" />
-                    <Button Name="DeleteExerciseButton" Visibility="Collapsed" Content="Delete" Width="237"
-                            Margin="4,10,0,0" Click="{x:Bind DeleteExercise}" />
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition  Width="*"/>
+                        <ColumnDefinition  Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Name="EditExerciseButton" Visibility="Collapsed" Content="Edit" HorizontalAlignment="Stretch"
+                            Margin="0,10,4,0" Click="{x:Bind EditExercise}" Grid.Column="0" />
+                    <Button Name="DeleteExerciseButton" Visibility="Collapsed" Content="Delete" HorizontalAlignment="Stretch"
+                            Margin="0,10,0,0" Click="{x:Bind DeleteExercise}" Grid.Column="1" />
+                </Grid>
+                <CheckBox Content="Add Notification" Name="NotificationCheckBox" />
             </StackPanel>
         </ContentDialog>
 
@@ -365,7 +368,8 @@
                          Grid.Row="1"
                          TextWrapping="Wrap"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                         MaxHeight="300" />
+                         MaxHeight="300"
+                         AcceptsReturn="True"/>
                 <TextBlock Grid.Row="2" Text="Due:" />
                 <CalendarDatePicker Date="{Binding DueDate, Mode=TwoWay}" Grid.Row="3" />
                 <TimePicker Grid.Row="4" Time="{Binding DueTime, Mode=TwoWay}" Header="Time:" />
